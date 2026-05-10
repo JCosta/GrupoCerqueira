@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0b0907"/>
+<title>Tasquinha do Cerqueira — Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ══ TOKENS ══ */
+:root{
+  --bg:#0b0907;--bg2:#131009;--card:#1a1510;--border:#2e2418;
+  --gold:#c9a96e;--gold-l:#e2c99a;--ember:#d4500a;
+  --text:#ede3d5;--text2:#b5a898;--muted:#7a6a58;
+  --fh:'Playfair Display',Georgia,serif;
+  --fb:'Inter',system-ui,sans-serif;
+  --tag-bg:rgba(201,169,110,.12);--tag-bd:rgba(201,169,110,.3);
+  --sidebar-w:200px;
+}
+body.light{
+  --bg:#f5f0e8;--bg2:#ede6d8;--card:#fff;--border:#d8cfc2;
+  --gold:#8b6914;--gold-l:#6a4e10;--ember:#b83d00;
+  --text:#1a1208;--text2:#4a3c2a;--muted:#7a6a50;
+  --tag-bg:rgba(139,105,20,.10);--tag-bd:rgba(139,105,20,.25);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;transition:background .3s,color .3s;min-height:100vh;}
+
+/* ══ HERO HEADER ══ */
+.hero-header{
+  position:sticky;top:0;z-index:200;
+  background:var(--bg2);
+  border-bottom:2px solid var(--border);
+  box-shadow:0 2px 24px rgba(0,0,0,.6);
+}
+.hero-header-inner{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:.75rem;padding:.7rem 1.2rem;
+}
+/* Logo + name block — always in centre column */
+.hero-brand{
+  grid-column:2;
+  display:flex;flex-direction:column;align-items:center;
+  text-decoration:none;flex-shrink:0;position:relative;gap:.3rem;
+}
+/* Controls pushed to right column */
+.hero-brand + .hero-controls{
+  grid-column:3;
+  justify-content:flex-end;
+}
+.hero-brand::before{
+  content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,80,10,.3) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-brand-img{
+  height:100px;width:100px;object-fit:contain;
+  mix-blend-mode:screen;
+  filter:drop-shadow(0 0 10px rgba(212,80,10,.6));
+  animation:logoPulse 4s ease-in-out infinite alternate;
+  position:relative;z-index:1;
+  flex-shrink:0;
+  display:block;margin:0 auto;
+}
+/* Light mode: keep logo fully visible — invert the black PNG to white on light bg */
+body.light .hero-brand-img{
+  mix-blend-mode:normal;
+  filter:invert(1) sepia(1) saturate(1.5) hue-rotate(5deg) brightness(.85)
+         drop-shadow(0 0 8px rgba(139,105,20,.4));
+}
+@keyframes logoPulse{
+  from{filter:drop-shadow(0 0 8px rgba(212,80,10,.4));}
+  to  {filter:drop-shadow(0 0 18px rgba(212,80,10,.9));}
+}
+.hero-brand-text{display:flex;flex-direction:column;align-items:center;line-height:1.15;text-align:center;}
+.hero-brand-name{
+  font-family:var(--fh);font-size:.95rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);
+}
+.hero-brand-sub{
+  font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-top:.1rem;
+}
+/* Gold divider under header */
+.hero-header-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold) 20%,var(--gold) 80%,transparent 100%);
+  opacity:.35;
+}
+/* Controls */
+.hero-controls{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;flex-shrink:0;justify-content:flex-end;}
+.lang-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.lang-btn{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .58rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.22rem;}
+.lang-btn .fi{font-size:.95rem;line-height:1;}
+.lang-btn:last-child{border-right:none;}
+.lang-btn.active{background:var(--gold);color:#fff;font-weight:600;}
+.lang-btn:not(.active):hover{background:var(--tag-bg);color:var(--gold);}
+.theme-btn{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);padding:.3rem .58rem;cursor:pointer;transition:all .2s;font-family:var(--fb);font-size:.62rem;display:flex;align-items:center;gap:.28rem;}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ══ LAYOUT: sidebar + content ══ */
+.layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
+
+/* ══ SIDEBAR NAV ══ */
+.sidebar{
+  width:var(--sidebar-w);
+  flex-shrink:0;
+  position:sticky;
+  top:72px; /* below hero-header (~72px tall) */
+  max-height:calc(100vh - 72px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.sidebar-inner{padding:.5rem 0 2rem;}
+.sidebar-title{
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);padding:.8rem 1rem .4rem;font-weight:600;
+}
+.nav-btn{
+  display:block;width:100%;background:none;border:none;
+  text-align:left;padding:.6rem 1rem;cursor:pointer;
+  font-family:var(--fb);font-size:.72rem;font-weight:400;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);transition:all .2s;
+  border-left:3px solid transparent;
+  line-height:1.3;
+}
+.nav-btn:hover{color:var(--gold-l);background:var(--tag-bg);border-left-color:var(--gold);}
+.nav-btn.active{color:var(--gold-l);background:var(--tag-bg);border-left-color:var(--ember);font-weight:600;}
+
+/* ══ MAIN CONTENT ══ */
+.main{flex:1;min-width:0;}
+.section{display:none;animation:fu .28s ease;}
+.section.visible{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ SECTION HERO IMAGE ══ */
+.sec-hero{position:relative;height:clamp(160px,28vw,300px);overflow:hidden;}
+.sec-hero img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform 8s ease;}
+.section.visible .sec-hero img{transform:scale(1.04);}
+.sec-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.04),rgba(0,0,0,.6)),linear-gradient(to top,rgba(0,0,0,.5),transparent 55%);}
+body.light .sec-ov{background:linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0,0,.4)),linear-gradient(to top,rgba(0,0,0,.3),transparent 55%);}
+.sec-title{position:absolute;bottom:1.2rem;left:0;right:0;text-align:center;padding:0 1rem;}
+.sec-title h2{font-family:var(--fh);font-size:clamp(1.5rem,4vw,2.4rem);font-weight:700;letter-spacing:.06em;color:#fff;text-transform:uppercase;text-shadow:0 2px 16px rgba(0,0,0,.85);}
+.sec-title p{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:.25rem;text-shadow:0 1px 6px rgba(0,0,0,.6);}
+
+/* ══ VIDEO HERO ══ */
+.wine-video-wrap{position:relative;height:clamp(160px,28vw,300px);overflow:hidden;background:#0b0907;}
+.wine-video-wrap video{width:100%;height:100%;object-fit:cover;display:block;}
+.wine-video-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.65));display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:1.2rem;text-align:center;}
+.wine-video-ov h2{font-family:var(--fh);font-size:clamp(1.5rem,4vw,2.4rem);font-weight:700;letter-spacing:.06em;color:#fff;text-transform:uppercase;text-shadow:0 2px 16px rgba(0,0,0,.85);}
+.wine-video-ov p{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:.25rem;}
+
+/* ══ ITEMS ══ */
+.items{padding:1.4rem 1.4rem 3rem;}
+.ornament{display:block;text-align:center;color:var(--gold);font-size:.8rem;letter-spacing:.5em;margin-bottom:1.2rem;opacity:.5;}
+.sub-heading{font-family:var(--fh);font-size:.9rem;font-weight:600;font-style:italic;color:var(--gold);letter-spacing:.07em;border-bottom:1px solid var(--border);padding-bottom:.3rem;margin:1.6rem 0 .7rem;}
+.item{display:grid;grid-template-columns:1fr auto;column-gap:1rem;row-gap:.15rem;padding:.78rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.item:last-child{border-bottom:none;}
+.item-left{min-width:0;}
+.item-name{font-family:var(--fh);font-size:.98rem;font-weight:600;color:var(--text);line-height:1.2;}
+.item-desc{font-size:.73rem;color:var(--muted);margin-top:.14rem;line-height:1.42;font-weight:300;}
+.item-price{font-family:var(--fh);font-size:.98rem;font-weight:700;color:var(--gold);white-space:nowrap;text-align:right;padding-top:.08rem;align-self:start;}
+
+/* ══ DUAL PRICE ══ */
+.pb{display:flex;flex-direction:column;align-items:flex-end;gap:.1rem;align-self:start;}
+.pr{display:flex;align-items:baseline;gap:.28rem;}
+.pl{font-size:.53rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:var(--fb);font-weight:500;white-space:nowrap;}
+.pv{font-family:var(--fh);font-size:.9rem;font-weight:700;color:var(--gold);white-space:nowrap;}
+.pv.dim{color:var(--muted);font-weight:400;font-size:.8rem;}
+.pd{width:100%;height:1px;background:var(--border);margin:.06rem 0;}
+.legend-row{display:flex;justify-content:flex-end;margin-bottom:.5rem;}
+.legend-row span{font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+/* ══ ALLERGEN ICONS ══ */
+.al-bar{display:flex;flex-wrap:wrap;gap:.18rem;margin-top:.3rem;}
+.al{display:inline-flex;align-items:center;justify-content:center;width:1.42rem;height:1.42rem;border-radius:50%;background:var(--tag-bg);border:1px solid var(--tag-bd);font-size:.74rem;line-height:1;cursor:default;transition:background .18s;position:relative;}
+.al:hover{background:rgba(201,169,110,.28);}
+.al::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:.58rem;font-family:var(--fb);white-space:nowrap;padding:.18rem .42rem;border-radius:4px;pointer-events:none;opacity:0;transition:opacity .18s;z-index:30;box-shadow:0 2px 8px rgba(0,0,0,.35);}
+.al:hover::after{opacity:1;}
+
+/* ══ ALLERGEN NOTICE ══ */
+.al-notice{display:flex;align-items:flex-start;gap:.5rem;background:var(--card);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:6px;padding:.7rem .85rem;margin-bottom:1rem;}
+.al-notice-icon{font-size:.95rem;flex-shrink:0;margin-top:.04rem;}
+.al-notice-txt{font-size:.69rem;color:var(--text2);line-height:1.5;}
+.al-notice-txt strong{color:var(--gold);font-weight:600;display:block;margin-bottom:.12rem;font-size:.71rem;letter-spacing:.04em;}
+
+/* ══ ALLERGEN LEGEND ══ */
+.al-legend{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.75rem .9rem;margin-top:1.5rem;}
+.al-legend-title{font-size:.54rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem;font-weight:500;}
+.al-legend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.25rem;}
+.al-legend-item{display:flex;align-items:center;gap:.3rem;font-size:.63rem;color:var(--text2);}
+
+/* ══ DONENESS ══ */
+.don-panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem .95rem;margin-bottom:1rem;}
+.don-title{font-size:.61rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem;font-weight:500;}
+.don-opts{display:flex;gap:.4rem;flex-wrap:wrap;}
+.don-btn{flex:1;min-width:74px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;padding:.48rem .3rem;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:.24rem;}
+.don-btn:hover{border-color:var(--gold);background:var(--tag-bg);}
+.don-btn.active{border-color:var(--ember);background:rgba(212,80,10,.12);}
+.don-dot{width:18px;height:18px;border-radius:50%;}
+.don-btn:nth-child(1) .don-dot{background:linear-gradient(135deg,#e8b4a0,#d4704a);}
+.don-btn:nth-child(2) .don-dot{background:linear-gradient(135deg,#c0554a,#8b2525);}
+.don-btn:nth-child(3) .don-dot{background:linear-gradient(135deg,#5c2a1a,#3a1408);}
+.don-lbl{font-size:.59rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);font-weight:500;}
+.don-note{margin-top:.5rem;font-size:.66rem;color:var(--muted);font-style:italic;border-top:1px solid var(--border);padding-top:.48rem;}
+
+/* ══ PRE-ORDER (now inside Carnes) ══ */
+.item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
+.item-preorder-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;flex-wrap:wrap;}
+.item-preorder-left{flex:1;min-width:0;}
+.item-badge{display:inline-block;background:var(--ember);color:#fff;font-size:.54rem;letter-spacing:.08em;font-weight:600;padding:.11rem .44rem;border-radius:20px;margin-bottom:.26rem;text-transform:uppercase;}
+.item-sunday{display:inline-block;background:rgba(201,169,110,.18);color:var(--gold);font-size:.56rem;letter-spacing:.08em;font-weight:600;padding:.11rem .46rem;border-radius:20px;margin-top:.26rem;text-transform:uppercase;border:1px solid var(--tag-bd);}
+
+/* ══ UNAVAILABLE BADGE ══ */
+.unavail-badge{
+  display:inline-block !important;
+  background:rgba(212,80,10,.18);
+  border:1px solid rgba(212,80,10,.45);
+  color:#e2c99a !important;
+  font-size:.64rem;letter-spacing:.08em;font-weight:600;
+  padding:.22rem .7rem;border-radius:20px;margin-top:.4rem;
+  text-transform:uppercase;font-family:var(--fb);
+  white-space:nowrap;line-height:1.4;
+  visibility:visible !important;opacity:1 !important;
+}
+.item.is-unavail .item-name{opacity:.45;}
+.item.is-unavail .item-desc{opacity:.35;}
+.item.is-unavail .item-price,.item.is-unavail .pb{opacity:.3;text-decoration:line-through;text-decoration-color:var(--muted);}
+.verde-img{width:100%;height:140px;object-fit:cover;border-radius:6px;margin-bottom:.45rem;display:block;}
+
+/* ══ NOTE ══ */
+.note{border-left:2px solid var(--ember);padding:.68rem .9rem;margin:1.2rem 0 0;font-style:italic;color:var(--muted);font-size:.78rem;line-height:1.5;}
+
+/* ══ LOADING ══ */
+#loading-msg{text-align:center;padding:4rem 2rem;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.ld-spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1.1rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ══ INSTAGRAM BUTTON (inline in footer bar) ══ */
+.ig-inline{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:linear-gradient(135deg,#c13584,#e1306c,#fd1d1d,#f56040);
+  color:#fff;text-decoration:none;
+  font-family:var(--fb);font-size:.72rem;font-weight:600;letter-spacing:.05em;
+  padding:.45rem 1rem;border-radius:20px;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 3px 12px rgba(193,53,132,.35);
+  white-space:nowrap;
+}
+.ig-inline:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(193,53,132,.5);}
+.ig-inline svg{width:15px;height:15px;flex-shrink:0;}
+
+/* ══ INFO BAR — 3 columns centred ══ */
+.info-bar{
+  background:var(--card);border-top:1px solid var(--border);
+  padding:1.4rem 2rem;
+  display:flex;flex-wrap:wrap;gap:1.2rem;
+  align-items:center;justify-content:center;
+  text-align:center;
+}
+.info-item{flex:1;min-width:140px;max-width:220px;}
+.info-item-ig{
+  flex:0 0 auto;display:flex;flex-direction:column;
+  align-items:center;gap:.4rem;text-align:center;
+}
+.info-ig-caption{font-size:.6rem;color:var(--muted);letter-spacing:.06em;line-height:1.4;}
+.info-label{font-size:.56rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+.info-value{font-family:var(--fh);font-size:.9rem;color:var(--gold-l);}
+.info-value a{color:inherit;text-decoration:none;}
+footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:1.1rem 1rem;color:var(--muted);font-size:.62rem;letter-spacing:.1em;}
+
+@media(max-width:600px){
+  .info-bar{padding:1.2rem 1rem;}
+}
+
+/* ══ LANG ══ */
+.t-pt,.t-en,.t-fr{display:none;}
+body.lang-pt .t-pt{display:inline;}
+body.lang-en .t-en{display:inline;}
+body.lang-fr .t-fr{display:inline;}
+
+/* ══ MOBILE — horizontal scrolling nav instead of sidebar ══ */
+@media(max-width:680px){
+  :root{--sidebar-w:0px;}
+  .sidebar{
+    width:100%;position:sticky;top:72px;
+    max-height:none;overflow-x:auto;overflow-y:hidden;
+    border-right:none;border-bottom:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .sidebar-inner{
+    display:flex;flex-direction:row;padding:0;
+    white-space:nowrap;min-width:max-content;
+  }
+  .sidebar-title{display:none;}
+  .nav-btn{
+    display:inline-flex;padding:.78rem .85rem;
+    border-left:none;border-bottom:3px solid transparent;
+    border-top:none;white-space:nowrap;
+    font-size:.62rem;
+  }
+  .nav-btn.active{border-bottom-color:var(--ember);border-left-color:transparent;background:var(--tag-bg);}
+  .nav-btn:hover{border-bottom-color:var(--gold);border-left-color:transparent;}
+  .layout{flex-direction:column;}
+  .main{width:100%;}
+  .topbar-logo span{display:none;}  /* hide text on very small screens */
+  .items{padding:1.1rem .9rem 2.5rem;}
+}
+@media(max-width:360px){
+  .hero-header-inner{grid-template-columns:1fr;justify-items:center;gap:.5rem;padding:.6rem .8rem;}
+  .hero-brand{grid-column:1;}
+  .hero-controls{grid-column:1;justify-content:center;}
+  .lang-btn{padding:.28rem .45rem;font-size:.58rem;}
+}
+</style>
+</head>
+<body class="lang-pt">
+
+<!-- ══ HERO HEADER ══ -->
+<header class="hero-header">
+  <div class="hero-header-inner">
+    <div class="hero-brand">
+      <img class="hero-brand-img" src="TasqCerqueiraBlack-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
+      <div class="hero-brand-text">
+        <span class="hero-brand-name">Tasquinha do Cerqueira</span>
+        <span class="hero-brand-sub"><span class="t-pt">Menu Digital</span><span class="t-en">Digital Menu</span><span class="t-fr">Menu Digital</span></span>
+      </div>
+    </div>
+    <div class="hero-controls">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')"><span class="fi">🇵🇹</span> PT</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')"><span class="fi">🇬🇧</span> EN</button>
+        <button class="lang-btn" id="btn-fr" onclick="setLang('fr')"><span class="fi">🇫🇷</span> FR</button>
+      </div>
+      <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">
+        <span id="ti">☀️</span>
+        <span id="tlbl"><span class="t-pt">Claro</span><span class="t-en">Light</span><span class="t-fr">Clair</span></span>
+      </button>
+    </div>
+  </div>
+  <div class="hero-header-divider"></div>
+</header>
+
+<!-- ══ MAIN LAYOUT ══ -->
+<div class="layout">
+
+  <!-- SIDEBAR / MOBILE NAV -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-inner" id="nav-inner">
+      <!-- tabs built by JS -->
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="main" id="page-content">
+    <div id="loading-msg">
+      <div class="ld-spinner"></div>
+      <span class="t-pt">A carregar menu…</span>
+      <span class="t-en">Loading menu…</span>
+      <span class="t-fr">Chargement…</span>
+    </div>
+  </main>
+
+</div><!-- /.layout -->
+
+<!-- INFO BAR — 3 colunas: morada | telefone | instagram -->
+<div class="info-bar">
+  <div class="info-item">
+    <div class="info-label"><span class="t-pt">Morada</span><span class="t-en">Address</span><span class="t-fr">Adresse</span></div>
+    <div class="info-value">Av. Marginal Cedovém 296<br>4740-031 Apúlia</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label"><span class="t-pt">Telefone</span><span class="t-en">Phone</span><span class="t-fr">Téléphone</span></div>
+    <div class="info-value">
+      <a href="tel:+351253963307">+351 253 963 307</a><br>
+      <a href="tel:+351910403608">+351 910 403 608</a>
+    </div>
+  </div>
+  <div class="info-item-ig">
+    <div class="info-ig-caption">
+      <span class="t-pt">📸 A sua mesa merece aparecer no feed!<br>Partilhe a experiência connosco.</span>
+      <span class="t-en">📸 Your table deserves to be on the feed!<br>Share your experience with us.</span>
+      <span class="t-fr">📸 Votre table mérite d'être dans le feed!<br>Partagez votre expérience avec nous.</span>
+    </div>
+    <a class="ig-inline" href="https://www.instagram.com/tasquinhacerqueira" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+      @tasquinhacerqueira
+    </a>
+  </div>
+</div>
+<footer>
+  <p>© Tasquinha do Cerqueira &nbsp;·&nbsp;
+    <span class="t-pt">Todos os direitos reservados</span>
+    <span class="t-en">All rights reserved</span>
+    <span class="t-fr">Tous droits réservés</span>
+  </p>
+</footer>
+
+<script>
+const CSV_FILENAME = 'menu_data.csv';
+
+const SECTIONS = [
+  {id:'entradas', lPt:'Entradas',         lEn:'Starters',          lFr:'Entrées',
+   img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Para abrir o apetite',sEn:'To whet your appetite',sFr:"Pour ouvrir l'appétit",legend:true,doneness:false},
+  {id:'sopas',    lPt:'Sopas',             lEn:'Soups',             lFr:'Soupes',
+   img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Reconfortantes e caseiras',sEn:'Comforting and homemade',sFr:'Réconfortantes et maison',legend:false,doneness:false},
+  {id:'carnes',   lPt:'Carnes',            lEn:'Meats',             lFr:'Viandes',
+   img:'https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Grelhados na brasa',sEn:'Grilled over embers',sFr:'Grillades sur braises',legend:true,doneness:true},
+  {id:'peixes',   lPt:'Peixes',            lEn:'Fish',              lFr:'Poissons',
+   img:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Do mar à mesa',sEn:'From the sea to the table',sFr:'De la mer à la table',legend:true,doneness:false},
+  {id:'sobremesas',lPt:'Sobremesas',       lEn:'Desserts',          lFr:'Desserts',
+   img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Para terminar com elegância',sEn:'To finish in style',sFr:'Pour finir en beauté',legend:true,doneness:false},
+  {id:'vinhoscasa',lPt:'Vinhos da Casa',   lEn:'House Wines',       lFr:'Vins de la Maison',
+   video:true,sPt:'Servidos em jarro',sEn:'Served in a jug',sFr:'Servis en carafe',legend:false,doneness:false},
+  {id:'vinhos',   lPt:'Carta de Vinhos',   lEn:'Wine List',         lFr:'Carte des Vins',
+   img:'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Seleção de rótulos portugueses',sEn:'Curated Portuguese labels',sFr:"Sélection d'étiquettes",legend:false,doneness:false},
+  {id:'bebidas',  lPt:'Bebidas & Cafetaria',lEn:'Drinks & Coffee',  lFr:'Boissons & Café',
+   img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Águas · Refrigerantes · Café',sEn:'Water · Soft Drinks · Coffee',sFr:'Eaux · Boissons · Café',legend:false,doneness:false},
+  {id:'cervejas', lPt:'Cervejas',          lEn:'Beer List',         lFr:'Bières',
+   img:'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Pressão · Copo · Sem Álcool',sEn:'Draft · Glass · Non-Alcoholic',sFr:'Pression · Verre · Sans Alcool',legend:false,doneness:false},
+  {id:'cocktails',lPt:'Cocktails & Sangrias',lEn:'Cocktails & Sangrias',lFr:'Cocktails & Sangrias',
+   img:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Bebidas da casa',sEn:'House drinks',sFr:'Boissons maison',legend:false,doneness:false},
+  {id:'digestivos',lPt:'Digestivos',       lEn:'Digestifs',         lFr:'Digestifs',
+   img:'https://images.unsplash.com/photo-1527761939622-933c972add22?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Para fechar em grande',sEn:'The perfect finale',sFr:'La parfaite conclusion',legend:false,doneness:false},
+];
+
+const AL = {
+  '🌾':{pt:'Glúten',en:'Gluten',fr:'Gluten'},'🦐':{pt:'Crustáceos',en:'Crustaceans',fr:'Crustacés'},
+  '🥚':{pt:'Ovos',en:'Eggs',fr:'Œufs'},'🐟':{pt:'Peixe',en:'Fish',fr:'Poisson'},
+  '🥜':{pt:'Amendoins',en:'Peanuts',fr:'Arachides'},'🌰':{pt:'Frutos secos',en:'Tree nuts',fr:'Fruits à coque'},
+  '🫘':{pt:'Soja',en:'Soya',fr:'Soja'},'🥛':{pt:'Leite/Lactose',en:'Milk/Lactose',fr:'Lait/Lactose'},
+  '🌿':{pt:'Aipo',en:'Celery',fr:'Céleri'},'🟡':{pt:'Mostarda',en:'Mustard',fr:'Moutarde'},
+  '🌱':{pt:'Sésamo',en:'Sesame',fr:'Sésame'},'🧪':{pt:'Sulfitos',en:'Sulphites',fr:'Sulfites'},
+  '🦪':{pt:'Moluscos',en:'Molluscs',fr:'Mollusques'},'🐑':{pt:'Tremoço',en:'Lupin',fr:'Lupin'},
+};
+
+function parseCSV(text){
+  const lines=text.split('\n').filter(l=>l.trim());
+  const h=lines[0].split(',').map(x=>x.trim());
+  return lines.slice(1).map(line=>{
+    const v=splitLine(line);const o={};
+    h.forEach((k,i)=>{o[k]=(v[i]||''). trim();});return o;
+  }).filter(r=>r.section);
+}
+function splitLine(line){
+  const r=[];let c='';let q=false;
+  for(const ch of line){if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(c);c='';}else{c+=ch;}}
+  r.push(c);return r;
+}
+function getLang(){return document.body.classList.contains('lang-en')?'en':document.body.classList.contains('lang-fr')?'fr':'pt';}
+function alBar(s){
+  if(!s)return'';
+  const icons=[...s].filter(c=>AL[c]);if(!icons.length)return'';
+  return`<div class="al-bar">${icons.map(ic=>`<span class="al" data-tip-pt="${AL[ic].pt}" data-tip-en="${AL[ic].en}" data-tip-fr="${AL[ic].fr}" data-tip="${AL[ic].pt}">${ic}</span>`).join('')}</div>`;
+}
+function fillUnavailBadges(){
+  const l=getLang();
+  const txt={pt:'Temporariamente indisponível',en:'Temporarily unavailable',fr:'Temporairement indisponible'};
+  document.querySelectorAll('.unavail-badge[data-unavail]').forEach(el=>{
+    el.innerHTML='⏸&nbsp;&nbsp;'+txt[l];
+  });
+}
+function refreshTips(){
+  const l=getLang(),k='tip'+l[0].toUpperCase()+l.slice(1);
+  document.querySelectorAll('.al').forEach(el=>el.setAttribute('data-tip',el.dataset[k]||el.dataset.tipPt));
+}
+function alNotice(){
+  return`<div class="al-notice"><div class="al-notice-icon">⚠️</div><div class="al-notice-txt">
+    <strong><span class="t-pt">Alergénios — Reg. UE 1169/2011</span><span class="t-en">Allergens — EU Reg. 1169/2011</span><span class="t-fr">Allergènes — Règl. UE 1169/2011</span></strong>
+    <span class="t-pt">Identificados com base nos ingredientes principais. Contaminação cruzada possível. <strong>Em caso de alergia, informe sempre o nosso staff antes de pedir.</strong></span>
+    <span class="t-en">Based on main ingredients. Cross-contamination possible. <strong>If you have any food allergy, always inform our staff before ordering.</strong></span>
+    <span class="t-fr">Selon les ingrédients principaux. Contamination croisée possible. <strong>En cas d'allergie, informez toujours notre personnel avant de commander.</strong></span>
+  </div></div>`;
+}
+function alLegend(){
+  const items=Object.entries(AL).map(([ic,n])=>`<div class="al-legend-item"><span>${ic}</span><span class="t-pt">${n.pt}</span><span class="t-en">${n.en}</span><span class="t-fr">${n.fr}</span></div>`).join('');
+  return`<div class="al-legend"><div class="al-legend-title"><span class="t-pt">Legenda — 14 Alergénios (Reg. UE 1169/2011)</span><span class="t-en">Key — 14 Allergens (EU Reg. 1169/2011)</span><span class="t-fr">Légende — 14 Allergènes (Règl. UE 1169/2011)</span></div><div class="al-legend-grid">${items}</div></div>`;
+}
+function priceBlock(row){
+  const pf=row.price_full,ph=row.price_half,lf=row.price_label_full,lh=row.price_label_half;
+  if(ph&&lf&&lh){return`<div class="pb"><div class="pr"><span class="pl">${lf}</span><span class="pv">${pf||'—'}</span></div><div class="pd"></div><div class="pr"><span class="pl">${lh}</span><span class="pv dim">${ph}</span></div></div>`;}
+  return`<div class="item-price">${pf||'—'}</div>`;
+}
+function buildItem(row,secId){
+  if(row.notes_pt==='SPECIAL_EXTRA') return '';
+  const name=`<div class="item-name"><span class="t-pt">${row.name_pt}</span><span class="t-en">${row.name_en||row.name_pt}</span><span class="t-fr">${row.name_fr||row.name_pt}</span></div>`;
+  const hasDesc=row.desc_pt||row.desc_en||row.desc_fr;
+  const desc=hasDesc?`<div class="item-desc"><span class="t-pt">${row.desc_pt}</span><span class="t-en">${row.desc_en}</span><span class="t-fr">${row.desc_fr}</span></div>`:'';
+  const al=alBar(row.allergens);
+
+  // Unavailable badge — check any notes column
+  const isUnavail=[row.notes_pt,row.notes_en,row.notes_fr].some(v=>v==='UNAVAILABLE');
+  const unavailBadge=isUnavail?`<div class="unavail-badge" data-unavail="1"></div>`:'';
+
+  // Pre-order items (inside carnes with special subsection)
+  if(row.subsection&&row.subsection.startsWith('Por Encomenda')){
+    const isSun=row.notes_pt&&(row.notes_pt.includes('Domingo')||row.notes_pt.includes('Sunday'));
+    const pf=row.price_full,ph=row.price_half,lf=row.price_label_full,lh=row.price_label_half;
+    let priceHtml='';
+    if(ph&&lf&&lh){priceHtml=`<div class="pb"><div class="pr"><span class="pl">${lf}</span><span class="pv">${pf||'—'}</span></div><div class="pd"></div><div class="pr"><span class="pl">${lh}</span><span class="pv dim">${ph}</span></div></div>`;}
+    else if(pf){priceHtml=`<div class="item-price">${pf}</div>`;}
+    return`<div class="item-preorder">
+      <div class="item-badge"><span class="t-pt">Por Encomenda</span><span class="t-en">Pre-Order Required</span><span class="t-fr">Sur Commande</span></div>
+      <div class="item-preorder-top"><div class="item-preorder-left">${name}${desc}${al}
+        ${isSun?`<div style="margin-top:.28rem;"><span class="item-sunday"><span class="t-pt">🟡 Apenas Domingos</span><span class="t-en">🟡 Sundays Only</span><span class="t-fr">🟡 Dimanches Seulement</span></span></div>`:''}
+      </div>${priceHtml}</div>
+    </div>`;
+  }
+  return`<div class="item${isUnavail?' is-unavail':''}"><div class="item-left">${name}${desc}${al}${unavailBadge}</div>${priceBlock(row)}</div>`;
+}
+function buildVerdeTinto(rows){
+  const main=rows.find(r=>r.notes_pt&&r.notes_pt.startsWith('1L:'));
+  const fallback=rows[0];
+  const row=main||fallback;
+  if(!row) return '';
+  // Parse 1L price from notes_pt: "1L:12.00€"
+  let price1L='12.00€';
+  if(row.notes_pt&&row.notes_pt.includes('1L:')){
+    price1L=row.notes_pt.split('1L:')[1].split(',')[0].trim();
+  }
+  const price05=row.price_half||'5.00€';  // 0.50cl
+  const price2L=row.price_full||'15.00€'; // 2L
+  return`<div class="sub-heading">Verde Tinto na Tijela</div>
+    <img class="verde-img" src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80&auto=format&fit=crop" alt="Verde Tinto na Tijela"/>
+    <div style="font-size:.76rem;color:var(--text2);padding:.18rem 0 .45rem;line-height:1.44;"><span class="t-pt">${row.desc_pt}</span><span class="t-en">${row.desc_en}</span><span class="t-fr">${row.desc_fr}</span></div>
+    ${alBar(row.allergens)}
+    <div class="item" style="margin-top:.28rem;"><div class="item-left"><div class="item-desc"><span class="t-pt">Copo 0.50cl</span><span class="t-en">Glass 0.50cl</span><span class="t-fr">Verre 0.50cl</span></div></div><div class="item-price">${price05}</div></div>
+    <div class="item"><div class="item-left"><div class="item-desc"><span class="t-pt">Jarro 1L</span><span class="t-en">1L Jug</span><span class="t-fr">Carafe 1L</span></div></div><div class="item-price">${price1L}</div></div>
+    <div class="item"><div class="item-left"><div class="item-desc"><span class="t-pt">Jarro 2L</span><span class="t-en">2L Jug</span><span class="t-fr">Carafe 2L</span></div></div><div class="item-price">${price2L}</div></div>`;
+}
+function buildDoneness(){
+  return`<div class="don-panel">
+    <div class="don-title"><span class="t-pt">Ponto da carne — escolha a sua preferência</span><span class="t-en">Doneness — choose your preference</span><span class="t-fr">Cuisson — choisissez votre préférence</span></div>
+    <div class="don-opts">
+      <button class="don-btn" onclick="setDon(this,'rare')"><div class="don-dot"></div><div class="don-lbl"><span class="t-pt">Mal Passado</span><span class="t-en">Rare</span><span class="t-fr">Saignant</span></div></button>
+      <button class="don-btn" onclick="setDon(this,'medium')"><div class="don-dot"></div><div class="don-lbl"><span class="t-pt">Médio</span><span class="t-en">Medium</span><span class="t-fr">À Point</span></div></button>
+      <button class="don-btn" onclick="setDon(this,'well')"><div class="don-dot"></div><div class="don-lbl"><span class="t-pt">Bem Passado</span><span class="t-en">Well Done</span><span class="t-fr">Bien Cuit</span></div></button>
+    </div>
+    <div class="don-note" id="don-note">
+      <span class="t-pt">ℹ️ Selecione e informe o empregado no pedido.</span>
+      <span class="t-en">ℹ️ Select and inform the waiter when ordering.</span>
+      <span class="t-fr">ℹ️ Sélectionnez et informez le serveur lors de la commande.</span>
+    </div>
+  </div>`;
+}
+function buildHero(sec){
+  if(sec.video){return`<div class="wine-video-wrap">
+    <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80&auto=format&fit=crop">
+      <source src="https://www.pexels.com/video/849633/download/?fps=25&h=720&w=1280" type="video/mp4"/>
+      <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover"/>
+    </video>
+    <div class="wine-video-ov">
+      <h2><span class="t-pt">${sec.lPt}</span><span class="t-en">${sec.lEn}</span><span class="t-fr">${sec.lFr}</span></h2>
+      <p><span class="t-pt">${sec.sPt}</span><span class="t-en">${sec.sEn}</span><span class="t-fr">${sec.sFr}</span></p>
+    </div>
+  </div>`;}
+  return`<div class="sec-hero"><img src="${sec.img}" alt="${sec.lPt}" loading="lazy"/>
+    <div class="sec-ov"></div>
+    <div class="sec-title">
+      <h2><span class="t-pt">${sec.lPt}</span><span class="t-en">${sec.lEn}</span><span class="t-fr">${sec.lFr}</span></h2>
+      <p><span class="t-pt">${sec.sPt}</span><span class="t-en">${sec.sEn}</span><span class="t-fr">${sec.sFr}</span></p>
+    </div>
+  </div>`;
+}
+function buildMenu(rows){
+  const navEl=document.getElementById('nav-inner');
+  const pageEl=document.getElementById('page-content');
+  navEl.innerHTML='';pageEl.innerHTML='';
+  const bySection={};
+  rows.forEach(r=>{(bySection[r.section]||(bySection[r.section]=[])).push(r);});
+  let first=true;
+  SECTIONS.forEach(sec=>{
+    const sRows=bySection[sec.id]||[];if(!sRows.length)return;
+    // NAV BUTTON
+    const btn=document.createElement('button');
+    btn.className='nav-btn'+(first?' active':'');
+    btn.onclick=function(){showSec(sec.id,this);};
+    btn.innerHTML=`<span class="t-pt">${sec.lPt}</span><span class="t-en">${sec.lEn}</span><span class="t-fr">${sec.lFr}</span>`;
+    navEl.appendChild(btn);
+    // GROUP by subsection
+    const bySub={};const subOrder=[];
+    sRows.forEach(r=>{const s=r.subsection||'__';if(!bySub[s]){bySub[s]=[];subOrder.push(s);}bySub[s].push(r);});
+    let html=buildHero(sec)+'<div class="items"><span class="ornament">✦ ✦ ✦</span>';
+    const alSecs=['entradas','sopas','carnes','peixes','sobremesas','vinhos','vinhoscasa'];
+    if(alSecs.includes(sec.id))html+=alNotice();
+    if(sec.doneness)html+=buildDoneness();
+    const hasHalf=sRows.some(r=>r.price_half&&r.price_label_full);
+    if(hasHalf&&!sec.id.includes('encomendas')){
+      const lf=sRows.find(r=>r.price_label_full)?.price_label_full||'';
+      const lh=sRows.find(r=>r.price_label_half)?.price_label_half||'';
+      if(lf&&lh)html+=`<div class="legend-row"><span>${lf} · ${lh}</span></div>`;
+    }
+    subOrder.forEach(sub=>{
+      const subRows=bySub[sub];
+      if(sub==='Verde Tinto na Tijela'){html+=buildVerdeTinto(subRows);return;}
+      if(sub!=='__')html+=`<div class="sub-heading">${sub}</div>`;
+      subRows.forEach(r=>{if(r.notes_pt==='SPECIAL')return;html+=buildItem(r,sec.id);});
+    });
+    if(sec.legend)html+=alLegend();
+    if(sec.id==='vinhos')html+=`<p class="note"><span class="t-pt">🧪 Todos os vinhos contêm sulfitos — alergénio de declaração obrigatória. "—" indica disponível apenas em 0.75cl.</span><span class="t-en">🧪 All wines contain sulphites — mandatory allergen. "—" means 0.75cl only.</span><span class="t-fr">🧪 Tous les vins contiennent des sulfites — allergène obligatoire. "—" uniquement en 0.75cl.</span></p>`;
+    if(sec.id==='vinhoscasa')html+=`<p class="note"><span class="t-pt">🧪 Todos os vinhos contêm sulfitos — alergénio de declaração obrigatória (Reg. UE 1169/2011).</span><span class="t-en">🧪 All wines contain sulphites — mandatory allergen (EU Reg. 1169/2011).</span><span class="t-fr">🧪 Tous les vins contiennent des sulfites — allergène obligatoire (Règl. UE 1169/2011).</span></p>`;
+    html+='</div>';
+    const div=document.createElement('div');
+    div.id=sec.id;div.className='section'+(first?' visible':'');
+    div.innerHTML=html;pageEl.appendChild(div);
+    first=false;
+  });
+  refreshTips();
+  requestAnimationFrame(()=>fillUnavailBadges());
+}
+async function loadMenu(){
+  try{
+    const res=await fetch(CSV_FILENAME+'?v='+Date.now());
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const text=await res.text();
+    if(text.trim().startsWith('section,')){buildMenu(parseCSV(text));return;}
+  }catch(e){console.info('Using embedded CSV.',e.message);}
+  buildMenu(parseCSV(FALLBACK_CSV));
+}
+function showSec(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id)?.classList.add('visible');
+  if(btn){
+    btn.classList.add('active');
+    btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+  // scroll to top of content area
+  document.getElementById('page-content').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function setLang(l){
+  document.body.classList.remove('lang-pt','lang-en','lang-fr');
+  document.body.classList.add('lang-'+l);
+  ['pt','en','fr'].forEach(x=>document.getElementById('btn-'+x)?.classList.toggle('active',x===l));
+  updateThemeLbl();refreshTips();fillUnavailBadges();
+  try{localStorage.setItem('mLang',l);}catch(e){}
+}
+let isLight=false;
+function toggleTheme(){
+  isLight=!isLight;
+  document.body.classList.toggle('light',isLight);
+  document.getElementById('ti').textContent=isLight?'🌙':'☀️';
+  updateThemeLbl();
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content',isLight?'#f5f0e8':'#0b0907');
+  try{localStorage.setItem('mTheme',isLight?'light':'dark');}catch(e){}
+}
+function updateThemeLbl(){
+  const m={pt:isLight?'Modo Escuro':'Modo Claro',en:isLight?'Dark':'Light',fr:isLight?'Sombre':'Clair'};
+  const lbl=document.getElementById('tlbl');
+  if(lbl)['pt','en','fr'].forEach(l=>{const el=lbl.querySelector('.t-'+l);if(el)el.textContent=m[l];});
+}
+const donTxt={
+  rare:{pt:'🥩 Mal Passado — Interior vermelho vivo, muito suculento',en:'🥩 Rare — Bright red interior, very juicy',fr:'🥩 Saignant — Intérieur rouge vif, très juteux'},
+  medium:{pt:'🍖 Médio — Interior rosado, ligeiramente suculento',en:'🍖 Medium — Pink interior, slightly juicy',fr:'🍖 À Point — Intérieur rosé, légèrement juteux'},
+  well:{pt:'🔥 Bem Passado — Interior bem cozido, seco e firme',en:'🔥 Well Done — Fully cooked, drier and firm',fr:'🔥 Bien Cuit — Bien cuit, plus sec et ferme'}
+};
+function setDon(btn,type){
+  document.querySelectorAll('.don-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const note=document.getElementById('don-note');
+  if(note)note.textContent=donTxt[type][getLang()];
+}
+(function init(){
+  try{
+    const lang=localStorage.getItem('mLang')||'pt';
+    const theme=localStorage.getItem('mTheme')||'dark';
+    if(lang!=='pt'){document.body.classList.remove('lang-pt');document.body.classList.add('lang-'+lang);}
+    if(theme==='light')toggleTheme();
+  }catch(e){}
+  loadMenu();
+})();
+
+const FALLBACK_CSV = `section,subsection,name_pt,name_en,name_fr,desc_pt,desc_en,desc_fr,price_full,price_half,price_label_full,price_label_half,allergens,image,notes_pt,notes_en,notes_fr
+entradas,,Azeitonas,Olives,Olives,Azeitonas temperadas da casa servidas como petisco de boas-vindas,House-seasoned olives served as a welcome snack,Olives assaisonnées maison servies en amuse-bouche de bienvenue,3.00€,,,,,,,
+entradas,,Ameijoa à Bolhão Pato,Clams Bolhão Pato Style,Palourdes à la Bolhão Pato,Ameijoas salteadas com azeite alho coentros e vinho branco,Clams sautéed with olive oil garlic coriander and white wine,Palourdes sautées à l'huile d'olive ail coriandre et vin blanc,3.00€,,,,🦪🧪,,,
+entradas,,Alheira,Alheira Sausage,Saucisse Alheira,Alheira transmontana assada de sabor fumado e textura suave,Roasted transmontana alheira sausage smoky flavour and soft texture,Saucisse alheira transmontana rôtie au goût fumé,3.00€,,,,🌾🧪,,,
+entradas,,Presunto,Cured Ham,Jambon Cru,Fatias de presunto curado de qualidade de sabor intenso e aroma inconfundível,Slices of quality cured ham with intense flavour and unmistakable aroma,Tranches de jambon sec de qualité au goût intense,3.00€,,,,🧪,,,
+entradas,,Gambas à Guilho,Prawns à Guilho,Crevettes à l'Ail,Gambas salteadas em azeite alho e malagueta servidas bem quentes,Prawns sautéed in olive oil garlic and chilli served piping hot,Crevettes sautées à l'huile d'olive à l'ail et au piment,25.00€,,,,🦐🧪,,,
+entradas,,Chouriça Caseira,House Chorizo,Chorizo Maison,Chouriça artesanal da nossa produção grelhada na brasa,Artisan chorizo from our own production grilled over embers,Chorizo artisanal de notre production grillé sur braises,5.00€,,,,🧪,,,
+entradas,,Bolinhos / Rissóis,Fish Cakes / Rissoles,Croquettes / Chaussons,Bolinhos de bacalhau ou rissóis caseiros estaladiços por fora cremosos por dentro,Salt cod fritters or homemade rissoles crispy outside creamy inside,Beignets de morue ou chaussons maison croustillants dehors crémeux dedans,3.00€,,,,🌾🥚🐟🥛,,,
+entradas,,Moelas,Chicken Gizzards,Gésiers de Poulet,Moelas estufadas em molho da casa temperadas com ervas e especiarias,Stewed chicken gizzards in house sauce seasoned with herbs and spices,Gésiers de poulet mijotés en sauce maison assaisonnés d'herbes,3.00€,,,,🧪,,,
+entradas,,Mexilhão com Molho Vinagrete,Mussels with Vinaigrette,Moules à la Vinaigrette,Mexilhões frescos servidos com molho vinagrete de azeite limão e ervas,Fresh mussels served with an olive oil lemon and herb vinaigrette,Moules fraîches avec vinaigrette à l'huile d'olive citron et herbes,3.00€,,,,🦪🧪,,,
+entradas,,Orelha de Porco,Pig's Ear,Oreille de Porc,Orelha de porco cozida e temperada petisco tradicional português,Cooked and seasoned pig's ear a traditional Portuguese snack,Oreille de porc cuite et assaisonnée amuse-bouche portugais traditionnel,3.00€,,,,🧪,,,
+entradas,,Queijo,Cheese,Fromage,Seleção de queijo regional português servido com pão da casa,Selection of regional Portuguese cheese served with house bread,Sélection de fromage portugais régional servi avec du pain maison,3.00€,,,,🥛🌾,,,
+entradas,,Punheta de Bacalhau,Shredded Salted Cod,Morue Effilochée à Cru,Bacalhau desfiado cru marinado com azeite alho e salsa,Raw shredded salt cod marinated with olive oil garlic and parsley,Morue salée effilochée marinée à l'huile d'olive ail et persil,5.00€,,,,🐟,,,
+entradas,,Petinga,Fried Sprats,Sprats Frits,Petingas fritas em azeite crocantes e saborosas,Sprats fried in olive oil crispy and flavourful,Sprats frits à l'huile d'olive croustillants et savoureux,3.00€,,,,🐟🌾,,,
+entradas,,Costelinha,Spare Ribs,Travers de Porc,Costelinhas de porco marinadas e grelhadas suculentas e plenas de sabor,Marinated and grilled pork spare ribs juicy and full of flavour,Travers de porc marinés et grillés juteux et pleins de saveur,3.00€,,,,🧪,,,
+entradas,,Polvo com Molho Verde,Octopus with Green Sauce,Poulpe à la Sauce Verte,Polvo tenro cozido servido com molho verde de coentros azeite e alho,Tender cooked octopus with a green coriander olive oil and garlic sauce,Poulpe tendre cuit avec sauce verte coriandre huile d'olive et ail,20.00€,,,,🦪,,,
+entradas,,Camarão Tigre,Tiger Prawns,Crevettes Tigrées,Camarões tigre grelhados na chapa com manteiga de ervas e limão,Grilled tiger prawns with herb butter and lemon,Crevettes tigrées grillées avec beurre aux herbes et citron,20.00€,,,,🦐🥛,,,
+entradas,,Camarão da Costa,Local Shrimp,Crevettes de la Côte,Camarão fresco da costa portuguesa cozido com sal grosso e louro,Fresh shrimp from the Portuguese coast boiled with coarse salt and bay leaf,Crevettes fraîches de la côte portugaise cuites au gros sel et laurier,10.00€,,,,🦐,,,
+entradas,,Pataniscas,Cod Fritters,Beignets de Morue,Pataniscas de bacalhau estaladiças fritas em azeite quente — receita da avó,Crispy salt cod fritters fried in hot olive oil — grandma's recipe,Beignets de morue croustillants frits à l'huile d'olive chaude,3.00€,,,,🐟🌾🥚,,,
+sopas,,Caldo Verde,Caldo Verde Soup,Soupe Caldo Verde,Sopa tradicional portuguesa com couve lombarda batata e chouriço,Traditional Portuguese soup with kale potato and chorizo,Soupe traditionnelle portugaise au chou kale pomme de terre et chorizo,2.50€,,,,🧪,,,
+sopas,,Sopa de Legumes,Vegetable Soup,Soupe de Légumes,Sopa cremosa de legumes frescos da época,Creamy soup made with fresh seasonal vegetables,Soupe crémeuse de légumes frais de saison,2.50€,,,,,,,
+vinhoscasa,Tinto,Cabeça de Gaio,Cabeça de Gaio,Cabeça de Gaio,Vinho tinto regional encorpado e elegante,Full-bodied and elegant regional red wine,Vin rouge régional corsé et élégant,12.00€,5.00€,0.75cl,0.375cl,,,,
+vinhoscasa,Tinto,Cerqueira,Cerqueira,Cerqueira,Vinho tinto da casa suave e equilibrado,Smooth and balanced house red wine,Vin rouge de la maison doux et équilibré,9.00€,5.00€,0.75cl,0.375cl,,,,
+vinhoscasa,Verde Tinto na Tijela,Verde Tinto na Tijela,Verde Tinto in the Bowl,Verde Tinto dans le Bol,Vinho verde tinto servido na tijela à tradicional — experiência única da casa,Traditional red vinho verde served in a terracotta bowl — a unique house experience,Vinho verde rouge servi dans le bol à la traditionnelle — expérience unique de la maison,15.00€,5.00€,2L,0.50cl,🧪,,1L:12.00€,,
+vinhos,Douro · Branco,Assobio,Assobio,Assobio,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,CARM Reserva,CARM Reserva,CARM Reserva,,,,24€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Despercebido,Despercebido,Despercebido,,,,15€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Dona Ermelinda Reserva,Dona Ermelinda Reserva,Dona Ermelinda Reserva,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Manoella,Manoella,Manoella,,,,28€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Memórias Da Nossa Terra {Esposende} Reserva,Memórias Da Nossa Terra {Esposende} Reserva,Memórias Da Nossa Terra {Esposende} Reserva,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Monte Da Vaqueira,Monte Da Vaqueira,Monte Da Vaqueira,,,,12€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Quinta De Castelares,Quinta De Castelares,Quinta De Castelares,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Quinta De Cidro Chardonnay,Quinta De Cidro Chardonnay,Quinta De Cidro Chardonnay,,,,35€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Ribeiro Santos Encruzado,Ribeiro Santos Encruzado,Ribeiro Santos Encruzado,,,,18€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Vallado,Vallado,Vallado,,,,16€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Vallado 3 Melros,Vallado 3 Melros,Vallado 3 Melros,,,,17€,,0.75cl,,🧪,,,
+vinhos,Douro · Branco,Vallado Prima,Vallado Prima,Vallado Prima,,,,17€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Assobio,Assobio,Assobio,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,CARM,CARM,CARM,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,CARM Reserva,CARM Reserva,CARM Reserva,,,,24€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Callabriga,Callabriga,Callabriga,,,,35€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Dona Ermelinda,Dona Ermelinda,Dona Ermelinda,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Duas Quintas,Duas Quintas,Duas Quintas,,,,22€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Esteva,Esteva,Esteva,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Manoella,Manoella,Manoella,,,,28€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Memórias Da Nossa Terra [Esposende] Reserva,Memórias Da Nossa Terra [Esposende] Reserva,Memórias Da Nossa Terra [Esposende] Reserva,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Papa Figos,Papa Figos,Papa Figos,,,,16€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Quinta Da Leda,Quinta Da Leda,Quinta Da Leda,,,,85€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Quinta De Castelares,Quinta De Castelares,Quinta De Castelares,,,,14€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Quinta De Castelares Grande Reserva,Quinta De Castelares Grande Reserva,Quinta De Castelares Grande Reserva,,,,42€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Quinta De Castelares Reserva,Quinta De Castelares Reserva,Quinta De Castelares Reserva,,,,26€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Quinta De Crasto,Quinta De Crasto,Quinta De Crasto,,,,20€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Quinta De Crasto Superior,Quinta De Crasto Superior,Quinta De Crasto Superior,,,,28€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Vallado,Vallado,Vallado,,,,16€,,0.75cl,,🧪,,,
+vinhos,Douro · Tinto,Vallado 3 Melros,Vallado 3 Melros,Vallado 3 Melros,,,,17€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Bella Elegance Cabernet Franc,Bella Elegance Cabernet Franc,Bella Elegance Cabernet Franc,,,,22€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Cabriz Colheita,Cabriz Colheita,Cabriz Colheita,,,,12€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Casa Albuquerque,Casa Albuquerque,Casa Albuquerque,,,,20€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Casa Santana Reserva,Casa Santana Reserva,Casa Santana Reserva,,,,25€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,MOB Lote 3,MOB Lote 3,MOB Lote 3,,,,20€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Monte Da Vaqueira,Monte Da Vaqueira,Monte Da Vaqueira,,,,24€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Ribeiro Santo Reserva,Ribeiro Santo Reserva,Ribeiro Santo Reserva,,,,18€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Vallado Superior,Vallado Superior,Vallado Superior,,,,24€,,0.75cl,,🧪,,,
+vinhos,Dão · Tinto,Vendaval,Vendaval,Vendaval,,,,14€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Borba,Borba,Borba,,,,12€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Esporão Reserva,Esporão Reserva,Esporão Reserva,,,,25€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Herdade Dos Grous 23 Barricas,Herdade Dos Grous 23 Barricas,Herdade Dos Grous 23 Barricas,,,,48€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Herdade Dos Grous Moon Harvested,Herdade Dos Grous Moon Harvested,Herdade Dos Grous Moon Harvested,,,,48€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Monte Da Peceguina,Monte Da Peceguina,Monte Da Peceguina,,,,22€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Monte Das Servas,Monte Das Servas,Monte Das Servas,,,,14€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Monte Velho,Monte Velho,Monte Velho,,,,12€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Tiago Cabaço .com,Tiago Cabaço .com,Tiago Cabaço .com,,,,14€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Tiago Cabaço Vinhas Velhas,Tiago Cabaço Vinhas Velhas,Tiago Cabaço Vinhas Velhas,,,,22€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Trinca Bolotas,Trinca Bolotas,Trinca Bolotas,,,,15€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Branco,Vinha De Defesa,Vinha De Defesa,Vinha De Defesa,,,,14€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Borba,Borba,Borba,,,,12€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Esporão Reserva,Esporão Reserva,Esporão Reserva,,,,28€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Monte Da Peceguina,Monte Da Peceguina,Monte Da Peceguina,,,,22€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Monte Das Servas,Monte Das Servas,Monte Das Servas,,,,14€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Monte Velho,Monte Velho,Monte Velho,,,,12€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Tiago Cabaço .com,Tiago Cabaço .com,Tiago Cabaço .com,,,,14€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Tiago Cabaço Vinhas Velhas,Tiago Cabaço Vinhas Velhas,Tiago Cabaço Vinhas Velhas,,,,22€,,0.75cl,,🧪,,,
+vinhos,Alentejo · Tinto,Vinha Da Defesa,Vinha Da Defesa,Vinha Da Defesa,,,,14€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Aveleda Fonte,Aveleda Fonte,Aveleda Fonte,,,,10€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Aveleda Solos Xisto,Aveleda Solos Xisto,Aveleda Solos Xisto,,,,18€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Casal Garcia,Casal Garcia,Casal Garcia,,,,10€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Gerações Alvarinho,Gerações Alvarinho,Gerações Alvarinho,,,,18€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Graça Da Pedra Alvarinho,Graça Da Pedra Alvarinho,Graça Da Pedra Alvarinho,,,,20€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Soalheiro Alvarinho,Soalheiro Alvarinho,Soalheiro Alvarinho,,,,17€,,0.75cl,,🧪,,,
+vinhos,Vinhos Verdes · Branco,Socalcos Do Bouro,Socalcos Do Bouro,Socalcos Do Bouro,,,,17€,,0.75cl,,🧪,,,
+bebidas,Águas,Água das Pedras (natural / gás),Still / Sparkling Water,Eau (plate / gazeuse),,,,1.50€,,,,,,,
+bebidas,Águas,Água Luso 0.33cl,Luso Water 0.33cl,Eau Luso 0.33cl,,,,1.20€,,,,,,,
+bebidas,Águas,Água Luso 0.5cl,Luso Water 0.5cl,Eau Luso 0.5cl,,,,1.50€,,,,,,,
+bebidas,Refrigerantes,Coca-Cola / Zero,Coca-Cola / Zero,Coca-Cola / Zero,,,,2.00€,,,,,,,
+bebidas,Refrigerantes,Sumol Laranja / Ananás,Sumol Orange / Pineapple,Sumol Orange / Ananas,,,,2.00€,,,,,,,
+bebidas,Refrigerantes,7UP / Sprite,7UP / Sprite,7UP / Sprite,,,,2.00€,,,,,,,
+bebidas,Refrigerantes,Ice Tea Pêssego,Peach Ice Tea,Ice Tea Pêche,,,,2.00€,,,,,,,
+bebidas,Refrigerantes,Compal (vários sabores),Compal (various flavours),Compal (diverses saveurs),,,,1.80€,,,,,,,
+bebidas,Sumos Naturais,Sumo de Laranja Natural,Fresh Orange Juice,Jus d'Orange Frais,,,,2.50€,,,,,,,
+bebidas,Cafetaria,Café,Coffee,Café,,,,1.00€,,,,,,,
+bebidas,Cafetaria,Descafeinado,Decaffeinated,Décaféiné,,,,1.00€,,,,,,,
+bebidas,Cafetaria,Chá (vários),Tea (various),Thé (divers),,,,1.00€,,,,,,,
+cocktails,Sangrias,Sangria Tasquinha,Tasquinha Sangria,Sangria Tasquinha,Vinho tinto frutas frescas e especiarias da casa,Red wine fresh fruit and house spices,Vin rouge fruits frais et épices maison,65.90€,35.90€,2L,1L,🧪,,,
+cocktails,Sangrias,Sangria de Maracujá,Passion Fruit Sangria,Sangria aux Fruits de la Passion,Vinho branco maracujá fresco e hortelã,White wine fresh passion fruit and mint,Vin blanc fruit de la passion frais et menthe,69.90€,38.90€,2L,1L,🧪,,,
+cocktails,Sangrias,Mojito Sangria,Mojito Sangria,Mojito Sangria,Vinho branco rum lima e hortelã fresca,White wine rum lime and fresh mint,Vin blanc rhum citron vert et menthe fraîche,65.90€,35.90€,2L,1L,🧪,,,
+cocktails,Sangrias,Sangria de Vinho do Porto,Port Wine Sangria,Sangria au Vin de Porto,Vinho do Porto citrinos e especiarias,Port wine citrus fruits and spices,Vin de Porto agrumes et épices,65.90€,35.90€,2L,1L,🧪,,,
+cocktails,Sangrias,Moët Chandon Sangria,Moët Chandon Sangria,Moët Chandon Sangria,Champagne Moët frutas frescas e licor de pêssego,Moët Champagne fresh fruits and peach liqueur,Champagne Moët fruits frais et liqueur de pêche,240.00€,125.90€,2L,1L,🧪,,,
+cocktails,Cocktails,Sequeirão,Sequeirão,Sequeirão,Cocktail exclusivo da casa,Exclusive house cocktail,Cocktail exclusif de la maison,10.90€,,,,🧪,,,
+cocktails,Cocktails,Moscow Mule,Moscow Mule,Moscow Mule,Vodka ginger beer e lima,Vodka ginger beer and lime,Vodka ginger beer et citron vert,11.90€,,,,🧪,,,
+cocktails,Cocktails,Daiquiri,Daiquiri,Daiquiri,Rum sumo de lima e açúcar,Rum lime juice and sugar,Rhum jus de citron vert et sucre,12.50€,,,,🧪,,,
+cocktails,Cocktails,Dry Martini,Dry Martini,Dry Martini,Gin ou vodka com vermute seco,Gin or vodka with dry vermouth,Gin ou vodka avec vermouth sec,4.90€,,,,🧪,,,
+carnes,,Bife da Vazia,Vazia Steak,Steak de Vazia,Bife de vazia grelhado na brasa suculento e saboroso,Grilled vazia steak juicy and flavourful,Steak de vazia grillé juteux et savoureux,20.00€,,Dose,,🧪,,,
+carnes,,Frango Churrasco,Grilled Chicken,Poulet Grillé,Frango grelhado no churrasco com especiarias da casa,Grilled chicken with house spices,Poulet grillé avec les épices de la maison,20.00€,12.00€,Dose,Meia,,,,
+carnes,,Grelhado Misto,Mixed Grill,Grillade Mixte,Seleção de carnes grelhadas na brasa — a favorita da casa,Selection of grilled meats — the house favourite,Sélection de viandes grillées — la préférée de la maison,32.00€,18.00€,Dose,Meia,🧪,,,
+carnes,,Picanha Laminada,Sliced Rump,Rumsteck Lamé,Picanha laminada grelhada servida em fatias suculentas,Sliced grilled rump served in juicy slices,Rumsteck lamé grillé servi en tranches juteuses,42.00€,22.00€,Dose,Meia,🧪,,,
+carnes,,Tomahawk Premium,Tomahawk Premium,Tomahawk Premium,Tomahawk grelhado na brasa corte imponente e cheio de sabor,Grilled tomahawk steak impressive cut full of flavour,Tomahawk grillé coupe impressionnante pleine de saveur,50.00€,,Dose,,🧪,,,
+carnes,,Espetada de Picanha,Rump Skewer,Brochette de Rumsteck,Espetada de picanha grelhada na brasa tenra e sumarenta,Grilled rump skewer tender and juicy,Brochette de rumsteck grillée tendre et juteuse,48.00€,24.00€,Dose,Meia,🧪,,,
+carnes,,Posta Laminada,Sliced Veal Steak,Côte de Veau Lamée,Posta de vitela laminada grelhada de sabor delicado,Sliced grilled veal steak with a delicate flavour,Côte de veau lamée grillée au goût délicat,30.00€,,Dose,,🧪,,,
+carnes,,Posta à Tasquinha,Tasquinha-Style Veal,Côte de Veau Tasquinha,Posta de vitela grelhada com molho especial da tasquinha,Grilled veal steak with the tasquinha special sauce,Côte de veau grillée avec sauce spéciale tasquinha,22.00€,,Dose,,🧪,,,
+carnes,,Costeletão de Novilho,Beef Chop,Côtelette de Bœuf,Costeletão de novilho grelhado na brasa suculento e encorpado,Grilled beef chop succulent and full-bodied,Côtelette de bœuf grillée succulente et corsée,46.00€,24.00€,Dose,Meia,🧪,,,
+carnes,,Miminhos à Tasquinha,Tasquinha Beef Tenderloin,Filets de Bœuf Tasquinha,Medalhões de novilho grelhados com molho da casa especialidade do Chef,Grilled beef medallions with house sauce Chef's speciality,Médaillons de bœuf grillés avec sauce maison spécialité du Chef,44.00€,23.00€,Dose,Meia,🧪,,,
+carnes,Por Encomenda · Sob reserva prévia,Pica no Chão,Pica no Chão (Chicken Cabidela),Pica no Chão (Poulet Cabidela),"Prato típico português — Arroz de Cabidela com Frango Caseiro Estufado e Arroz Fresco. Sob encomenda prévia.","Traditional Portuguese dish — Chicken Cabidela rice with home-stewed chicken and fresh rice. Must be ordered in advance.","Plat typique portugais — Riz Cabidela avec poulet mijoté maison et riz frais. Sur commande préalable.",100.00€,,Dose,,🌾🥚🧪,,,Por encomenda
+carnes,Por Encomenda · Sob reserva prévia,Cabrito Assado no Forno,Oven-Roasted Kid Goat,Chevreau Rôti au Four,"Cabrito assado lentamente no forno — apenas aos Domingos. Textura macia e sabor inconfundível. Sob encomenda prévia.","Slowly oven-roasted kid goat — Sundays only. Tender texture and unmistakable flavour. Must be ordered in advance.","Chevreau rôti lentement au four — Dimanches seulement. Texture moelleuse et saveur incomparable. Sur commande préalable.",46.00€,24.00€,Dose,Meia,,,,🟡 Apenas Domingos / Sundays only / Dimanches seulement
+carnes,Por Encomenda · Sob reserva prévia,Vitela Assada no Forno,Oven-Roasted Veal,Veau Rôti au Four,"Vitela assada lentamente no forno com ervas aromáticas — apenas aos Domingos. Sob encomenda prévia.","Slowly oven-roasted veal with aromatic herbs — Sundays only. Must be ordered in advance.","Veau rôti lentement au four avec herbes aromatiques — Dimanches seulement. Sur commande préalable.",28.00€,15.00€,Dose,Meia,,,,🟡 Apenas Domingos / Sundays only / Dimanches seulement
+peixes,,Bacalhau Assado,Roasted Codfish,Morue Rôtie,Bacalhau assado no forno com azeite alho e batatas,Oven-roasted cod with olive oil garlic and potatoes,Morue rôtie au four avec huile d'olive ail et pommes de terre,45.00€,24.00€,Dose,Meia,🐟,,,
+peixes,,Bacalhau Recheado,Stuffed Codfish,Morue Farcie,Bacalhau recheado com legumes e queijo assado no forno,Codfish stuffed with vegetables and cheese baked in the oven,Morue farcie aux légumes et fromage cuite au four,45.00€,24.00€,Dose,Meia,🐟🥛🌾,,,
+peixes,,Bacalhau Cozido,Boiled Codfish,Morue Bouillie,Bacalhau cozido com grão-de-bico batata cebola e ovo cozido,Boiled cod with chickpeas potato onion and boiled egg,Morue bouillie avec pois chiches pomme de terre oignon et œuf,45.00€,24.00€,Dose,Meia,🐟🥚,,,
+peixes,,Polvo à Lagareiro,Octopus à Lagareiro,Poulpe à la Lagareiro,Polvo assado no forno com azeite e batatas a murro,Octopus baked in the oven with olive oil and smashed potatoes,Poulpe rôti au four avec huile d'olive et pommes de terre écrasées,—,24.00€,Dose,Meia,🦪,,,
+peixes,,Polvo Cozido,Boiled Octopus,Poulpe Bouilli,Polvo cozido servido com batata cozida e azeite,Boiled octopus served with boiled potato and olive oil,Poulpe bouilli servi avec pomme de terre bouillie et huile d'olive,—,24.00€,Dose,Meia,🦪,,,
+peixes,,Rodovalho Grelhado,Grilled Turbot,Turbot Grillé,Rodovalho grelhado na brasa ao preço de mercado,Grilled turbot at market price,Turbot grillé au prix du marché,45.00€/Kg,,Dose,,🐟,,,
+peixes,,Espetadas de Lulas,Squid Skewers,Brochettes de Calamars,Espetadas de lulas grelhadas temperadas com limão e ervas,Grilled squid skewers seasoned with lemon and herbs,Brochettes de calmars grillées assaisonnées au citron et aux herbes,36.00€,18.00€,Dose,Meia,🦪,,,
+peixes,,Dourada Grelhada,Grilled Sea Bream,Dorade Grillée,Dourada fresca grelhada na brasa ao preço de mercado,Fresh sea bream grilled over embers at market price,Dorade fraîche grillée sur braises au prix du marché,20.00€/Kg,,Dose,,🐟,,,
+peixes,,Robalo Grelhado,Grilled Sea Bass,Bar Grillé,Robalo fresco grelhado na brasa ao preço de mercado,Fresh sea bass grilled over embers at market price,Bar frais grillé sur braises au prix du marché,20.00€/Kg,,Dose,,🐟,,,
+peixes,,Salmão Grelhado,Grilled Salmon,Saumon Grillé,Salmão fresco grelhado na brasa ao preço de mercado,Fresh salmon grilled over embers at market price,Saumon frais grillé sur braises au prix du marché,20.00€/Kg,,Dose,,🐟,,,
+peixes,,Parrilhada de Peixe,Mixed Fish Grill,Parrillade de Poisson,Seleção de peixes frescos grelhados na brasa — para partilhar,Selection of fresh fish grilled over embers — to share,Sélection de poissons frais grillés — à partager,46.00€,,Dose,,🐟,,UNAVAILABLE,,
+peixes,,Espetada de Peixe,Fish Skewer,Brochette de Poisson,Espetada de peixes variados grelhados na brasa com limão e ervas,Skewer of assorted fish grilled over embers with lemon and herbs,Brochette de poissons variés grillés avec citron et herbes,46.00€,,Dose,,🐟,,,
+sobremesas,,Rabanadas,French Toast,Pain Perdu,Rabanadas tradicionais portuguesas douradas e caneladas,Traditional Portuguese golden cinnamon French toast,Pain perdu traditionnel portugais doré et cannelle,3.50€,,,,🌾🥚🥛,,,
+sobremesas,,Baba de Camelo,Camel Mousse,Baba de Camelo,Mousse de leite condensado leve e cremosa,Light and creamy condensed milk mousse,Mousse de lait condensé légère et crémeuse,3.50€,,,,🥚🥛,,,
+sobremesas,,Leite Creme,Crème Brûlée,Crème Brûlée,Leite creme caseiro com caramelizado perfeito,Homemade crème brûlée with perfect caramelisation,Crème brûlée maison à la caramélisation parfaite,3.50€,,,,🥚🥛,,,
+sobremesas,,Salada de Fruta,Fruit Salad,Salade de Fruits,Salada de fruta fresca da época levemente adoçada,Lightly sweetened fresh seasonal fruit salad,Salade de fruits frais de saison légèrement sucrée,3.50€,,,,,,,
+sobremesas,,Abacaxi,Pineapple,Ananas,Abacaxi fresco às fatias,Fresh sliced pineapple,Ananas frais en tranches,3.50€,,,,,,,
+sobremesas,,Melão,Melon,Melon,Melão fresco da época às fatias,Fresh seasonal melon slices,Melon frais de saison en tranches,4.00€,,,,,,,
+sobremesas,,Queijo c/ Marmelada,Cheese with Quince Jam,Fromage à la Pâte de Coing,Queijo da terra com marmelada artesanal,Local cheese with homemade quince jam,Fromage local avec pâte de coing artisanale,4.50€,,,,🥛,,,
+sobremesas,,Pudim Caseiro,Homemade Flan,Flan Maison,Pudim caseiro cremoso de receita da casa,Creamy homemade flan from the house recipe,Flan crémeux maison selon la recette de la maison,3.00€,,,,🥚🥛,,,
+sobremesas,,Bolo de Bolacha,Biscuit Cake,Gâteau aux Biscuits,Bolo de bolacha com creme de manteiga tradicional,Traditional biscuit cake with buttercream,Gâteau aux biscuits avec crème au beurre traditionnelle,3.80€,,,,🌾🥛🥚,,,
+sobremesas,,Mousse de Chocolate,Chocolate Mousse,Mousse au Chocolat,Mousse de chocolate caseira rica e aveludada,Rich and velvety homemade chocolate mousse,Mousse au chocolat maison riche et veloutée,3.50€,,,,🥚🥛,,,
+sobremesas,,Cheesecake de Oreo,Oreo Cheesecake,Cheesecake aux Oreo,Cheesecake cremoso com base de Oreo e cobertura de chocolate,Creamy Oreo-based cheesecake with chocolate topping,Cheesecake crémeux à base d'Oreo avec nappage au chocolat,3.80€,,,,🌾🥛🥚,,,
+sobremesas,,Cheesecake de Frutos Vermelhos,Red Fruits Cheesecake,Cheesecake aux Fruits Rouges,Cheesecake cremoso com cobertura de frutos vermelhos frescos,Creamy cheesecake with fresh red fruit topping,Cheesecake crémeux avec coulis de fruits rouges frais,3.80€,,,,🌾🥛🥚,,,
+cervejas,Super Bock,Cerveja Super Bock 0.50cl,Super Bock Beer 0.50cl,Bière Super Bock 0.50cl,Cerveja Super Bock em copo grande 0.50cl,Super Bock beer large glass 0.50cl,Bière Super Bock grand verre 0.50cl,3.70€,,,,,,,
+cervejas,Super Bock,Cerveja Super Bock 0.35cl,Super Bock Beer 0.35cl,Bière Super Bock 0.35cl,Cerveja Super Bock em copo médio 0.35cl,Super Bock beer medium glass 0.35cl,Bière Super Bock verre moyen 0.35cl,3.00€,,,,,,,
+cervejas,Super Bock,Fino Super Bock 0.20cl,Super Bock Small Beer 0.20cl,Petit Verre Super Bock 0.20cl,Fino Super Bock em copo pequeno 0.20cl,Super Bock small beer 0.20cl,Petit verre Super Bock 0.20cl,2.40€,,,,,,,
+cervejas,Stout,Copo Stout 0.35cl,Stout Glass 0.35cl,Verre Stout 0.35cl,Cerveja escura Stout em copo médio 0.35cl,Dark Stout beer medium glass 0.35cl,Bière brune Stout verre moyen 0.35cl,3.00€,,,,,,,
+cervejas,Stout,Copo Stout 0.20cl,Stout Glass 0.20cl,Verre Stout 0.20cl,Cerveja escura Stout em copo pequeno 0.20cl,Dark Stout beer small glass 0.20cl,Bière brune Stout petit verre 0.20cl,2.40€,,,,,,,
+cervejas,Grimbergen,Copo Grimbergen 0.35cl,Grimbergen Glass 0.35cl,Verre Grimbergen 0.35cl,Cerveja belga Grimbergen em copo médio 0.35cl,Belgian Grimbergen beer medium glass 0.35cl,Bière belge Grimbergen verre moyen 0.35cl,3.50€,,,,,,,
+cervejas,Grimbergen,Copo Grimbergen 0.20cl,Grimbergen Glass 0.20cl,Verre Grimbergen 0.20cl,Cerveja belga Grimbergen em copo pequeno 0.20cl,Belgian Grimbergen beer small glass 0.20cl,Bière belge Grimbergen petit verre 0.20cl,2.70€,,,,,,,
+cervejas,Abadia,Copo Abadia 0.35cl,Abadia Glass 0.35cl,Verre Abadia 0.35cl,Cerveja Abadia em copo médio 0.35cl,Abadia beer medium glass 0.35cl,Bière Abadia verre moyen 0.35cl,3.50€,,,,,,,
+cervejas,Abadia,Copo Abadia 0.20cl,Abadia Glass 0.20cl,Verre Abadia 0.20cl,Cerveja Abadia em copo pequeno 0.20cl,Abadia beer small glass 0.20cl,Bière Abadia petit verre 0.20cl,2.70€,,,,,,,
+cervejas,Sem Álcool,Cerveja Sem Álcool,Non-Alcoholic Beer,Bière Sans Alcool,Cerveja sem álcool refrescante e leve,Refreshing and light non-alcoholic beer,Bière sans alcool rafraîchissante et légère,2.50€,,,,,,,
+cervejas,Sem Álcool,Somersby,Somersby Cider,Somersby Cidre,Sidra Somersby refrescante com sabor a maçã,Refreshing Somersby apple cider,Cidre Somersby rafraîchissant au goût de pomme,3.50€,,,,,,,
+digestivos,Whisky,Whisky Jack Daniel's,Whisky Jack Daniel's,Whisky Jack Daniel's,,,,10.00€,,,,🧪,,,
+digestivos,Whisky,Whisky Ballantine's,Whisky Ballantine's,Whisky Ballantine's,,,,10.00€,,,,🧪,,,
+digestivos,Whisky,Whisky Grant's Novo,Whisky Grant's New,Whisky Grant's Nouveau,,,,8.00€,,,,🧪,,,
+digestivos,Whisky,Whisky Grant's 12 Anos,Whisky Grant's 12 Years,Whisky Grant's 12 Ans,,,,10.00€,,,,🧪,,,
+digestivos,Whisky,Whisky Grant's 8 Anos,Whisky Grant's 8 Years,Whisky Grant's 8 Ans,,,,10.00€,,,,🧪,,,
+digestivos,Whisky,Whisky Famous Grouse,Whisky Famous Grouse,Whisky Famous Grouse,,,,10.00€,,,,🧪,,,
+digestivos,Gin,Gin Hendrick's,Gin Hendrick's,Gin Hendrick's,,,,12.00€,,,,🧪,,,
+digestivos,Gin,Gin Hendrick's Another,Gin Hendrick's Another,Gin Hendrick's Another,,,,12.00€,,,,🧪,,,
+digestivos,Vodka,Vodka Moskovskaya,Vodka Moskovskaya,Vodka Moskovskaya,,,,10.00€,,,,🧪,,,`;
+</script>
+</body>
+</html>
