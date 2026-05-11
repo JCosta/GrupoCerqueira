@@ -583,14 +583,14 @@ function buildVerdeTinto(rows){
   const desc=row.desc_pt||'Vinho verde tinto servido na tigela à tradicional — experiência única da casa';
   return`<div class="verde-tinto-card">
     <div class="verde-tinto-img-wrap">
-      <img src="${VERDE_IMG_URL}" alt="Verde Tinto na Tijela" class="verde-tinto-photo"/>
+      <img src="${VERDE_IMG_URL}" alt="Verde Tinto na Tigela" class="verde-tinto-photo"/>
       <div class="verde-tinto-overlay">
         <div class="verde-tinto-badge">
           <span class="t-pt">🏡 Especialidade da Casa</span>
           <span class="t-en">🏡 House Speciality</span>
           <span class="t-fr">🏡 Spécialité Maison</span>
         </div>
-        <div class="verde-tinto-title">Verde Tinto na Tijela</div>
+        <div class="verde-tinto-title">Verde Tinto na Tigela</div>
         <div class="verde-tinto-subtitle">
           <span class="t-pt">Servido directamente na tigela, à tradição minhota</span>
           <span class="t-en">Served directly in the bowl, in the Minho tradition</span>
@@ -705,7 +705,7 @@ function buildMenu(rows){
     }
     subOrder.forEach(sub=>{
       const subRows=bySub[sub];
-      if(sub==='Verde Tinto na Tijela'){html+=buildVerdeTinto(subRows);return;}
+      if(sub==='Verde Tinto na Tigela'){html+=buildVerdeTinto(subRows);return;}
       if(sub!=='__') html+=`<div class="sub-heading">${sub}</div>`;
       subRows.forEach(r=>{html+=buildItem(r,sec.id);});
     });
@@ -931,7 +931,7 @@ vinhoscasa,Verde Branco,Cabeça de Gaio,Cabeça de Gaio,Cabeça de Gaio,"Vinho b
 vinhoscasa,Verde Branco,Cerqueira,Cerqueira,Cerqueira,,,,9.00€,5.00€,,0.75cl,0.375cl,,,Branco,ativo
 vinhoscasa,Maduro Tinto,Cabeça de Gaio,Cabeça de Gaio,Cabeça de Gaio,"Vinho tinto do Douro, encorpado e equilibrado, com notas de frutos vermelhos e especiarias suaves.",Full-bodied and balanced Douro red wine with notes of red berries and soft spices.,"Vin rouge du Douro, corsé et équilibré, aux notes de fruits rouges et d’épices douces.",12.00€,5.00€,,0.75cl,0.375cl,,,Tinto,ativo
 vinhoscasa,Maduro Tinto,Cerqueira,Cerqueira,Cerqueira,Vinho tinto da casa suave e equilibrado,Smooth and balanced house red wine,Vin rouge de la maison doux et équilibré,9.00€,5.00€,,0.75cl,0.375cl,,,Tinto,ativo
-vinhoscasa,Verde Tinto na Tijela,Verde Tinto na Tijela,Verde Tinto in the Bowl,Verde Tinto dans le Bol,Vinho verde tinto servido na tigela à tradicional — experiência única da casa,Traditional red vinho verde served in a terracotta bowl — a unique house experience,Vinho verde rouge servi dans le bol traditionnel — expérience unique de la maison,15.00€,12.00€,5.00€,2L,1.5L,0.50cl,🧪,,ativo
+vinhoscasa,Verde Tinto na Tigela,Verde Tinto na Tigela,Verde Tinto in the Bowl,Verde Tinto dans le Bol,Vinho verde tinto servido na tigela à tradicional — experiência única da casa,Traditional red vinho verde served in a terracotta bowl — a unique house experience,Vinho verde rouge servi dans le bol traditionnel — expérience unique de la maison,15.00€,12.00€,5.00€,2L,1.5L,0.50cl,🧪,,ativo
 vinhos,Douro · Branco,Assobio,Assobio,Assobio,"Fresco e cítrico, com boa acidez e carácter atlântico.",Fresh and citrusy with good acidity and Atlantic character.,"Frais et citronné, bonne acidité et caractère atlantique.",14.00€,,,0.75cl,0.375cl,,🧪,Branco,ativo
 vinhos,Douro · Branco,CARM Reserva,CARM Reserva,CARM Reserva,"Elegante e mineral, notas de fruta tropical e final persistente.","Elegant and mineral, tropical fruit notes and a lingering finish.","Élégant et minéral, fruits tropicaux et finale persistante.",24.00€,,,0.75cl,0.375cl,,🧪,Branco,ativo
 vinhos,Douro · Branco,Despercebido,Despercebido,Despercebido,"Expressivo e floral, com mineralidade marcante de carácter atlântico.",Expressive and floral with a distinctive Atlantic mineral character.,"Expressif et floral, minéralité marquée de caractère atlantique.",15.00€,,,0.75cl,0.375cl,,🧪,Branco,ativo
