@@ -438,12 +438,13 @@ body.lang-fr .t-fr{display:inline;}
 
 <script>
 /* ════════════════════════════════════════════════════════
-   DATA SOURCE
-   Primary: Google Sheet (auto-updates when Sheet is edited)
-   Fallback: embedded CSV below (used if Sheet unreachable)
+   DATA SOURCE — ordem de prioridade:
+   1. menu_data.csv (mesmo servidor — GitHub Pages / local)
+   2. Google Sheet via proxy CORS (bónus, tempo real)
+   3. FALLBACK_CSV embutido no HTML (sempre funciona)
 ════════════════════════════════════════════════════════ */
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZdhct0L58EbvbGYmiN7HCFGwoUeVTXPAtRm1_OXvGjmgdIboq1Ve2AGHbt8QlQF_vuGxPh2V1A5nv/pub?gid=1649563943&single=true&output=csv';
-const CSV_FILENAME  = 'menu_data.csv'; // local fallback
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZdhct0L58EbvbGYmiN7HCFGwoUeVTXPAtRm1_OXvGjmgdIboq1Ve2AGHbt8QlQF_vuGxPh2V1A5nv/pub?gid=1649563943&output=csv';
+const CSV_FILENAME  = 'menu_data.csv';
 
 const SECTIONS = [
   {id:'entradas', lPt:'Entradas',         lEn:'Starters',          lFr:'Entrées',
@@ -770,58 +771,56 @@ async function loadMenu(){
            clean.includes('\n');
   };
 
-  // CORS proxies to try in order
-  const proxies = [
-    t => `https://corsproxy.io/?${encodeURIComponent(t)}`,
-    t => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(t)}`,
-    t => `https://api.allorigins.win/raw?url=${encodeURIComponent(t)}`,
-  ];
-
-  // 1) Google Sheet via CORS proxies
-  console.log('📊 Trying Google Sheet via proxies…');
-  for(const proxy of proxies){
-    const url = proxy(SHEET_CSV_URL);
-    try{
-      const res = await fetch(url, {signal: AbortSignal.timeout(5000)});
-      console.log('   Proxy response:', res.status, url.split('?')[0]);
-      if(res.ok){
-        const t = await res.text();
-        if(isValidCSV(t)){
-          const rows = parseCSV(t);
-          console.log(`   ✅ Sheet loaded — ${rows.length} rows`);
-          buildMenu(rows);
-          showSourceBadge('sheet');
-          return;
-        }
-        console.warn('   ⚠️ Not valid CSV, preview:', t.substring(0,80));
-      }
-    }catch(e){ console.warn('   ❌', e.message); }
-  }
-
-  // 2) Local menu_data.csv
-  console.log('📁 Trying local menu_data.csv…');
+  // 1) menu_data.csv — mesmo servidor, sem CORS, sempre funciona no GitHub Pages e local com servidor
+  console.log('📁 Trying menu_data.csv…');
   try{
-    const res = await fetch(CSV_FILENAME + '?v=' + Date.now(),
-                            {signal: AbortSignal.timeout(3000)});
-    console.log('   Local response:', res.status);
+    const res = await fetch(CSV_FILENAME + '?v=' + Date.now(), {signal: AbortSignal.timeout(4000)});
+    console.log('   Response:', res.status);
     if(res.ok){
       const t = await res.text();
       if(isValidCSV(t)){
         const rows = parseCSV(t);
-        console.log(`   ✅ Local CSV loaded — ${rows.length} rows`);
+        console.log(`   ✅ CSV loaded — ${rows.length} rows`);
         buildMenu(rows);
         showSourceBadge('local');
+        // Try Sheet in background to check for updates
+        trySheetInBackground();
         return;
       }
     }
-  }catch(e){ console.warn('   ❌ Local CSV:', e.message); }
+  }catch(e){ console.warn('   CSV unavailable:', e.message); }
 
-  // 3) Embedded fallback
+  // 2) Embedded fallback
   console.log('💾 Using embedded FALLBACK_CSV');
   const rows = parseCSV(FALLBACK_CSV);
-  console.log(`   ✅ Fallback loaded — ${rows.length} rows`);
   buildMenu(rows);
   showSourceBadge('fallback');
+  trySheetInBackground();
+}
+
+// Try to load from Google Sheet in background — if successful, refresh the menu silently
+async function trySheetInBackground(){
+  const isValidCSV = t => t.trim().length > 100 && (t.includes('secção') || t.includes('section')) && t.includes('\n');
+  const proxies = [
+    t => `https://corsproxy.io/?url=${encodeURIComponent(t)}`,
+    t => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(t)}`,
+    t => `https://api.allorigins.win/raw?url=${encodeURIComponent(t)}`,
+  ];
+  for(const proxy of proxies){
+    try{
+      const res = await fetch(proxy(SHEET_CSV_URL), {signal: AbortSignal.timeout(6000)});
+      if(res.ok){
+        const t = await res.text();
+        if(isValidCSV(t)){
+          console.log('📊 Sheet loaded in background — refreshing menu');
+          buildMenu(parseCSV(t));
+          showSourceBadge('sheet');
+          return;
+        }
+      }
+    }catch(e){ /* silent */ }
+  }
+  console.info('📊 Sheet not reachable in background — using CSV/fallback data');
 }
 function showSec(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
