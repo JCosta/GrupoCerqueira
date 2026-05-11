@@ -42,23 +42,36 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
   display:flex;align-items:center;gap:1rem;
   flex:1;justify-content:center;
 }
-.topbar-brand img{
+.topbar-brand-img{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  width:160px;height:160px;flex-shrink:0;
+}
+/* Glowing halo behind logo — visible in both dark and light mode */
+.topbar-brand-img::before{
+  content:'';
+  position:absolute;inset:-8px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(212,80,10,.35) 0%, rgba(180,60,0,.18) 45%, transparent 72%);
+  animation:halo 4s ease-in-out infinite alternate;
+  z-index:0;
+}
+@keyframes halo{
+  from{opacity:.7;transform:scale(.95);}
+  to{opacity:1;transform:scale(1.05);}
+}
+.topbar-brand-img img{
   height:150px;
-  filter:drop-shadow(0 2px 8px rgba(212,80,10,.6)) drop-shadow(0 0 20px rgba(212,80,10,.4));
-  animation:pulse 4s ease-in-out infinite alternate;
+  position:relative;z-index:1;
+  /* Brighten the logo in dark mode so it stands out */
+  filter:brightness(1.35) contrast(1.1) drop-shadow(0 0 10px rgba(212,80,10,.7));
   transition:filter .3s;
 }
-@keyframes pulse{
-  from{filter:drop-shadow(0 2px 8px rgba(212,80,10,.5)) drop-shadow(0 0 14px rgba(212,80,10,.3));}
-  to{filter:drop-shadow(0 2px 16px rgba(212,80,10,.8)) drop-shadow(0 0 30px rgba(212,80,10,.6));}
+body.light .topbar-brand-img::before{
+  background:radial-gradient(circle, rgba(201,169,110,.3) 0%, rgba(180,120,40,.12) 45%, transparent 72%);
 }
-body.light .topbar-brand img{
-  filter:drop-shadow(0 2px 6px rgba(120,60,0,.35)) drop-shadow(0 1px 12px rgba(160,80,0,.25));
-  animation:pulse-light 4s ease-in-out infinite alternate;
-}
-@keyframes pulse-light{
-  from{filter:drop-shadow(0 2px 4px rgba(120,60,0,.25));}
-  to{filter:drop-shadow(0 2px 12px rgba(160,80,0,.45));}
+body.light .topbar-brand-img img{
+  filter:brightness(1.0) contrast(1.05) drop-shadow(0 2px 8px rgba(120,60,0,.3));
 }
 .topbar-brand-text{display:flex;flex-direction:column;gap:.2rem;}
 .topbar-brand-text h1{
@@ -285,7 +298,7 @@ body.lang-fr .t-fr{display:inline;}
   .nav-btn:hover{border-bottom-color:var(--gold);border-left-color:transparent;}
   .layout{flex-direction:column;}
   .main{width:100%;}
-  .topbar-brand img{height:90px;}
+  .topbar-brand-img{width:110px;height:110px;}.topbar-brand-img img{height:100px;}
   .topbar-brand-text h1{font-size:.78rem;}
   .items{padding:1.1rem .9rem 2.5rem;}
   .topbar{padding:.3rem .6rem;}.topbar-controls{right:.6rem;}
@@ -293,7 +306,7 @@ body.lang-fr .t-fr{display:inline;}
 @media(max-width:400px){
   .topbar-brand-text h1{font-size:.68rem;letter-spacing:.06em;}
   .topbar-brand-text p{display:none;}
-  .topbar-brand img{height:70px;}
+  .topbar-brand-img{width:86px;height:86px;}.topbar-brand-img img{height:76px;}
   .topbar-brand{gap:.6rem;}
 }
 </style>
@@ -302,9 +315,10 @@ body.lang-fr .t-fr{display:inline;}
 
 <!-- TOP BAR -->
 <div class="topbar">
-							
   <div class="topbar-brand">
-    <img src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueira-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
+    <div class="topbar-brand-img">
+      <img src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueira-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
+    </div>
     <div class="topbar-brand-text">
       <h1>Tasquinha do Cerqueira</h1>
       <p>Digital Menu</p>
@@ -889,10 +903,6 @@ cervejas,Super Bock,Cerveja Super Bock Stout,Stout Glass 0.35cl,Verre Stout 0.35
 cervejas,Super Bock,Cerveja Super Bock Abadia,Abadia Glass 0.35cl,Verre Abadia 0.35cl,Cerveja Super Bock Abadia em copo,,,2.70€,3.50€,,0.20cl,0.33cl,,,,ativo
 cervejas,Super Bock,Fino Pressão Super Bock,Super Bock Small Beer 0.20cl,Petit Verre Super Bock 0.20cl,Fino Super Bock em copo pequeno,,,2.40€,,,0.20cl,,,,,ativo
 cervejas,Grimbergen,Belga Grimbergen,Grimbergen Glass 0.35cl,Verre Grimbergen 0.35cl,Cerveja Grimbergen em copo,,,2.70€,3.50€,,0.20cl,0.33cl,,,,ativo
-																																																																																																																																																																																							  
-																																																																																																																																																																					
-																																																																																																																																																  
-																																																																																																																																													 
 cervejas,Sem Álcool,Cerveja Sem Álcool,Non-Alcoholic Beer,Bière Sans Alcool,Cerveja sem álcool refrescante e leve,,,2.50€,,,,,,,,ativo
 cervejas,Sem Álcool,Somersby,Somersby Cider,Somersby Cidre,Sidra Somersby refrescante com sabor a maçã,,,3.50€,,,,,,,,ativo
 vinhoscasa,Verde Branco,Cabeça de Gaio,Cabeça de Gaio,Cabeça de Gaio,"Vinho branco do Douro, fresco e equilibrado, com notas cítricas, florais e final mineral.","Fresh and balanced Douro white wine with citrus, floral, and mineral notes.","Vin blanc du Douro, frais et équilibré, aux notes d’agrumes, florales et minérales.",12.00€,5.00€,,0.75cl,0.375cl,,,Branco,ativo
@@ -974,8 +984,6 @@ cocktails,Sangrias,Sangria Tasquinha,Tasquinha Sangria,Sangria Tasquinha,Vinho t
 cocktails,Sangrias,Sangria de Maracujá,Passion Fruit Sangria,Sangria aux Fruits de la Passion,Vinho branco maracujá fresco e hortelã,"White wine, fresh passion fruit and mint","Vin blanc, fruit de la passion frais et menthe",22.00€,15.00€,,2L,1L,,🧪,,ativo
 cocktails,Sangrias,Sangria de Espumante,Mojito Sangria,Mojito Sangria,Vinho branco rum lima e hortelã fresca,"White wine, rum, lime and fresh mint","Vin blanc, rhum, citron vert et menthe fraîche",27.00€,,,2L,,,🧪,,ativo
 cocktails,Sangrias,Sangria de Frutos Vermelhos,Port Wine Sangria,Sangria au Vin de Porto,Vinho do Porto citrinos e especiarias,"Port wine, citrus fruits and spices","Vin de Porto, agrumes et épices",22.00€,15.00€,,2L,1L,,🧪,,temporariamente indisponivel
-																																																																																																																																																																																																																																																																																	   
-																																																																																																																																													
 cocktails,Cocktails,Moscow Mule,Moscow Mule,Moscow Mule,Vodka ginger beer e lima,"Vodka, ginger beer and lime","Vodka, ginger beer et citron vert",11.90€,,,,,,🧪,,rascunho
 cocktails,Cocktails,Daiquiri,Daiquiri,Daiquiri,Rum sumo de lima e açúcar,"Rum, lime juice and sugar","Rhum, jus de citron vert et sucre",12.50€,,,,,,🧪,,rascunho
 cocktails,Cocktails,Dry Martini,Dry Martini,Dry Martini,Gin ou vodka com vermute seco,Gin or vodka with dry vermouth,Gin ou vodka avec vermouth sec,4.90€,,,,,,🧪,,rascunho
