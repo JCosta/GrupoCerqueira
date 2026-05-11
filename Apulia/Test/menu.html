@@ -291,7 +291,7 @@ body.lang-fr .t-fr{display:inline;}
 @media(max-width:680px){
   :root{--sidebar-w:0px;}
   .sidebar{
-    width:100%;position:sticky;top:62px;
+    width:100%;position:sticky;top:130px;
     max-height:none;overflow-x:auto;overflow-y:hidden;
     border-right:none;border-bottom:1px solid var(--border);flex-shrink:0;
   }
@@ -309,7 +309,7 @@ body.lang-fr .t-fr{display:inline;}
   .topbar{
     flex-direction:column;gap:.4rem;
     padding:.5rem .8rem;
-    position:relative;
+    position:sticky;top:0;
   }
   .topbar-controls{
     position:static;  /* no longer absolute */
@@ -322,8 +322,7 @@ body.lang-fr .t-fr{display:inline;}
   .topbar-brand-text h1{font-size:.85rem;letter-spacing:.08em;}
   .topbar-brand-text p{font-size:.52rem;letter-spacing:.2em;}
   .items{padding:1.1rem .9rem 2.5rem;}
-  /* Sidebar sticky offset now taller (topbar is taller on mobile) */
-  .sidebar{top:130px;}
+
 }
 @media(max-width:400px){
   .topbar-brand-text h1{font-size:.68rem;letter-spacing:.06em;}
