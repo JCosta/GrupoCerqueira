@@ -33,17 +33,47 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 /* ══ TOP BAR ══ */
 .topbar{
   background:var(--bg2);border-bottom:1px solid var(--border);
-  display:grid;grid-template-columns:1fr auto 1fr;
-  align-items:center;gap:.75rem;padding:.55rem 1.2rem;
+  display:flex;align-items:center;justify-content:center;
+  gap:0;padding:.5rem 1.2rem;
   position:sticky;top:0;z-index:200;
 }
-.topbar-logo{display:flex;flex-direction:column;align-items:center;gap:.3rem;text-decoration:none;grid-column:2;}
-.topbar-logo img{height:80px;filter:drop-shadow(0 0 12px rgba(212,80,10,.55));animation:pulse 4s ease-in-out infinite alternate;}
-@keyframes pulse{from{filter:drop-shadow(0 0 8px rgba(212,80,10,.35));}to{filter:drop-shadow(0 0 22px rgba(212,80,10,.75));}}
-body.light .topbar-logo img{filter:invert(1) sepia(1) saturate(1.5) drop-shadow(0 0 8px rgba(180,60,0,.3));}
-.topbar-logo h1{font-family:var(--fh);font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-l);line-height:1.1;text-align:center;}
-.topbar-logo p{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
-.topbar-controls{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;grid-column:3;}
+/* Centre group: logo + name — takes up remaining space, centred */
+.topbar-brand{
+  display:flex;align-items:center;gap:1rem;
+  flex:1;justify-content:center;
+}
+.topbar-brand img{
+  height:150px;
+  filter:drop-shadow(0 2px 8px rgba(212,80,10,.6)) drop-shadow(0 0 20px rgba(212,80,10,.4));
+  animation:pulse 4s ease-in-out infinite alternate;
+  transition:filter .3s;
+}
+@keyframes pulse{
+  from{filter:drop-shadow(0 2px 8px rgba(212,80,10,.5)) drop-shadow(0 0 14px rgba(212,80,10,.3));}
+  to{filter:drop-shadow(0 2px 16px rgba(212,80,10,.8)) drop-shadow(0 0 30px rgba(212,80,10,.6));}
+}
+body.light .topbar-brand img{
+  filter:drop-shadow(0 2px 6px rgba(120,60,0,.35)) drop-shadow(0 1px 12px rgba(160,80,0,.25));
+  animation:pulse-light 4s ease-in-out infinite alternate;
+}
+@keyframes pulse-light{
+  from{filter:drop-shadow(0 2px 4px rgba(120,60,0,.25));}
+  to{filter:drop-shadow(0 2px 12px rgba(160,80,0,.45));}
+}
+.topbar-brand-text{display:flex;flex-direction:column;gap:.2rem;}
+.topbar-brand-text h1{
+  font-family:var(--fh);font-size:1.15rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold-l);line-height:1.1;
+}
+.topbar-brand-text p{
+  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);
+}
+/* Right: controls pinned to the right */
+.topbar-controls{
+  display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;
+  position:absolute;right:1.2rem;
+}
 .lang-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
 .lang-btn{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .55rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.2rem;}
 .lang-btn:last-child{border-right:none;}
@@ -255,15 +285,16 @@ body.lang-fr .t-fr{display:inline;}
   .nav-btn:hover{border-bottom-color:var(--gold);border-left-color:transparent;}
   .layout{flex-direction:column;}
   .main{width:100%;}
-  .topbar-logo img{height:56px;}
-  .topbar-logo h1{font-size:.72rem;}
+  .topbar-brand img{height:90px;}
+  .topbar-brand-text h1{font-size:.78rem;}
   .items{padding:1.1rem .9rem 2.5rem;}
-  .topbar{grid-template-columns:1fr auto 1fr;gap:.3rem;padding:.4rem .6rem;}
+  .topbar{padding:.3rem .6rem;}.topbar-controls{right:.6rem;}
 }
 @media(max-width:400px){
-  .topbar-logo h1{display:none;}
-  .topbar-logo p{display:none;}
-  .topbar-logo img{height:44px;}
+  .topbar-brand-text h1{font-size:.68rem;letter-spacing:.06em;}
+  .topbar-brand-text p{display:none;}
+  .topbar-brand img{height:70px;}
+  .topbar-brand{gap:.6rem;}
 }
 </style>
 </head>
@@ -271,11 +302,13 @@ body.lang-fr .t-fr{display:inline;}
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div></div><!-- spacer -->
-  <div class="topbar-logo">
+							
+  <div class="topbar-brand">
     <img src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueira-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
-    <h1>Tasquinha do Cerqueira</h1>
-    <p>Digital Menu</p>
+    <div class="topbar-brand-text">
+      <h1>Tasquinha do Cerqueira</h1>
+      <p>Digital Menu</p>
+    </div>
   </div>
   <div class="topbar-controls">
     <div class="lang-toggle">
@@ -856,10 +889,10 @@ cervejas,Super Bock,Cerveja Super Bock Stout,Stout Glass 0.35cl,Verre Stout 0.35
 cervejas,Super Bock,Cerveja Super Bock Abadia,Abadia Glass 0.35cl,Verre Abadia 0.35cl,Cerveja Super Bock Abadia em copo,,,2.70€,3.50€,,0.20cl,0.33cl,,,,ativo
 cervejas,Super Bock,Fino Pressão Super Bock,Super Bock Small Beer 0.20cl,Petit Verre Super Bock 0.20cl,Fino Super Bock em copo pequeno,,,2.40€,,,0.20cl,,,,,ativo
 cervejas,Grimbergen,Belga Grimbergen,Grimbergen Glass 0.35cl,Verre Grimbergen 0.35cl,Cerveja Grimbergen em copo,,,2.70€,3.50€,,0.20cl,0.33cl,,,,ativo
-																																																																																																																																																																																																														
-																																																																																																																																																																																																																   
-																																																																																																																																																																											   
-																																																																																																																																																																												
+																																																																																																																																																																																							  
+																																																																																																																																																																					
+																																																																																																																																																  
+																																																																																																																																													 
 cervejas,Sem Álcool,Cerveja Sem Álcool,Non-Alcoholic Beer,Bière Sans Alcool,Cerveja sem álcool refrescante e leve,,,2.50€,,,,,,,,ativo
 cervejas,Sem Álcool,Somersby,Somersby Cider,Somersby Cidre,Sidra Somersby refrescante com sabor a maçã,,,3.50€,,,,,,,,ativo
 vinhoscasa,Verde Branco,Cabeça de Gaio,Cabeça de Gaio,Cabeça de Gaio,"Vinho branco do Douro, fresco e equilibrado, com notas cítricas, florais e final mineral.","Fresh and balanced Douro white wine with citrus, floral, and mineral notes.","Vin blanc du Douro, frais et équilibré, aux notes d’agrumes, florales et minérales.",12.00€,5.00€,,0.75cl,0.375cl,,,Branco,ativo
@@ -941,8 +974,8 @@ cocktails,Sangrias,Sangria Tasquinha,Tasquinha Sangria,Sangria Tasquinha,Vinho t
 cocktails,Sangrias,Sangria de Maracujá,Passion Fruit Sangria,Sangria aux Fruits de la Passion,Vinho branco maracujá fresco e hortelã,"White wine, fresh passion fruit and mint","Vin blanc, fruit de la passion frais et menthe",22.00€,15.00€,,2L,1L,,🧪,,ativo
 cocktails,Sangrias,Sangria de Espumante,Mojito Sangria,Mojito Sangria,Vinho branco rum lima e hortelã fresca,"White wine, rum, lime and fresh mint","Vin blanc, rhum, citron vert et menthe fraîche",27.00€,,,2L,,,🧪,,ativo
 cocktails,Sangrias,Sangria de Frutos Vermelhos,Port Wine Sangria,Sangria au Vin de Porto,Vinho do Porto citrinos e especiarias,"Port wine, citrus fruits and spices","Vin de Porto, agrumes et épices",22.00€,15.00€,,2L,1L,,🧪,,temporariamente indisponivel
-																																																																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																									  
+																																																																																																																																																																																																																																																																																	   
+																																																																																																																																													
 cocktails,Cocktails,Moscow Mule,Moscow Mule,Moscow Mule,Vodka ginger beer e lima,"Vodka, ginger beer and lime","Vodka, ginger beer et citron vert",11.90€,,,,,,🧪,,rascunho
 cocktails,Cocktails,Daiquiri,Daiquiri,Daiquiri,Rum sumo de lima e açúcar,"Rum, lime juice and sugar","Rhum, jus de citron vert et sucre",12.50€,,,,,,🧪,,rascunho
 cocktails,Cocktails,Dry Martini,Dry Martini,Dry Martini,Gin ou vodka com vermute seco,Gin or vodka with dry vermouth,Gin ou vodka avec vermouth sec,4.90€,,,,,,🧪,,rascunho
@@ -959,7 +992,7 @@ digestivos,Champanhe,Moet & Chandon Champanhe Brut Branco,Moet & Chandon Champan
 digestivos,Champanhe,Moet & Chandon Champanhe Brut Rosé,Moet & Chandon Champanhe Brut Rosé,Moet & Chandon Champanhe Brut Rosé,,,,79.90€,,,"0,75cl",,,🧪,,rascunho
 digestivos,Champanhe,Dom Perignon Champanhe Brut Branco,Dom Perignon Champanhe Brut Branco,Dom Perignon Champanhe Brut Branco,,,,350.00€,599.00€,,"0,75cl",2L,,🧪,,novidade
 digestivos,Espumante,Terras do Demo Espumante Távora-Varosa Bruto Branco,Terras do Demo Espumante Távora-Varosa Bruto Branco,Terras do Demo Espumante Távora-Varosa Bruto Branco,,,,16.00€,,,"0,75cl",,,🧪,,novidade
-`;
+,,,,,,,,,,,,,,,,ativo`;
 </script>
 </body>
 </html>
