@@ -255,13 +255,18 @@ body.light .sec-ov{background:linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0
 .unavail-badge{
   display:inline-block !important;
   background:rgba(212,80,10,.18);
-  border:1px solid rgba(212,80,10,.45);
-  color:#e2c99a !important;
+  border:1px solid rgba(212,80,10,.55);
+  color:var(--ember) !important;
   font-size:.64rem;letter-spacing:.08em;font-weight:600;
   padding:.22rem .7rem;border-radius:20px;margin-top:.4rem;
   text-transform:uppercase;font-family:var(--fb);
   white-space:nowrap;line-height:1.4;
   visibility:visible !important;opacity:1 !important;
+}
+body.light .unavail-badge{
+  background:rgba(184,61,0,.12);
+  border-color:rgba(184,61,0,.5);
+  color:#b83d00 !important;
 }
 .item.is-unavail .item-name{opacity:.45;}
 .item.is-unavail .item-desc{opacity:.35;}
