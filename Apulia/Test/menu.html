@@ -747,23 +747,75 @@ function buildMenu(rows){
   refreshTips();
   requestAnimationFrame(()=>fillUnavailBadges());
 }
+function showSourceBadge(source){
+  const existing=document.getElementById('source-badge');
+  if(existing)existing.remove();
+  const badge=document.createElement('div');
+  badge.id='source-badge';
+  badge.style.cssText=`
+    position:fixed;bottom:14px;right:14px;z-index:9999;
+    width:10px;height:10px;border-radius:50%;
+    box-shadow:0 0 6px 2px ${source==='sheet'?'rgba(76,175,80,.7)':'rgba(255,193,7,.7)'};
+    background:${source==='sheet'?'#4caf50':'#ffc107'};
+    cursor:${source==='sheet'?'default':'pointer'};
+    opacity:.85;
+  `;
+  if(source!=='sheet') badge.onclick=()=>{badge.remove();loadMenu();}
+  document.body.appendChild(badge);
+}
+
 async function loadMenu(){
-  const isValidCSV=t=>t.trim().length>50&&(t.includes('secção')||t.includes('section'));
+  const isValidCSV = t => {
+    const clean = t.trim();
+    return clean.length > 100 &&
+           (clean.includes('secção') || clean.includes('section')) &&
+           clean.includes('\n');
+  };
 
-  // 1) Google Sheet (live — updates instantly when Sheet is edited)
+  // 1) Google Sheet — live data
+  console.log('📊 Trying Google Sheet…', SHEET_CSV_URL);
   try{
-    const res=await fetch(SHEET_CSV_URL+'&t='+Date.now());
-    if(res.ok){const t=await res.text();if(isValidCSV(t)){buildMenu(parseCSV(t));return;}}
-  }catch(e){console.info('Sheet unreachable:',e.message);}
+    const res = await fetch(SHEET_CSV_URL + '&t=' + Date.now());
+    console.log('   Sheet response:', res.status, res.ok ? 'OK' : 'FAIL');
+    if(res.ok){
+      const t = await res.text();
+      console.log('   Sheet CSV preview:', t.substring(0,120));
+      if(isValidCSV(t)){
+        const rows = parseCSV(t);
+        console.log(`   ✅ Sheet loaded — ${rows.length} rows`);
+        buildMenu(rows);
+        showSourceBadge('sheet');
+        return;
+      } else {
+        console.warn('   ⚠️ Sheet response not valid CSV — content too short or missing headers');
+        console.warn('   First 200 chars:', t.substring(0,200));
+      }
+    }
+  }catch(e){ console.warn('   ❌ Sheet fetch error:', e.message); }
 
-  // 2) Local menu_data.csv (GitHub Pages / server)
+  // 2) Local menu_data.csv
+  console.log('📁 Trying local menu_data.csv…');
   try{
-    const res=await fetch(CSV_FILENAME+'?v='+Date.now());
-    if(res.ok){const t=await res.text();if(isValidCSV(t)){buildMenu(parseCSV(t));return;}}
-  }catch(e){console.info('Local CSV unreachable:',e.message);}
+    const res = await fetch(CSV_FILENAME + '?v=' + Date.now());
+    console.log('   Local response:', res.status);
+    if(res.ok){
+      const t = await res.text();
+      if(isValidCSV(t)){
+        const rows = parseCSV(t);
+        console.log(`   ✅ Local CSV loaded — ${rows.length} rows`);
+        buildMenu(rows);
+        showSourceBadge('local');
+        return;
+      }
+    }
+  }catch(e){ console.warn('   ❌ Local CSV error:', e.message); }
 
-  // 3) Embedded fallback (always works, even offline)
-  buildMenu(parseCSV(FALLBACK_CSV));
+  // 3) Embedded fallback
+  console.log('💾 Using embedded FALLBACK_CSV');
+  const rows = parseCSV(FALLBACK_CSV);
+  console.log(`   ✅ Fallback loaded — ${rows.length} rows`);
+  buildMenu(rows);
+  showSourceBadge('fallback');
 }
 function showSec(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
