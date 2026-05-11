@@ -438,13 +438,13 @@ body.lang-fr .t-fr{display:inline;}
 
 <script>
 /* ════════════════════════════════════════════════════════
-   DATA SOURCE — ordem de prioridade:
-   1. menu_data.csv (mesmo servidor — GitHub Pages / local)
-   2. Google Sheet via proxy CORS (bónus, tempo real)
-   3. FALLBACK_CSV embutido no HTML (sempre funciona)
+   DATA SOURCE
+   1. Google Apps Script (lê da Sheet directamente, sem CORS)
+   2. menu_data.csv no GitHub (fallback se o Script falhar)
+   3. FALLBACK_CSV embutido (último recurso)
 ════════════════════════════════════════════════════════ */
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZdhct0L58EbvbGYmiN7HCFGwoUeVTXPAtRm1_OXvGjmgdIboq1Ve2AGHbt8QlQF_vuGxPh2V1A5nv/pub?gid=1649563943&output=csv';
-const CSV_FILENAME  = 'menu_data.csv';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_USXfLytrCxEBjVk15irEhefqvuSUWwLeym8RIQcmg4yc0RZwXBTXgCuiiF9WCQQ4/exec';
+const CSV_FILENAME     = 'menu_data.csv';
 
 const SECTIONS = [
   {id:'entradas', lPt:'Entradas',         lEn:'Starters',          lFr:'Entrées',
@@ -764,63 +764,38 @@ function showSourceBadge(source){
 }
 
 async function loadMenu(){
-  const isValidCSV = t => {
-    const clean = t.trim();
-    return clean.length > 100 &&
-           (clean.includes('secção') || clean.includes('section')) &&
-           clean.includes('\n');
-  };
+  const isValid = t => t.trim().length > 100 && t.includes('\n') &&
+                       (t.includes('secção') || t.includes('section'));
 
-  // 1) menu_data.csv — mesmo servidor, sem CORS, sempre funciona no GitHub Pages e local com servidor
-  console.log('📁 Trying menu_data.csv…');
+  // 1) Google Apps Script — lê directamente da Sheet, sem CORS
   try{
-    const res = await fetch(CSV_FILENAME + '?v=' + Date.now(), {signal: AbortSignal.timeout(4000)});
-    console.log('   Response:', res.status);
+    const res = await fetch(APPS_SCRIPT_URL, {signal: AbortSignal.timeout(8000)});
     if(res.ok){
       const t = await res.text();
-      if(isValidCSV(t)){
-        const rows = parseCSV(t);
-        console.log(`   ✅ CSV loaded — ${rows.length} rows`);
-        buildMenu(rows);
-        showSourceBadge('local');
-        // Try Sheet in background to check for updates
-        trySheetInBackground();
+      if(isValid(t)){
+        buildMenu(parseCSV(t));
+        showSourceBadge('sheet');
         return;
       }
     }
-  }catch(e){ console.warn('   CSV unavailable:', e.message); }
+  }catch(e){ console.warn('Apps Script unavailable:', e.message); }
 
-  // 2) Embedded fallback
-  console.log('💾 Using embedded FALLBACK_CSV');
-  const rows = parseCSV(FALLBACK_CSV);
-  buildMenu(rows);
-  showSourceBadge('fallback');
-  trySheetInBackground();
-}
-
-// Try to load from Google Sheet in background — if successful, refresh the menu silently
-async function trySheetInBackground(){
-  const isValidCSV = t => t.trim().length > 100 && (t.includes('secção') || t.includes('section')) && t.includes('\n');
-  const proxies = [
-    t => `https://corsproxy.io/?url=${encodeURIComponent(t)}`,
-    t => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(t)}`,
-    t => `https://api.allorigins.win/raw?url=${encodeURIComponent(t)}`,
-  ];
-  for(const proxy of proxies){
-    try{
-      const res = await fetch(proxy(SHEET_CSV_URL), {signal: AbortSignal.timeout(6000)});
-      if(res.ok){
-        const t = await res.text();
-        if(isValidCSV(t)){
-          console.log('📊 Sheet loaded in background — refreshing menu');
-          buildMenu(parseCSV(t));
-          showSourceBadge('sheet');
-          return;
-        }
+  // 2) menu_data.csv no GitHub
+  try{
+    const res = await fetch(CSV_FILENAME + '?v=' + Date.now(), {signal: AbortSignal.timeout(5000)});
+    if(res.ok){
+      const t = await res.text();
+      if(isValid(t)){
+        buildMenu(parseCSV(t));
+        showSourceBadge('fallback');
+        return;
       }
-    }catch(e){ /* silent */ }
-  }
-  console.info('📊 Sheet not reachable in background — using CSV/fallback data');
+    }
+  }catch(e){ console.warn('CSV fallback unavailable:', e.message); }
+
+  // 3) Dados embutidos no HTML
+  buildMenu(parseCSV(FALLBACK_CSV));
+  showSourceBadge('fallback');
 }
 function showSec(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
