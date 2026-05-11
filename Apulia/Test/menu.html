@@ -64,14 +64,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
   height:150px;
   position:relative;z-index:1;
   /* Brighten the logo in dark mode so it stands out */
-  filter:brightness(1.35) contrast(1.1) drop-shadow(0 0 10px rgba(212,80,10,.7));
+  filter:drop-shadow(0 0 10px rgba(212,80,10,.5));
   transition:filter .3s;
 }
 body.light .topbar-brand-img::before{
   background:radial-gradient(circle, rgba(201,169,110,.3) 0%, rgba(180,120,40,.12) 45%, transparent 72%);
 }
+/* Show correct logo per mode */
+.logo-dark{display:block;}
+.logo-light{display:none;}
+body.light .logo-dark{display:none;}
+body.light .logo-light{display:block;}
+
 body.light .topbar-brand-img img{
-  filter:brightness(1.0) contrast(1.05) drop-shadow(0 2px 8px rgba(120,60,0,.3));
+  filter:drop-shadow(0 2px 6px rgba(120,60,0,.2));
 }
 .topbar-brand-text{display:flex;flex-direction:column;gap:.2rem;}
 .topbar-brand-text h1{
@@ -317,7 +323,8 @@ body.lang-fr .t-fr{display:inline;}
 <div class="topbar">
   <div class="topbar-brand">
     <div class="topbar-brand-img">
-      <img src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueira-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
+      <img class="logo-dark"  src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueiraDarkMode-Photoroom.png"  alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
+      <img class="logo-light" src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueiraLightMode-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
     </div>
     <div class="topbar-brand-text">
       <h1>Tasquinha do Cerqueira</h1>
