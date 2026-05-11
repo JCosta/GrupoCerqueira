@@ -442,8 +442,6 @@ body.lang-fr .t-fr{display:inline;}
    Primary: Google Sheet (auto-updates when Sheet is edited)
    Fallback: embedded CSV below (used if Sheet unreachable)
 ════════════════════════════════════════════════════════ */
-// Google Sheet "Publish to web" CSV URL
-// To update: File → Share → Publish to web → Sheet1 → CSV → Copy URL
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZdhct0L58EbvbGYmiN7HCFGwoUeVTXPAtRm1_OXvGjmgdIboq1Ve2AGHbt8QlQF_vuGxPh2V1A5nv/pub?gid=1649563943&single=true&output=csv';
 const CSV_FILENAME  = 'menu_data.csv'; // local fallback
 
@@ -772,14 +770,15 @@ async function loadMenu(){
            clean.includes('\n');
   };
 
-  // 1) Google Sheet — live data
-  console.log('📊 Trying Google Sheet…', SHEET_CSV_URL);
+  // 1) Google Sheet via CORS proxy (works from any domain including GitHub Pages)
+  console.log('📊 Trying Google Sheet…');
+  const proxyURL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEET_CSV_URL);
   try{
-    const res = await fetch(SHEET_CSV_URL + '&t=' + Date.now());
-    console.log('   Sheet response:', res.status, res.ok ? 'OK' : 'FAIL');
+    const res = await fetch(proxyURL);
+    console.log('   Proxy response:', res.status);
     if(res.ok){
       const t = await res.text();
-      console.log('   Sheet CSV preview:', t.substring(0,120));
+      console.log('   Preview:', t.substring(0,120));
       if(isValidCSV(t)){
         const rows = parseCSV(t);
         console.log(`   ✅ Sheet loaded — ${rows.length} rows`);
@@ -787,13 +786,28 @@ async function loadMenu(){
         showSourceBadge('sheet');
         return;
       } else {
-        console.warn('   ⚠️ Sheet response not valid CSV — content too short or missing headers');
-        console.warn('   First 200 chars:', t.substring(0,200));
+        console.warn('   ⚠️ Response not valid CSV');
       }
     }
-  }catch(e){ console.warn('   ❌ Sheet fetch error:', e.message); }
+  }catch(e){ console.warn('   ❌ Proxy error:', e.message); }
 
-  // 2) Local menu_data.csv
+  // 2) Direct fetch (works if CORS is allowed or on same origin)
+  console.log('📊 Trying direct Sheet fetch…');
+  try{
+    const res = await fetch(SHEET_CSV_URL + '&t=' + Date.now());
+    if(res.ok){
+      const t = await res.text();
+      if(isValidCSV(t)){
+        const rows = parseCSV(t);
+        console.log(`   ✅ Direct Sheet loaded — ${rows.length} rows`);
+        buildMenu(rows);
+        showSourceBadge('sheet');
+        return;
+      }
+    }
+  }catch(e){ console.warn('   ❌ Direct fetch error:', e.message); }
+
+  // 3) Local menu_data.csv
   console.log('📁 Trying local menu_data.csv…');
   try{
     const res = await fetch(CSV_FILENAME + '?v=' + Date.now());
@@ -810,7 +824,7 @@ async function loadMenu(){
     }
   }catch(e){ console.warn('   ❌ Local CSV error:', e.message); }
 
-  // 3) Embedded fallback
+  // 4) Embedded fallback
   console.log('💾 Using embedded FALLBACK_CSV');
   const rows = parseCSV(FALLBACK_CSV);
   console.log(`   ✅ Fallback loaded — ${rows.length} rows`);
