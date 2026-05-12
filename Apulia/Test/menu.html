@@ -108,18 +108,16 @@ body.light .topbar-brand-img img{
 /* ══ SIDEBAR ══ */
 .sidebar{
   width:var(--sidebar-w);flex-shrink:0;
-  position:fixed;top:68px;
+  position:sticky;top:68px;
   height:calc(100vh - 68px);
   overflow-y:auto;overflow-x:hidden;
   background:var(--bg2);border-right:1px solid var(--border);
   scrollbar-width:thin;scrollbar-color:var(--border) transparent;
-  z-index:100;
 }
 .sidebar::-webkit-scrollbar{width:4px;}
 .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .sidebar-inner{padding:.5rem 0 2rem;}
-/* Main content needs left margin to account for fixed sidebar */
-.main{margin-left:var(--sidebar-w);}
+.main{flex:1;min-width:0;}
 .nav-btn{
   display:block;width:100%;background:none;border:none;
   text-align:left;padding:.6rem 1rem;cursor:pointer;
@@ -299,9 +297,9 @@ body.lang-fr .t-fr{display:inline;}
     width:100%;height:auto;
     max-height:none;overflow-x:auto;overflow-y:hidden;
     border-right:none;border-bottom:1px solid var(--border);
-    flex-shrink:0;z-index:100;
+    flex-shrink:0;
   }
-  .main{margin-left:0;}
+  .main{margin-left:0;width:100%;}
   .sidebar-inner{display:flex;flex-direction:row;padding:0;white-space:nowrap;min-width:max-content;}
   .nav-btn{
     display:inline-flex;padding:.78rem .85rem;
@@ -818,13 +816,15 @@ function showSec(id,btn){
   if(btn){
     btn.classList.add('active');
     if(window.innerWidth<=680){
-      // Mobile: scroll horizontal do nav + scroll vertical para o conteúdo
+      // Mobile: scroll horizontal do nav + scroll para o conteúdo
       btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-      document.getElementById('page-content')?.scrollIntoView({behavior:'smooth',block:'start'});
+      setTimeout(()=>{
+        document.getElementById('page-content')?.scrollIntoView({behavior:'smooth',block:'start'});
+      },100);
     } else {
-      // Desktop: sidebar é sticky — não faz scroll nenhum da janela
-      // O botão activo fica visível automaticamente (sidebar tem overflow-y:auto)
-      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'nearest'});
+      // Desktop: scroll suave ao topo da página para que a sidebar sticky
+      // apareça sempre do início, com todos os itens visíveis
+      window.scrollTo({top:0,behavior:'smooth'});
     }
   }
 }
