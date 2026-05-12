@@ -225,6 +225,15 @@ body.light .sec-ov{background:linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0
   text-transform:uppercase;font-family:var(--fb);white-space:nowrap;line-height:1.4;
 }
 body.light .unavail-badge{background:rgba(184,61,0,.12);border-color:rgba(184,61,0,.5);color:#b83d00 !important;}
+.domingo-badge{
+  display:inline-block !important;
+  background:rgba(255,193,7,.15);border:1px solid rgba(255,193,7,.55);
+  color:#f5a623 !important;
+  font-size:.64rem;letter-spacing:.08em;font-weight:600;
+  padding:.22rem .7rem;border-radius:20px;margin-top:.4rem;
+  text-transform:uppercase;font-family:var(--fb);white-space:nowrap;line-height:1.4;
+}
+body.light .domingo-badge{background:rgba(230,140,0,.1);border-color:rgba(230,140,0,.5);color:#b35c00 !important;}
 .novidade-badge{
   display:inline-block !important;
   background:rgba(20,100,20,.18);border:1px solid rgba(60,180,60,.5);
@@ -664,9 +673,9 @@ function buildVerdeTinto(rows){
   const pf=row.price_full, pm=row.price_half, pt=row.price_third;
   const lf=row.price_label_full, lm=row.price_label_half, lt=row.price_label_third;
   let priceRows='';
-  if(pt && lt) priceRows+=`<div class="vt-price"><span class="vt-label">Tigela ${lt}</span><span class="vt-val">${pt}</span></div>${pm&&lm?'<div class="vt-sep"></div>':''}`;
-  if(pm && lm) priceRows+=`<div class="vt-price"><span class="vt-label">Tigela ${lm}</span><span class="vt-val">${pm}</span></div>${pf&&lf?'<div class="vt-sep"></div>':''}`;
-  if(pf && lf) priceRows+=`<div class="vt-price"><span class="vt-label">Tigela ${lf}</span><span class="vt-val">${pf}</span></div>`;
+  if(pt && lt) priceRows+=`<div class="vt-price"><span class="vt-label">${lt}</span><span class="vt-val">${pt}</span></div>${pm&&lm?'<div class="vt-sep"></div>':''}`;
+  if(pm && lm) priceRows+=`<div class="vt-price"><span class="vt-label">${lm}</span><span class="vt-val">${pm}</span></div>${pf&&lf?'<div class="vt-sep"></div>':''}`;
+  if(pf && lf) priceRows+=`<div class="vt-price"><span class="vt-label">${lf}</span><span class="vt-val">${pf}</span></div>`;
   if(!priceRows && pf) priceRows=`<div class="vt-price"><span class="vt-val">${pf}</span></div>`;
   const desc=row.desc_pt||'Vinho verde tinto servido na tigela à tradicional — experiência única da casa';
   return`<div class="verde-tinto-card">
@@ -716,16 +725,18 @@ function buildDoneness(){
 
 function buildItem(row, secId){
   const estado = (row.estado || '').toLowerCase().trim();
-  const isUnavail = estado === 'temporariamente indisponivel';
-  const isNovidade = estado === 'novidade';
+  const isUnavail   = estado === 'temporariamente indisponivel';
+  const isNovidade  = estado === 'novidade';
   const isEncomenda = estado === 'por encomenda' || (row.subsection && row.subsection.startsWith('Por Encomenda'));
+  const isDomingo   = estado === 'so domingo';
 
   const name=`<div class="item-name"><span class="t-pt">${row.name_pt}</span><span class="t-en">${row.name_en||row.name_pt}</span><span class="t-fr">${row.name_fr||row.name_pt}</span></div>`;
   const hasDesc=row.desc_pt||row.desc_en||row.desc_fr;
   const desc=hasDesc?`<div class="item-desc"><span class="t-pt">${row.desc_pt}</span><span class="t-en">${row.desc_en}</span><span class="t-fr">${row.desc_fr}</span></div>`:'';
   const al=alBar(row.allergens);
-  const unavailBadge=isUnavail?`<div class="unavail-badge" data-unavail="1"></div>`:'';
-  const novidadeBadge=isNovidade?`<div class="novidade-badge" data-novidade="1"></div>`:'';
+  const unavailBadge  = isUnavail  ? `<div class="unavail-badge"  data-unavail="1"></div>`  : '';
+  const novidadeBadge = isNovidade ? `<div class="novidade-badge" data-novidade="1"></div>` : '';
+  const domingoBadge  = isDomingo  ? `<div class="domingo-badge"  data-domingo="1"></div>`  : '';
 
   if(isEncomenda){
     const isSun=row.desc_pt&&(row.desc_pt.includes('Domingo')||row.desc_pt.includes('Sunday')||row.desc_pt.includes('Dimanche'));
@@ -738,7 +749,7 @@ function buildItem(row, secId){
   }
   const wineAttr = secId==='vinhos' && row.wine_type ? ` data-wine-type="${row.wine_type}"` : '';
   const digAttr  = secId==='digestivos' && row.wine_type ? ` data-dig-type="${row.wine_type}"` : '';
-  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
+  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
 }
 
 function buildHero(sec){
@@ -853,6 +864,8 @@ function fillUnavailBadges(){
   const ntxt={pt:'✨ Novidade',en:'✨ New',fr:'✨ Nouveau'};
   document.querySelectorAll('.unavail-badge[data-unavail]').forEach(el=>{el.innerHTML='⏸&nbsp;&nbsp;'+txt[l];});
   document.querySelectorAll('.novidade-badge[data-novidade]').forEach(el=>{el.innerHTML=ntxt[l];});
+  const dtxt={pt:'🟡 Apenas Domingos',en:'🟡 Sundays Only',fr:'🟡 Dimanches Seulement'};
+  document.querySelectorAll('.domingo-badge[data-domingo]').forEach(el=>{el.innerHTML=dtxt[l];});
 }
 
 function setDigFilter(tipo, btn){
