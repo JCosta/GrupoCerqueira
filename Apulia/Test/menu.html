@@ -33,14 +33,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 /* ══ TOP BAR ══ */
 .topbar{
   background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;
   gap:0;padding:.5rem 1.2rem;
   position:sticky;top:0;z-index:200;
 }
 /* Centre group: logo + name — takes up remaining space, centred */
 .topbar-brand{
   display:flex;align-items:center;gap:1rem;
-  flex:1;justify-content:center;
+  justify-content:center;
+  /* Force true centre regardless of back btn width */
+  position:absolute;left:50%;transform:translateX(-50%);
 }
 .topbar-brand-img{
   position:relative;
@@ -96,15 +99,13 @@ body.light .topbar-brand-img img{
   font-family:var(--fb);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
   transition:color .2s;white-space:nowrap;
   -webkit-tap-highlight-color:transparent;
-  position:fixed;top:0;left:0;z-index:201;
-  height:68px;padding:0 1rem;
+  padding:.3rem 0;
 }
 .back-btn-menu:hover{color:var(--gold2);}
 body.light .back-btn-menu{color:var(--muted);}
 body.light .back-btn-menu:hover{color:var(--gold);}
 .topbar-controls{
   display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;
-  position:absolute;right:1.2rem;
 }
 .lang-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
 .lang-btn{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .55rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.2rem;}
@@ -332,17 +333,10 @@ body.lang-fr .t-fr{display:inline;}
     flex-shrink:0;
   }
   .main{margin-left:0;width:100%;}
-  /* Back button: em mobile fica como barra fina acima do topbar */
-  .back-btn-menu{
-    position:sticky;top:0;
-    width:100%;height:auto;
-    padding:.38rem 1rem;
-    background:var(--bg2);
-    border-bottom:1px solid var(--border);
-    font-size:.58rem;z-index:201;
-  }
+  /* Back button em mobile: texto oculto em ecrãs muito pequenos */
+  .back-btn-menu span{display:inline;}
   /* Topbar em mobile: brand centrado, controls à direita absolutos */
-  .topbar{padding:.45rem .8rem;}
+  .topbar{padding:.45rem .8rem;grid-template-columns:auto 1fr auto;}
   .sidebar-inner{display:flex;flex-direction:row;padding:0;white-space:nowrap;min-width:max-content;}
   .nav-btn{
     display:inline-flex;padding:.78rem .85rem;
@@ -383,12 +377,12 @@ body.lang-fr .t-fr{display:inline;}
 <body class="lang-pt">
 
 <!-- TOP BAR -->
-<a class="back-btn-menu" href="https://jcosta.github.io/GrupoCerqueira/Apulia/index.html">
-  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-  <span class="t-pt">Voltar</span><span class="t-en">Back</span><span class="t-fr">Retour</span>
-</a>
 <div class="topbar">
-    <div class="topbar-brand-img">
+  <a class="back-btn-menu" href="https://jcosta.github.io/GrupoCerqueira/Apulia/index.html">
+    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <span class="t-pt">Voltar</span><span class="t-en">Back</span><span class="t-fr">Retour</span>
+  </a>
+  <div class="topbar-brand">
       <img class="logo-dark"  src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueiraDarkMode-Photoroom.png"  alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
       <img class="logo-light" src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueiraLightMode-Photoroom.png" alt="Tasquinha do Cerqueira" onerror="this.style.display='none'"/>
     </div>
@@ -491,7 +485,7 @@ const SECTIONS = [
    sPt:'Para abrir o apetite',sEn:'To whet your appetite',sFr:"Pour ouvrir l'appétit",legend:true,doneness:false},
   {id:'sopas',     lPt:'Sopas',             lEn:'Soups',            lFr:'Soupes',
    img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=1200&q=80&auto=format&fit=crop',
-   sPt:'Reconfortantes e caseiras',sEn:'Comforting and homemade',sFr:'Réconfortantes et maison',legend:false,doneness:false},
+   sPt:'Reconfortantes e caseiras',sEn:'Comforting and homemade',sFr:'Réconfortantes et maison',legend:true,doneness:false},
   {id:'carnes',    lPt:'Carnes',            lEn:'Meats',            lFr:'Viandes',
    img:'https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=80&auto=format&fit=crop',
    sPt:'Grelhados na brasa',sEn:'Grilled over embers',sFr:'Grillades sur braises',legend:true,doneness:true},
