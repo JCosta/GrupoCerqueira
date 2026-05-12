@@ -494,6 +494,15 @@ const COL_MAP = {
   'allergens':'allergens','wine_type':'wine_type','estado':'estado',
 };
 
+// Normaliza preço — aceita: 3 / 3.0 / 3.00 / 3,00 / 3.00€ / 3,00€
+function normalizePrice(v){
+  if(!v || !v.toString().trim()) return '';
+  const s = v.toString().trim().replace('€','').replace(',','.');
+  const n = parseFloat(s);
+  if(isNaN(n)) return v; // devolve original se não for número
+  return (Number.isInteger(n) ? n.toFixed(2) : n.toFixed(2)) + '€';
+}
+
 function parseCSV(text){
   const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n').filter(l=>l.trim());
   if(lines.length < 2) return [];
@@ -507,6 +516,10 @@ function parseCSV(text){
     if(!o.name_fr) o.name_fr = o.name_pt;
     if(!o.desc_en) o.desc_en = o.desc_pt;
     if(!o.desc_fr) o.desc_fr = o.desc_pt;
+    // Normaliza preços independentemente do formato da Sheet
+    o.price_full  = normalizePrice(o.price_full);
+    o.price_half  = normalizePrice(o.price_half);
+    o.price_third = normalizePrice(o.price_third);
     return o;
   }).filter(r => {
     const sec = (r.section || '').toLowerCase().trim();
