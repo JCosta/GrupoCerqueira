@@ -49,6 +49,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
   -webkit-tap-highlight-color:transparent;
 }
 .back-btn-menu:hover{color:var(--gold2);}
+.back-btn-menu .t-pt,.back-btn-menu .t-en,.back-btn-menu .t-fr{display:none;}
+body.lang-pt .back-btn-menu .t-pt{display:inline;}
+body.lang-en .back-btn-menu .t-en{display:inline;}
+body.lang-fr .back-btn-menu .t-fr{display:inline;}
 body.light .back-btn-menu{color:var(--muted);}
 body.light .back-btn-menu:hover{color:var(--gold);}
 
@@ -67,8 +71,8 @@ body.light .back-btn-menu:hover{color:var(--gold);}
 /* Logo: hard size with !important to override any stale CSS */
 .topbar-brand .logo-dark,
 .topbar-brand .logo-light{
-  width:70px !important;height:70px !important;
-  max-width:70px !important;max-height:70px !important;
+  width:90px !important;height:90px !important;
+  max-width:90px !important;max-height:90px !important;
   object-fit:contain;flex-shrink:0;
   filter:drop-shadow(0 0 10px rgba(212,80,10,.5));
 }
@@ -116,8 +120,8 @@ body.light .logo-light{display:block;}
   .topbar-brand{gap:.55rem;}
   .topbar-brand .logo-dark,
   .topbar-brand .logo-light{
-    width:48px !important;height:48px !important;
-    max-width:48px !important;max-height:48px !important;
+    width:62px !important;height:62px !important;
+    max-width:62px !important;max-height:62px !important;
   }
   .topbar-brand-text h1{font-size:.8rem;letter-spacing:.07em;}
   .topbar-brand-text p{font-size:.46rem;letter-spacing:.18em;}
@@ -279,12 +283,15 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 .wine-filter-btn.wf-active-branco{border-color:#a8c4e0;color:#c0dcf0;background:rgba(168,196,224,.12);font-weight:600;}
 .wine-filter-btn.wf-active-rose{border-color:#e8a0b0;color:#f0c0cc;background:rgba(232,160,176,.12);font-weight:600;}
 .wine-filter-btn.wf-active-tinto{border-color:#c06060;color:#e8a0a0;background:rgba(192,96,96,.12);font-weight:600;}
+.wine-filter-btn.wf-active-premium{border-color:#c9a032;color:#e8c96a;background:rgba(201,160,50,.14);font-weight:600;}
+.dot-premium{background:linear-gradient(135deg,#e8c96a,#c9a032);}
 .wine-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .dot-all{background:linear-gradient(135deg,var(--gold),var(--ember));}
 .dot-branco{background:linear-gradient(135deg,#d0e8f8,#90b8d8);}
 .dot-rose{background:linear-gradient(135deg,#f4b8c8,#e07090);}
 .dot-tinto{background:linear-gradient(135deg,#d06060,#801818);}
 .wine-item-hidden{display:none;}
+.dig-item-hidden{display:none;}
 
 /* ══ NOTE ══ */
 .note{border-left:2px solid var(--ember);padding:.68rem .9rem;margin:1.2rem 0 0;font-style:italic;color:var(--muted);font-size:.78rem;line-height:1.5;}
@@ -730,7 +737,8 @@ function buildItem(row, secId){
     </div>`;
   }
   const wineAttr = secId==='vinhos' && row.wine_type ? ` data-wine-type="${row.wine_type}"` : '';
-  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
+  const digAttr  = secId==='digestivos' && row.wine_type ? ` data-dig-type="${row.wine_type}"` : '';
+  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
 }
 
 function buildHero(sec){
@@ -763,7 +771,39 @@ function buildMenu(rows){
     let html=buildHero(sec)+'<div class="items"><span class="ornament">✦ ✦ ✦</span>';
     const alSecs=['entradas','sopas','carnes','peixes','sobremesas','vinhos','vinhoscasa'];
     if(alSecs.includes(sec.id)) html+=alNotice();
-    if(sec.doneness) html+=buildDoneness();
+if(sec.id==='digestivos'){
+      html+=`<div class="wine-filter" id="dig-filter">
+        <button class="wine-filter-btn wf-active-all" onclick="setDigFilter('all',this)">
+          <span class="wine-dot dot-all"></span>
+          <span class="t-pt">Todos</span><span class="t-en">All</span><span class="t-fr">Tous</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setDigFilter('Champanhe',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#f0e68c,#daa520)"></span>
+          <span class="t-pt">Champanhe</span><span class="t-en">Champagne</span><span class="t-fr">Champagne</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setDigFilter('Espumante',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#e8f5e9,#a5d6a7)"></span>
+          <span class="t-pt">Espumante</span><span class="t-en">Sparkling</span><span class="t-fr">Pétillant</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setDigFilter('Whisky',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#d4a04a,#8b5e1a)"></span>
+          <span class="t-pt">Whisky</span><span class="t-en">Whisky</span><span class="t-fr">Whisky</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setDigFilter('Gin',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#b2dfdb,#4db6ac)"></span>
+          <span class="t-pt">Gin</span><span class="t-en">Gin</span><span class="t-fr">Gin</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setDigFilter('Vodka',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#e0e0e0,#9e9e9e)"></span>
+          <span class="t-pt">Vodka</span><span class="t-en">Vodka</span><span class="t-fr">Vodka</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setDigFilter('Digestivo',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#ce93d8,#8e24aa)"></span>
+          <span class="t-pt">Digestivos</span><span class="t-en">Digestifs</span><span class="t-fr">Digestifs</span>
+        </button>
+      </div>`;
+    }
+        if(sec.doneness) html+=buildDoneness();
     if(sec.id==='vinhos'){
       html+=`<div class="wine-filter" id="wine-filter">
         <button class="wine-filter-btn wf-active-all" onclick="setWineFilter('all',this)">
@@ -781,6 +821,10 @@ function buildMenu(rows){
         <button class="wine-filter-btn" onclick="setWineFilter('Tinto',this)">
           <span class="wine-dot dot-tinto"></span>
           <span class="t-pt">Tintos</span><span class="t-en">Reds</span><span class="t-fr">Rouges</span>
+        </button>
+        <button class="wine-filter-btn" onclick="setWineFilter('Premium',this)">
+          <span class="wine-dot dot-premium"></span>
+          <span class="t-pt">⭐ Premium</span><span class="t-en">⭐ Premium</span><span class="t-fr">⭐ Premium</span>
         </button>
       </div>`;
     }
@@ -811,13 +855,31 @@ function fillUnavailBadges(){
   document.querySelectorAll('.novidade-badge[data-novidade]').forEach(el=>{el.innerHTML=ntxt[l];});
 }
 
+function setDigFilter(tipo, btn){
+  document.querySelectorAll('#dig-filter .wine-filter-btn').forEach(b=>{
+    b.classList.remove('wf-active-all','wf-active-tinto');
+  });
+  btn.classList.add(tipo==='all'?'wf-active-all':'wf-active-tinto');
+  document.querySelectorAll('#digestivos .item[data-dig-type]').forEach(el=>{
+    el.classList.toggle('dig-item-hidden', tipo!=='all' && el.dataset.digType!==tipo);
+  });
+  document.querySelectorAll('#digestivos .sub-heading').forEach(sh=>{
+    let el=sh.nextElementSibling; let allHidden=true;
+    while(el && !el.classList.contains('sub-heading') && !el.classList.contains('al-legend') && !el.classList.contains('note')){
+      if(el.classList.contains('item') && !el.classList.contains('dig-item-hidden')) allHidden=false;
+      el=el.nextElementSibling;
+    }
+    sh.classList.toggle('sub-heading-hidden', allHidden);
+  });
+}
 function setWineFilter(tipo, btn){
   document.querySelectorAll('.wine-filter-btn').forEach(b=>{
-    b.classList.remove('wf-active-all','wf-active-branco','wf-active-rose','wf-active-tinto');
+    b.classList.remove('wf-active-all','wf-active-branco','wf-active-rose','wf-active-tinto','wf-active-premium');
   });
   if(tipo==='all') btn.classList.add('wf-active-all');
   else if(tipo==='Branco') btn.classList.add('wf-active-branco');
   else if(tipo==='Rosé') btn.classList.add('wf-active-rose');
+  else if(tipo==='Premium') btn.classList.add('wf-active-premium');
   else btn.classList.add('wf-active-tinto');
   document.querySelectorAll('#vinhos .item[data-wine-type]').forEach(el=>{
     el.classList.toggle('wine-item-hidden', tipo!=='all' && el.dataset.wineType!==tipo);
