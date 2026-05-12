@@ -13,9 +13,15 @@
 :root{
   --ink:#0b0805;--cream:#f0e8d5;--gold:#c9a032;--gold2:#e8c96a;
   --ember:#c4400a;--dark:#1a1208;--muted:rgba(240,232,213,.45);
+  --border:rgba(201,160,50,.15);
   --fh:'Cormorant Garamond',Georgia,serif;
   --fc:'Cinzel',Georgia,serif;
   --fb:'Jost',system-ui,sans-serif;
+}
+body.light{
+  --ink:#f5f0e8;--cream:#1a1208;--gold:#8b6914;--gold2:#6a4e10;
+  --ember:#b83d00;--dark:#fff;--muted:rgba(26,18,8,.5);
+  --border:rgba(139,105,20,.2);
 }
 /* Lang visibility */
 .t-pt,.t-en,.t-fr{display:none;}
@@ -24,7 +30,7 @@ body.lang-en .t-en{display:inline;}
 body.lang-fr .t-fr{display:inline;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;}
-body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:300;min-height:100svh;overflow-x:hidden;}
+body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:300;min-height:100svh;overflow-x:hidden;transition:background .3s,color .3s;}
 .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 70% 50% at 20% 50%,rgba(196,64,10,.1) 0%,transparent 65%),radial-gradient(ellipse 70% 50% at 80% 50%,rgba(201,160,50,.07) 0%,transparent 65%),var(--ink);}
 .wrap{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem;gap:3rem;}
 .header{text-align:center;animation:fadeDown .8s ease both;}
@@ -65,6 +71,31 @@ body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:
 .card-status::before{content:'';width:5px;height:5px;border-radius:50%;background:#4caf50;display:inline-block;}
 .card-status.soon{color:rgba(201,160,50,.6);}
 .card-status.soon::before{background:var(--gold);}
+.phrase{
+  max-width:620px;text-align:center;
+  animation:fadeUp .7s .35s ease both;
+}
+.phrase-text{
+  font-family:var(--fh);font-style:italic;
+  font-size:clamp(.95rem,2.8vw,1.3rem);
+  font-weight:300;line-height:1.75;
+  color:rgba(240,232,213,.55);
+  letter-spacing:.03em;
+}
+body.light .phrase-text{color:rgba(26,18,8,.45);}
+.phrase-line{
+  display:flex;align-items:center;gap:.8rem;
+  margin-bottom:.7rem;justify-content:center;
+}
+.phrase-line::before,.phrase-line::after{
+  content:'';width:30px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,160,50,.5));
+}
+.phrase-line::after{transform:scaleX(-1);}
+.phrase-ornament{
+  font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);font-family:var(--fb);
+}
 .lang-bar{display:flex;gap:.4rem;animation:fadeUp .6s .6s ease both;}
 .lang-bar-btn{background:none;border:1px solid rgba(201,160,50,.3);border-radius:3px;color:rgba(240,232,213,.45);font-family:var(--fb);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .6rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.25rem;}
 .lang-bar-btn.active{background:rgba(201,160,50,.15);border-color:rgba(201,160,50,.7);color:var(--gold2);}
@@ -79,6 +110,25 @@ body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:
 .google-review-btn{display:inline-flex;align-items:center;gap:.42rem;background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;text-decoration:none;font-family:var(--fb);font-size:.72rem;font-weight:600;letter-spacing:.05em;padding:.45rem 1rem;border-radius:20px;transition:transform .2s,box-shadow .2s;box-shadow:0 3px 12px rgba(66,133,244,.35);white-space:nowrap;}
 .google-review-btn:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(66,133,244,.5);}
 .google-review-btn svg,.ig-inline svg,.fb-inline svg{flex-shrink:0;}
+.theme-portal-btn{background:none;border:1px solid rgba(201,160,50,.3);border-radius:3px;color:rgba(240,232,213,.5);font-size:.72rem;padding:.28rem .52rem;cursor:pointer;transition:all .2s;min-width:34px;min-height:30px;}
+.theme-portal-btn:hover{border-color:rgba(201,160,50,.6);color:var(--gold2);}
+body.light .theme-portal-btn{border-color:rgba(139,105,20,.3);color:var(--muted);}
+/* Light mode card adaptations */
+body.light .card{background:#fff;border-color:rgba(139,105,20,.2);}
+body.light .card:hover{border-color:rgba(139,105,20,.5);}
+body.light .card-desc{color:rgba(26,18,8,.55);}
+body.light .card-meta-row{color:rgba(26,18,8,.5);}
+body.light .card-btn{color:var(--gold);}
+body.light .card-name{color:var(--gold);}
+body.light .header-eyebrow{color:var(--gold);}
+body.light .header-sub{color:var(--muted);}
+body.light .bg{background:radial-gradient(ellipse 70% 50% at 20% 50%,rgba(180,60,10,.06) 0%,transparent 65%),radial-gradient(ellipse 70% 50% at 80% 50%,rgba(139,105,20,.05) 0%,transparent 65%),var(--ink);}
+body.light .divider{color:rgba(139,105,20,.4);}
+body.light .card-tag.original{background:rgba(139,105,20,.8);}
+body.light .card-tag{background:rgba(180,60,10,.75);}
+body.light .card-status{color:rgba(30,110,30,.8);}
+body.light .card-status.soon{color:rgba(139,105,20,.8);}
+body.light .foot{color:rgba(26,18,8,.25);}
 .foot{text-align:center;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,232,213,.18);animation:fadeUp .6s .8s ease both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
@@ -101,10 +151,21 @@ body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:
     <p class="header-sub"><span class="t-pt">Duas casas, a mesma paixão pela boa mesa</span><span class="t-en">Two restaurants, the same passion for great food</span><span class="t-fr">Deux maisons, la même passion pour la bonne table</span></p>
   </div>
 
-  <div class="lang-bar">
-    <button class="lang-bar-btn active" onclick="setLang('pt')">🇵🇹 PT</button>
-    <button class="lang-bar-btn" onclick="setLang('en')">🇬🇧 EN</button>
-    <button class="lang-bar-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+  <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:center;">
+    <div class="lang-bar">
+      <button class="lang-bar-btn active" onclick="setLang('pt')">🇵🇹 PT</button>
+      <button class="lang-bar-btn" onclick="setLang('en')">🇬🇧 EN</button>
+      <button class="lang-bar-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    </div>
+    <button class="theme-portal-btn" onclick="togglePortalTheme()" title="Toggle theme"><span id="pti">☀️</span></button>
+  </div>
+  <div class="phrase">
+    <div class="phrase-line"><span class="phrase-ornament">Grupo Cerqueira</span></div>
+    <p class="phrase-text">
+      <span class="t-pt">O sabor autêntico de sempre, apurado pela tecnologia de hoje. Grelhamos sem carvão para que sinta apenas a suculência e a pureza de cada corte.</span>
+      <span class="t-en">The authentic flavour, refined by today's technology. We grill without charcoal so you feel only the succulence and purity of every cut.</span>
+      <span class="t-fr">La saveur authentique d'antan, affinée par la technologie d'aujourd'hui. Nous grillons sans charbon pour que vous ressentiez uniquement la succulence et la pureté de chaque coupe.</span>
+    </p>
   </div>
   <div class="divider"><span class="t-pt">Escolha a sua casa</span><span class="t-en">Choose your restaurant</span><span class="t-fr">Choisissez votre maison</span></div>
 
@@ -178,15 +239,28 @@ body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:
   <div class="foot">© 2026 Grupo Cerqueira · Todos os direitos reservados</div>
 </div>
 <script>
+let portalLight=false;
+function togglePortalTheme(){
+  portalLight=!portalLight;
+  document.body.classList.toggle('light',portalLight);
+  document.getElementById('pti').textContent=portalLight?'🌙':'☀️';
+  try{localStorage.setItem('pTheme',portalLight?'light':'dark');}catch(e){}
+}
 function setLang(l){
-  document.body.className=document.body.className.replace(/lang-\w+/,'').trim()+' lang-'+l;
+  document.body.classList.remove('lang-pt','lang-en','lang-fr');
+  document.body.classList.add('lang-'+l);
   document.querySelectorAll('.lang-bar-btn').forEach((b,i)=>{
     b.classList.toggle('active',['pt','en','fr'][i]===l);
   });
   try{localStorage.setItem('pLang',l);}catch(e){}
 }
 (function(){
-  try{const l=localStorage.getItem('pLang');if(l)setLang(l);}catch(e){}
+  try{
+    const t=localStorage.getItem('pTheme');
+    const l=localStorage.getItem('pLang')||'pt';
+    if(t==='light'){portalLight=true;document.body.classList.add('light');document.getElementById('pti').textContent='🌙';}
+    setLang(l);
+  }catch(e){}
 })();
 </script>
 </body>
