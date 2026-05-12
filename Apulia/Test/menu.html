@@ -108,7 +108,7 @@ body.light .topbar-brand-img img{
 /* ══ SIDEBAR ══ */
 .sidebar{
   width:var(--sidebar-w);flex-shrink:0;
-  position:sticky;top:68px;max-height:calc(100vh - 68px);
+  position:sticky;top:68px;height:calc(100vh - 68px);
   overflow-y:auto;overflow-x:hidden;
   background:var(--bg2);border-right:1px solid var(--border);
   scrollbar-width:thin;scrollbar-color:var(--border) transparent;
@@ -808,8 +808,21 @@ function showSec(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(id)?.classList.add('visible');
-  if(btn){btn.classList.add('active');btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
-  document.getElementById('page-content')?.scrollIntoView({behavior:'smooth',block:'start'});
+  if(btn){
+    btn.classList.add('active');
+    // Mobile: scroll horizontal do nav
+    if(window.innerWidth<=680){
+      btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+      document.getElementById('page-content')?.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    // Desktop: scroll a janela para o topo do layout (abaixo do topbar)
+    // A sidebar é sticky e fica no lugar — só o conteúdo muda
+    else{
+      const topbar=document.querySelector('.topbar');
+      const offset=topbar ? topbar.offsetHeight + 8 : 76;
+      window.scrollTo({top:offset,behavior:'smooth'});
+    }
+  }
 }
 
 function setLang(l){
