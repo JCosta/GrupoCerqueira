@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 /* ══ TOP BAR ══ */
 .topbar{
   background:var(--bg2);border-bottom:1px solid var(--border);
-  display:grid;grid-template-columns:auto 1fr auto;
+  display:grid;grid-template-columns:1fr auto 1fr;
   align-items:center;
   gap:0;padding:.5rem 1.2rem;
   position:sticky;top:0;z-index:200;
@@ -42,8 +42,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 .topbar-brand{
   display:flex;align-items:center;gap:1rem;
   justify-content:center;
-  /* Force true centre regardless of back btn width */
-  position:absolute;left:50%;transform:translateX(-50%);
 }
 .topbar-brand-img{
   position:relative;
@@ -99,7 +97,7 @@ body.light .topbar-brand-img img{
   font-family:var(--fb);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
   transition:color .2s;white-space:nowrap;
   -webkit-tap-highlight-color:transparent;
-  padding:.3rem 0;
+  padding:.3rem 0;justify-self:start;
 }
 .back-btn-menu:hover{color:var(--gold2);}
 body.light .back-btn-menu{color:var(--muted);}
