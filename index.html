@@ -3,465 +3,134 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta name="description" content="Tasquinha do Cerqueira — Restaurante em Apúlia. Grelhados na brasa, vinhos da casa na tigela, petiscos e muito mais. Reserve já a sua mesa."/>
+<meta name="description" content="Grupo Cerqueira — Tasquinha do Cerqueira. Duas casas, a mesma paixão pela boa mesa. Vila Verde e Apúlia."/>
 <meta name="theme-color" content="#0b0805"/>
-<title>Tasquinha do Cerqueira — Apúlia</title>
+<title>Grupo Cerqueira — As Nossas Casas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400;1,600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --ink:#0b0805;--paper:#f7f2ea;--gold:#c9a032;--gold2:#e8c96a;
-  --ember:#c4400a;--cream:#f0e8d5;--dark:#1a1208;
+  --ink:#0b0805;--cream:#f0e8d5;--gold:#c9a032;--gold2:#e8c96a;
+  --ember:#c4400a;--dark:#1a1208;--muted:rgba(240,232,213,.45);
   --fh:'Cormorant Garamond',Georgia,serif;
   --fc:'Cinzel',Georgia,serif;
   --fb:'Jost',system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;font-size:16px;}
-body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:300;overflow-x:hidden;}
-
-/* ══ HERO ══ */
-.hero{
-  min-height:100svh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-  padding:2rem 1.5rem;
-}
-.hero-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(196,64,10,.18) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(201,160,50,.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 10%, rgba(196,64,10,.08) 0%, transparent 60%);
-  background-color:var(--ink);
-}
-/* Grain texture overlay */
-.hero-bg::after{
-  content:'';position:absolute;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity:.6;pointer-events:none;
-}
-/* Decorative lines */
-.hero::before{
-  content:'';position:absolute;
-  top:0;left:50%;transform:translateX(-50%);
-  width:1px;height:80px;
-  background:linear-gradient(to bottom,transparent,rgba(201,160,50,.4));
-}
-.hero::after{
-  content:'';position:absolute;
-  bottom:0;left:50%;transform:translateX(-50%);
-  width:1px;height:80px;
-  background:linear-gradient(to top,transparent,rgba(201,160,50,.4));
-}
-
-.hero-inner{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;
-  gap:0;text-align:center;max-width:700px;
-}
-
-/* Logo */
-.hero-logo{
-  width:180px;height:180px;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;margin-bottom:1.5rem;
-  animation:fadeDown .9s ease both;
-}
-.hero-logo::before{
-  content:'';position:absolute;inset:-20px;border-radius:50%;
-  background:radial-gradient(circle,rgba(196,64,10,.22) 0%,rgba(196,64,10,.08) 50%,transparent 75%);
-  animation:breathe 5s ease-in-out infinite;
-}
-@keyframes breathe{
-  0%,100%{transform:scale(1);opacity:.7;}
-  50%{transform:scale(1.08);opacity:1;}
-}
-.hero-logo img{
-  width:170px;height:170px;object-fit:contain;
-  position:relative;z-index:1;
-  filter:drop-shadow(0 4px 20px rgba(196,64,10,.6));
-}
-
-/* Location pill */
-.hero-location{
-  font-family:var(--fb);font-size:.62rem;font-weight:400;
-  letter-spacing:.35em;text-transform:uppercase;color:var(--gold);
-  border:1px solid rgba(201,160,50,.35);border-radius:30px;
-  padding:.3rem 1rem;margin-bottom:1.4rem;
-  animation:fadeUp .8s .2s ease both;
-  display:flex;align-items:center;gap:.5rem;
-}
-.hero-location::before,.hero-location::after{
-  content:'';display:inline-block;width:18px;height:1px;background:rgba(201,160,50,.5);
-}
-
-/* Main title */
-.hero-title{
-  font-family:var(--fc);font-size:clamp(2rem,6vw,4.2rem);
-  font-weight:400;letter-spacing:.18em;line-height:1.15;
-  color:var(--cream);margin-bottom:.6rem;
-  animation:fadeUp .8s .35s ease both;
-  text-transform:uppercase;
-}
-.hero-title em{
-  display:block;font-style:italic;font-weight:600;
-  font-family:var(--fh);
-  color:var(--gold2);letter-spacing:.04em;
-  font-size:clamp(2.8rem,8vw,5.5rem);
-  text-transform:none;
-}
-.hero-tagline{
-  font-family:var(--fh);font-style:italic;font-size:clamp(.95rem,2.5vw,1.3rem);
-  font-weight:300;color:rgba(240,232,213,.55);letter-spacing:.04em;
-  margin-bottom:2.8rem;
-  animation:fadeUp .8s .5s ease both;
-}
-
-/* CTA buttons */
-.hero-ctas{
-  display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;
-  animation:fadeUp .8s .65s ease both;
-}
-.btn-primary{
-  background:var(--ember);color:#fff;
-  font-family:var(--fb);font-size:.7rem;font-weight:500;
-  letter-spacing:.2em;text-transform:uppercase;text-decoration:none;
-  padding:.9rem 2rem;border-radius:2px;
-  border:1px solid var(--ember);
-  transition:all .28s;
-  position:relative;overflow:hidden;
-}
-.btn-primary::before{
-  content:'';position:absolute;inset:0;
-  background:rgba(255,255,255,.1);
-  transform:translateX(-100%);transition:transform .3s;
-}
-.btn-primary:hover::before{transform:translateX(0);}
-.btn-primary:hover{box-shadow:0 0 28px rgba(196,64,10,.5);}
-.btn-secondary{
-  background:transparent;color:var(--gold2);
-  font-family:var(--fb);font-size:.7rem;font-weight:400;
-  letter-spacing:.2em;text-transform:uppercase;text-decoration:none;
-  padding:.9rem 2rem;border-radius:2px;
-  border:1px solid rgba(201,160,50,.45);
-  transition:all .28s;
-}
-.btn-secondary:hover{border-color:var(--gold2);color:var(--cream);background:rgba(201,160,50,.08);}
-
-/* Scroll hint */
-.scroll-hint{
-  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:.4rem;
-  opacity:.4;animation:fadeUp .8s 1.2s ease both;
-}
-.scroll-hint span{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);}
-.scroll-arrow{width:1px;height:36px;background:linear-gradient(to bottom,rgba(201,160,50,.8),transparent);animation:scrollPulse 2s ease-in-out infinite;}
-@keyframes scrollPulse{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);}100%{transform:scaleY(0);transform-origin:bottom;}}
-
-/* ══ HIGHLIGHTS STRIP ══ */
-.highlights{
-  background:var(--dark);border-top:1px solid rgba(201,160,50,.15);
-  border-bottom:1px solid rgba(201,160,50,.15);
-  padding:2.2rem 1.5rem;
-  display:flex;justify-content:center;
-}
-.highlights-inner{
-  display:flex;gap:0;max-width:900px;width:100%;
-  justify-content:space-around;flex-wrap:wrap;gap:1.5rem;
-}
-.hl-item{
-  display:flex;flex-direction:column;align-items:center;gap:.35rem;
-  text-align:center;flex:1;min-width:120px;max-width:180px;
-  opacity:0;transform:translateY(12px);transition:all .5s;
-}
-.hl-item.visible{opacity:1;transform:translateY(0);}
-.hl-icon{font-size:1.6rem;line-height:1;}
-.hl-label{
-  font-family:var(--fh);font-size:1rem;font-weight:600;
-  color:var(--gold2);letter-spacing:.04em;
-}
-.hl-sub{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(240,232,213,.4);}
-
-/* ══ VERDE TINTO FEATURE ══ */
-.feature{
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:520px;overflow:hidden;
-}
-.feature-img{
-  position:relative;overflow:hidden;
-}
-.feature-img img{
-  width:100%;height:100%;object-fit:cover;object-position:center;
-  filter:brightness(.85) saturate(1.1);
-  transition:transform 8s ease;
-}
-.feature:hover .feature-img img{transform:scale(1.04);}
-.feature-img::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to right,transparent 60%,var(--dark));
-}
-.feature-content{
-  background:var(--dark);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:3.5rem 3rem 3.5rem 2.5rem;
-  position:relative;
-}
-.feature-content::before{
-  content:'';position:absolute;top:3rem;left:0;
-  width:3px;height:60px;
-  background:linear-gradient(to bottom,var(--ember),var(--gold));
-}
-.feature-eyebrow{
-  font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--ember);font-family:var(--fb);font-weight:400;
-  margin-bottom:1rem;
-}
-.feature-title{
-  font-family:var(--fc);font-size:clamp(1.6rem,3.5vw,2.6rem);
-  font-weight:400;line-height:1.15;color:var(--cream);
-  letter-spacing:.1em;text-transform:uppercase;
-  margin-bottom:.8rem;
-}
-.feature-title em{font-style:italic;color:var(--gold2);font-family:var(--fh);text-transform:none;letter-spacing:.02em;}
-.feature-desc{
-  font-size:.85rem;line-height:1.7;color:rgba(240,232,213,.6);
-  margin-bottom:2rem;font-weight:300;
-}
-.feature-prices{
-  display:flex;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;
-}
-.fp-item{display:flex;flex-direction:column;gap:.15rem;}
-.fp-label{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,160,50,.6);}
-.fp-val{font-family:var(--fh);font-size:1.4rem;font-weight:600;color:var(--gold);}
-
-/* ══ INFO SECTION ══ */
-.info{
-  background:var(--ink);
-  padding:5rem 1.5rem;
-  display:flex;justify-content:center;
-}
-.info-inner{
-  max-width:900px;width:100%;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;
-}
-.info-block{
-  display:flex;flex-direction:column;gap:.6rem;
-  opacity:0;transform:translateY(16px);transition:all .5s;
-}
-.info-block.visible{opacity:1;transform:translateY(0);}
-.info-block-icon{font-size:1.4rem;margin-bottom:.2rem;}
-.info-block-label{
-  font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;
-  color:var(--gold);font-family:var(--fb);
-}
-.info-block-value{
-  font-family:var(--fh);font-size:1.05rem;color:var(--cream);
-  line-height:1.5;
-}
-.info-block-value a{color:inherit;text-decoration:none;transition:color .2s;}
-.info-block-value a:hover{color:var(--gold2);}
-.info-divider{
-  grid-column:1/-1;height:1px;
-  background:linear-gradient(to right,transparent,rgba(201,160,50,.2),transparent);
-  margin:-1rem 0;
-}
-
-/* ══ CTA BOTTOM ══ */
-.cta-bottom{
-  background:var(--dark);
-  padding:5rem 1.5rem;
-  text-align:center;
-  display:flex;flex-direction:column;align-items:center;gap:1.8rem;
-  border-top:1px solid rgba(201,160,50,.12);
-}
-.cta-bottom-title{
-  font-family:var(--fc);font-size:clamp(1.4rem,4vw,2.4rem);
-  font-weight:400;color:var(--cream);letter-spacing:.14em;
-  text-transform:uppercase;
-}
-.cta-bottom-title em{font-style:italic;font-weight:600;color:var(--gold2);font-family:var(--fh);text-transform:none;letter-spacing:.02em;}
-.cta-bottom-sub{
-  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(240,232,213,.35);max-width:400px;line-height:1.8;
-}
-
-/* ══ FOOTER ══ */
-footer{
-  background:var(--ink);
-  border-top:1px solid rgba(201,160,50,.1);
-  padding:1.5rem;text-align:center;
-  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(240,232,213,.2);
-}
-footer a{color:rgba(201,160,50,.4);text-decoration:none;}
-footer a:hover{color:var(--gold);}
-
-/* ══ ANIMATIONS ══ */
+html{font-size:16px;}
+body{background:var(--ink);color:var(--cream);font-family:var(--fb);font-weight:300;min-height:100svh;overflow-x:hidden;}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 70% 50% at 20% 50%,rgba(196,64,10,.1) 0%,transparent 65%),radial-gradient(ellipse 70% 50% at 80% 50%,rgba(201,160,50,.07) 0%,transparent 65%),var(--ink);}
+.wrap{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem;gap:3rem;}
+.header{text-align:center;animation:fadeDown .8s ease both;}
+.header-logo{width:120px;height:120px;margin:0 auto 1.2rem;display:flex;align-items:center;justify-content:center;position:relative;}
+.header-logo::before{content:'';position:absolute;inset:-15px;border-radius:50%;background:radial-gradient(circle,rgba(196,64,10,.2) 0%,transparent 70%);animation:breathe 5s ease-in-out infinite;}
+@keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.header-logo img{width:110px;height:110px;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 4px 16px rgba(196,64,10,.55));}
+.header-eyebrow{font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;gap:.6rem;}
+.header-eyebrow::before,.header-eyebrow::after{content:'';display:inline-block;width:24px;height:1px;background:rgba(201,160,50,.4);}
+.header-title{font-family:var(--fc);font-size:clamp(1.4rem,5vw,2.4rem);font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);line-height:1.1;margin-bottom:.4rem;}
+.header-sub{font-family:var(--fh);font-style:italic;font-size:clamp(.95rem,2.5vw,1.2rem);color:var(--muted);font-weight:300;}
+.divider{display:flex;align-items:center;gap:1rem;width:100%;max-width:600px;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,160,50,.35);animation:fadeUp .6s .4s ease both;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,160,50,.2),transparent);}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;width:100%;max-width:860px;}
+.card{background:var(--dark);border:1px solid rgba(201,160,50,.15);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .3s,box-shadow .3s,border-color .3s;opacity:0;transform:translateY(20px);animation:fadeUp .7s ease both;}
+.card:first-child{animation-delay:.3s;}
+.card:last-child{animation-delay:.5s;}
+.card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5);border-color:rgba(201,160,50,.4);}
+.card-hero{position:relative;height:220px;overflow:hidden;}
+.card-hero img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(.65) saturate(1.1);transition:transform 6s ease,filter .4s;}
+.card:hover .card-hero img{transform:scale(1.05);filter:brightness(.75) saturate(1.2);}
+.card-hero-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(26,18,8,.95));}
+.card-tag{position:absolute;top:.9rem;left:.9rem;font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;background:rgba(196,64,10,.85);color:#fff;padding:.22rem .65rem;border-radius:2px;font-family:var(--fb);font-weight:400;}
+.card-tag.original{background:rgba(201,160,50,.85);color:var(--ink);}
+.card-location{position:absolute;bottom:.9rem;left:.9rem;right:.9rem;font-family:var(--fc);font-size:clamp(.95rem,2.5vw,1.3rem);font-weight:400;letter-spacing:.1em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.8);}
+.card-body{padding:1.4rem 1.4rem 1.8rem;flex:1;display:flex;flex-direction:column;gap:1rem;}
+.card-name{font-family:var(--fh);font-style:italic;font-size:clamp(1.2rem,3vw,1.6rem);font-weight:600;color:var(--gold2);line-height:1.1;}
+.card-desc{font-size:.75rem;line-height:1.7;color:rgba(240,232,213,.5);font-weight:300;flex:1;}
+.card-meta{display:flex;flex-direction:column;gap:.35rem;border-top:1px solid rgba(201,160,50,.12);padding-top:.9rem;}
+.card-meta-row{display:flex;align-items:flex-start;gap:.5rem;font-size:.68rem;color:rgba(240,232,213,.45);}
+.card-meta-row span:first-child{flex-shrink:0;}
+.card-cta{display:flex;align-items:center;justify-content:space-between;margin-top:.3rem;}
+.card-btn{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-family:var(--fb);font-weight:400;display:flex;align-items:center;gap:.4rem;transition:gap .2s,color .2s;}
+.card:hover .card-btn{gap:.7rem;color:var(--gold2);}
+.card-btn-arrow{font-size:.8rem;transition:transform .2s;}
+.card:hover .card-btn-arrow{transform:translateX(4px);}
+.card-status{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(76,175,80,.7);display:flex;align-items:center;gap:.3rem;}
+.card-status::before{content:'';width:5px;height:5px;border-radius:50%;background:#4caf50;display:inline-block;}
+.card-status.soon{color:rgba(201,160,50,.6);}
+.card-status.soon::before{background:var(--gold);}
+.foot{text-align:center;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,232,213,.18);animation:fadeUp .6s .8s ease both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
-
-/* ══ MOBILE ══ */
-@media(max-width:700px){
-  .feature{grid-template-columns:1fr;}
-  .feature-img{height:280px;}
-  .feature-img::after{background:linear-gradient(to top,var(--dark) 10%,transparent);}
-  .feature-content{padding:2rem 1.5rem;text-align:center;}
-  .feature-content::before{display:none;}
-  .feature-prices{justify-content:center;}
-  .info-inner{grid-template-columns:1fr;gap:2rem;}
-  .info-divider{display:none;}
-  .highlights-inner{gap:1rem;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:620px){
+  .cards{grid-template-columns:1fr;}
+  .card-hero{height:190px;}
+  .wrap{gap:2.5rem;padding:2.5rem 1.2rem;}
 }
 </style>
 </head>
 <body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="header">
+    <div class="header-logo">
+      <img src="Apulia/Test/images/TasqCerqueiraDarkMode-Photoroom.png" alt="Tasquinha do Cerqueira"/>
+    </div>
+    <div class="header-eyebrow">Grupo Cerqueira</div>
+    <h1 class="header-title">Tasquinha do Cerqueira</h1>
+    <p class="header-sub">Duas casas, a mesma paixão pela boa mesa</p>
+  </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-logo">
-      <img src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/TasqCerqueiraDarkMode-Photoroom.png"
-           alt="Tasquinha do Cerqueira"/>
-    </div>
-    <div class="hero-location">Apúlia · Esposende · Costa Verde</div>
-    <h1 class="hero-title">
-      Tasquinha<br>
-      <em>do Cerqueira</em>
-    </h1>
-    <p class="hero-tagline">Grelhados na brasa · Vinhos da casa · Petiscos de mar e terra</p>
-    <div class="hero-ctas">
-      <a href="Apulia/Test/menu.html" class="btn-primary">Ver Ementa Digital</a>
-      <a href="tel:+351253963307" class="btn-secondary">Reservar Mesa</a>
-    </div>
-  </div>
-  <div class="scroll-hint">
-    <span>Descobrir</span>
-    <div class="scroll-arrow"></div>
-  </div>
-</section>
+  <div class="divider">Escolha a sua casa</div>
 
-<!-- HIGHLIGHTS -->
-<div class="highlights">
-  <div class="highlights-inner">
-    <div class="hl-item">
-      <div class="hl-icon">🔥</div>
-      <div class="hl-label">Grelhados</div>
-      <div class="hl-sub">Na brasa</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-icon">🐟</div>
-      <div class="hl-label">Peixe Fresco</div>
-      <div class="hl-sub">Do mar à mesa</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-icon">🫙</div>
-      <div class="hl-label">Verde Tinto</div>
-      <div class="hl-sub">Na tigela</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-icon">🌊</div>
-      <div class="hl-label">Frente de Mar</div>
-      <div class="hl-sub">Apúlia</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-icon">🍷</div>
-      <div class="hl-label">Carta de Vinhos</div>
-      <div class="hl-sub">Seleção portuguesa</div>
-    </div>
+  <div class="cards">
+    <!-- VILA VERDE -->
+    <a class="card" href="VilaVerde/index.html">
+      <div class="card-hero">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop" alt="Vila Verde"/>
+        <div class="card-hero-ov"></div>
+        <div class="card-tag original">Casa Original</div>
+        <div class="card-location">Vila Verde</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Tasquinha do Cerqueira I</div>
+        <div class="card-desc">A casa mãe, no coração de Vila Verde. Cozinha típica regional, petiscos generosos, carnes e peixes grelhados e o famoso vinho verde tinto na malga.</div>
+        <div class="card-meta">
+          <div class="card-meta-row"><span>📍</span><span>R. José Feio Soares de Azevedo 236, Vila Verde</span></div>
+          <div class="card-meta-row"><span>📞</span><span>+351 964 408 072</span></div>
+        </div>
+        <div class="card-cta">
+          <div class="card-status soon">Em breve · Ementa Digital</div>
+          <div class="card-btn">Ver mais <span class="card-btn-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <!-- APÚLIA -->
+    <a class="card" href="Apulia/index.html">
+      <div class="card-hero">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80&auto=format&fit=crop" alt="Apúlia"/>
+        <div class="card-hero-ov"></div>
+        <div class="card-tag">Casa II</div>
+        <div class="card-location">Apúlia</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Tasquinha do Cerqueira II</div>
+        <div class="card-desc">Junto ao mar, em Apúlia. Grelhados na brasa, peixe fresco do dia, vinhos da casa na tigela e uma vista para a Costa Verde que não tem preço.</div>
+        <div class="card-meta">
+          <div class="card-meta-row"><span>📍</span><span>Av. Marginal Cedovém 296, Apúlia · Esposende</span></div>
+          <div class="card-meta-row"><span>📞</span><span>+351 253 963 307 · +351 910 403 608</span></div>
+        </div>
+        <div class="card-cta">
+          <div class="card-status">Ementa Digital disponível</div>
+          <div class="card-btn">Ver mais <span class="card-btn-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
   </div>
+
+  <div class="foot">© 2025 Grupo Cerqueira · Todos os direitos reservados</div>
 </div>
-
-<!-- VERDE TINTO FEATURE -->
-<div class="feature">
-  <div class="feature-img">
-    <img src="https://raw.githubusercontent.com/JCosta/GrupoCerqueira/main/Apulia/Test/images/verdetintotigela.png"
-         alt="Verde Tinto na Tigela"/>
-  </div>
-  <div class="feature-content">
-    <div class="feature-eyebrow">🏡 Especialidade da Casa</div>
-    <h2 class="feature-title">Verde Tinto<br><em>na Tigela</em></h2>
-    <p class="feature-desc">
-      Uma tradição minhota servida à mesa como sempre foi —
-      directamente na tigela, fresco e generoso.
-      O vinho da terra, ao jeito da Tasquinha.
-    </p>
-    <div class="feature-prices">
-      <div class="fp-item">
-        <span class="fp-label">Tigela 0.50cl</span>
-        <span class="fp-val">5€</span>
-      </div>
-      <div class="fp-item">
-        <span class="fp-label">Tigela 1.5L</span>
-        <span class="fp-val">12€</span>
-      </div>
-      <div class="fp-item">
-        <span class="fp-label">Tigela 2L</span>
-        <span class="fp-val">15€</span>
-      </div>
-    </div>
-    <a href="Apulia/Test/menu.html#vinhoscasa" class="btn-primary" style="width:fit-content;">Ver Vinhos da Casa</a>
-  </div>
-</div>
-
-<!-- INFO -->
-<section class="info">
-  <div class="info-inner">
-    <div class="info-block">
-      <div class="info-block-icon">📍</div>
-      <div class="info-block-label">Morada</div>
-      <div class="info-block-value">
-        Av. Marginal Cedovém 296<br>
-        4740-031 Apúlia<br>
-        Esposende
-      </div>
-    </div>
-    <div class="info-block">
-      <div class="info-block-icon">📞</div>
-      <div class="info-block-label">Contactos</div>
-      <div class="info-block-value">
-        <a href="tel:+351253963307">+351 253 963 307</a><br>
-        <a href="tel:+351910403608">+351 910 403 608</a>
-      </div>
-    </div>
-    <div class="info-block">
-      <div class="info-block-icon">📸</div>
-      <div class="info-block-label">Redes Sociais</div>
-      <div class="info-block-value">
-        <a href="https://www.instagram.com/tasquinhadocerqueira" target="_blank">@tasquinhadocerqueira</a><br>
-        <a href="https://g.page/r/tasquinhadocerqueira/review" target="_blank">Deixar Avaliação Google</a>
-      </div>
-    </div>
-    <div class="info-divider"></div>
-  </div>
-</section>
-
-<!-- CTA BOTTOM -->
-<div class="cta-bottom">
-  <h2 class="cta-bottom-title">Venha à mesa.<br><em>A brasa está acesa.</em></h2>
-  <p class="cta-bottom-sub">Consulte a nossa ementa completa com todas as opções de grelhados, peixes, vinhos e sobremesas</p>
-  <a href="Apulia/Test/menu.html" class="btn-primary">Ementa Digital Completa</a>
-</div>
-
-<footer>
-  <p>© 2025 Tasquinha do Cerqueira · Apúlia · Todos os direitos reservados ·
-    <a href="https://www.instagram.com/tasquinhadocerqueira" target="_blank">Instagram</a>
-  </p>
-</footer>
-
-<script>
-// Intersection Observer for scroll animations
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if(e.isIntersecting){
-      setTimeout(() => e.target.classList.add('visible'), i * 120);
-    }
-  });
-}, {threshold: 0.15});
-
-document.querySelectorAll('.hl-item, .info-block').forEach(el => observer.observe(el));
-</script>
 </body>
 </html>
