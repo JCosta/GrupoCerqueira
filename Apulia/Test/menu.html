@@ -265,7 +265,8 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* ══ INFO BAR ══ */
-.info-bar{background:var(--card);border-top:1px solid var(--border);padding:.75rem 1.4rem;display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:center;}
+.info-bar-wrap{background:var(--card);border-top:1px solid var(--border);}
+.info-bar{padding:.75rem 1.4rem;display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:center;max-width:900px;margin:0 auto;}
 .info-item{display:flex;flex-direction:column;gap:.2rem;}
 .info-item-social{display:flex;flex-direction:column;gap:.4rem;align-items:center;text-align:center;}
 .info-item-photos{display:flex;flex-direction:column;gap:.2rem;text-align:right;}
@@ -279,7 +280,9 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 .soc-icon-btn:hover{transform:translateY(-3px) scale(1.08);box-shadow:0 6px 16px rgba(0,0,0,.3);}
 .photos-link{font-size:.75rem;color:var(--text2);text-decoration:none;line-height:1.55;font-style:italic;transition:color .2s;}
 .photos-link:hover{color:var(--gold);}
-.photos-link strong{color:var(--gold);font-style:normal;font-weight:700;}
+.partilha-link{color:var(--gold);text-decoration:none;font-style:italic;transition:color .2s;}
+.partilha-link:hover{color:var(--gold-l);}
+.partilha-link strong{font-weight:700;font-style:normal;}
 @media(max-width:680px){
   .info-bar{grid-template-columns:1fr;text-align:center;padding:.85rem 1rem;gap:.8rem;}
   .info-item-photos{text-align:center;}
@@ -396,6 +399,7 @@ body.lang-fr .t-fr{display:inline;}
 </div>
 
 <!-- INFO BAR -->
+<div class="info-bar-wrap">
 <div class="info-bar">
 
   <!-- ESQUERDA: Morada + Contacto -->
@@ -429,14 +433,14 @@ body.lang-fr .t-fr{display:inline;}
     <div class="info-label">📸 <span class="t-pt">Fotos</span><span class="t-en">Photos</span><span class="t-fr">Photos</span></div>
     <div class="info-value">
       <a href="https://www.google.com/maps/place/?q=place_id:ChIJEdWMCABJJA0RRAf8uvnKsqI" target="_blank" rel="noopener" class="photos-link">
-        <span class="t-pt">Os nossos clientes são os nossos melhores fotógrafos.<br><strong>Partilha</strong> a tua experiência connosco!</span>
-        <span class="t-en">Our customers are our best photographers.<br><strong>Share</strong> your experience with us!</span>
-        <span class="t-fr">Nos clients sont nos meilleurs photographes.<br><strong>Partagez</strong> votre expérience avec nous!</span>
+        <span class="t-pt">Os nossos clientes são os nossos melhores fotógrafos.<br><a href="https://search.google.com/local/writereview?placeid=ChIJEdWMCABJJA0RRAf8uvnKsqI" target="_blank" rel="noopener" class="partilha-link"><svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:3px"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><strong>Partilha</strong> a tua experiência connosco!</a></span>
+        <span class="t-en">Our customers are our best photographers.<br><a href="https://search.google.com/local/writereview?placeid=ChIJEdWMCABJJA0RRAf8uvnKsqI" target="_blank" rel="noopener" class="partilha-link"><svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:3px"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><strong>Share</strong> your experience with us!</a></span>
+        <span class="t-fr">Nos clients sont nos meilleurs photographes.<br><a href="https://search.google.com/local/writereview?placeid=ChIJEdWMCABJJA0RRAf8uvnKsqI" target="_blank" rel="noopener" class="partilha-link"><svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:3px"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><strong>Partagez</strong> votre expérience avec nous!</a></span>
       </a>
     </div>
   </div>
-
-</div>
+</div><!-- /info-bar -->
+</div><!-- /info-bar-wrap -->
 <footer>
   <p>© Tasquinha do Cerqueira &nbsp;·&nbsp;
     <span class="t-pt">Todos os direitos reservados</span>
