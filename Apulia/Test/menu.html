@@ -115,29 +115,36 @@ body.light .logo-light{display:block;}
   }
   .topbar{
     top:28px;
-    padding:.5rem .8rem;
-    min-height:90px;
-    max-height:90px;
+    padding:.5rem .8rem .4rem;
+    min-height:100px;
+    max-height:100px;
     position:sticky;
     overflow:hidden;
-    /* Stack brand centre + controls right */
-    display:grid;
-    grid-template-columns:1fr auto;
+    display:flex;
+    flex-direction:column;
     align-items:center;
-    gap:.5rem;
+    justify-content:center;
+    gap:.3rem;
   }
   .topbar-brand{
-    gap:.6rem;
-    justify-content:flex-start;
+    gap:.55rem;
+    justify-content:center;
+    width:100%;
   }
   .topbar-brand .logo-dark,
   .topbar-brand .logo-light{
-    width:72px !important;height:72px !important;
-    max-width:72px !important;max-height:72px !important;
+    width:60px !important;height:60px !important;
+    max-width:60px !important;max-height:60px !important;
   }
   .topbar-brand-text h1{font-size:.82rem;letter-spacing:.07em;}
-  .topbar-brand-text p{font-size:.46rem;letter-spacing:.18em;}
-  .topbar-controls{flex-direction:column;align-items:flex-end;gap:.28rem;flex-shrink:0;}
+  .topbar-brand-text p{font-size:.44rem;letter-spacing:.18em;}
+  .topbar-controls{
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:.4rem;
+    width:100%;
+  }
   .lang-toggle{border-radius:3px;}
   .lang-btn{font-size:.52rem;padding:.2rem .3rem;}
   #theme-lbl{display:none;}
@@ -411,7 +418,7 @@ body.lang-fr .t-fr{display:inline;}
 @media(max-width:680px){
   :root{--sidebar-w:0px;}
   .sidebar{
-    position:sticky;top:118px;
+    position:sticky;top:128px;
     width:100%;height:auto;
     max-height:none;overflow-x:auto;overflow-y:hidden;
     border-right:none;border-bottom:1px solid var(--border);
