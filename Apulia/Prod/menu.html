@@ -416,7 +416,17 @@ body.light .bistrobit-badge-powered{color:rgba(26,18,8,.35);}
 footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:1.3rem 1rem;color:var(--muted);font-size:.62rem;letter-spacing:.1em;}
 
 /* ══ SOURCE BADGE ══ */
-#source-badge{position:fixed;bottom:14px;right:14px;z-index:9999;width:10px;height:10px;border-radius:50%;opacity:.85;}
+#source-badge{
+  position:fixed;bottom:14px;right:14px;z-index:9999;
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.28rem .65rem .28rem .45rem;border-radius:20px;
+  font-family:var(--fb);font-size:.58rem;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;
+  cursor:pointer;transition:opacity .2s,transform .2s;
+  box-shadow:0 2px 10px rgba(0,0,0,.4);white-space:nowrap;
+}
+#source-badge:hover{opacity:1;transform:translateY(-2px);}
+#source-badge .sb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 
 /* ══ LANG ══ */
 .t-pt,.t-en,.t-fr{display:none;}
@@ -989,18 +999,30 @@ function showSourceBadge(source){
   if(existing) existing.remove();
   const badge=document.createElement('div');
   badge.id='source-badge';
-  badge.style.cssText=`
-    position:fixed;bottom:14px;right:14px;z-index:9999;
-    width:10px;height:10px;border-radius:50%;
-    box-shadow:0 0 6px 2px ${source==='sheet'?'rgba(76,175,80,.7)':'rgba(255,193,7,.7)'};
-    background:${source==='sheet'?'#4caf50':'#ffc107'};
-    cursor:${source==='sheet'?'default':'pointer'};
-    opacity:.85;
-  `;
-  badge.title=source==='sheet'
-    ?'✅ A ler da Google Sheet em tempo real'
-    :'⚠️ Fonte local — clique para tentar a Google Sheet';
-  if(source!=='sheet') badge.onclick=()=>{badge.remove();loadMenu();};
+  const l=getLang();
+  const cfg={
+    sheet:{
+      bg:'#4caf50',color:'#fff',shadow:'rgba(76,175,80,.5)',dot:'#a5d6a7',
+      label:{pt:'Menu Actualizado',en:'Menu Updated',fr:'Menu à Jour'},
+      title:'✅ A ler da Google Sheet em tempo real',clickable:false
+    },
+    csv:{
+      bg:'#ff9800',color:'#fff',shadow:'rgba(255,152,0,.5)',dot:'#ffe0b2',
+      label:{pt:'Clique para Actualizar',en:'Tap to Refresh',fr:'Actualiser'},
+      title:'⚠️ A usar CSV local — clique para tentar a Google Sheet',clickable:true
+    },
+    embedded:{
+      bg:'#ffc107',color:'#1a1208',shadow:'rgba(255,193,7,.5)',dot:'#fff8e1',
+      label:{pt:'Clique para Actualizar',en:'Tap to Refresh',fr:'Actualiser'},
+      title:'⚠️ A usar dados embutidos — clique para tentar a Google Sheet',clickable:true
+    }
+  };
+  const c=cfg[source]||cfg.embedded;
+  badge.style.cssText=`background:${c.bg};color:${c.color};box-shadow:0 2px 10px ${c.shadow};opacity:.92;`;
+  badge.dataset.source=source;
+  badge.innerHTML=`<span class="sb-dot" style="background:${c.dot};"></span>${c.label[l]||c.label.pt}`;
+  badge.title=c.title;
+  if(c.clickable) badge.onclick=()=>{badge.remove();loadMenu();};
   document.body.appendChild(badge);
 }
 
@@ -1013,15 +1035,15 @@ async function loadMenu(){
     if(res.ok){const t=await res.text();if(isValid(t)){buildMenu(parseCSV(t));showSourceBadge('sheet');return;}}
   }catch(e){console.warn('Apps Script unavailable:',e.message);}
 
-  // 2) menu_data.csv no GitHub
+  // 2) Embedded FALLBACK_CSV — mostra menu imediatamente
+  buildMenu(parseCSV(FALLBACK_CSV));
+  showSourceBadge('embedded');
+
+  // 3) menu_data.csv no GitHub — actualiza em background se disponível
   try{
     const res=await fetch(CSV_FILENAME+'?v='+Date.now(),{signal:AbortSignal.timeout(5000)});
-    if(res.ok){const t=await res.text();if(isValid(t)){buildMenu(parseCSV(t));showSourceBadge('fallback');return;}}
-  }catch(e){console.warn('CSV fallback unavailable:',e.message);}
-
-  // 3) Embedded FALLBACK_CSV
-  buildMenu(parseCSV(FALLBACK_CSV));
-  showSourceBadge('fallback');
+    if(res.ok){const t=await res.text();if(isValid(t)){buildMenu(parseCSV(t));showSourceBadge('csv');return;}}
+  }catch(e){console.warn('CSV unavailable:',e.message);}
 }
 
 function showSec(id,btn){
@@ -1049,6 +1071,8 @@ function setLang(l){
   document.body.classList.add('lang-'+l);
   ['pt','en','fr'].forEach(x=>document.getElementById('btn-'+x)?.classList.toggle('active',x===l));
   updateThemeLbl();refreshTips();fillUnavailBadges();
+  const badge=document.getElementById('source-badge');
+  if(badge&&badge.dataset.source) showSourceBadge(badge.dataset.source);
   try{localStorage.setItem('mLang',l);}catch(e){}
 }
 
