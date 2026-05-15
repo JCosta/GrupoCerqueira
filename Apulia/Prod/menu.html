@@ -404,27 +404,27 @@ body.light .dryaged-header{
   background:linear-gradient(90deg,rgba(201,169,110,.15),transparent);
 }
 .pairing-row{
-  display:flex;align-items:baseline;gap:.55rem;
-  padding:.32rem 0;
+  display:flex;flex-direction:column;
+  gap:.18rem;
+  padding:.5rem 0;
   border-bottom:1px solid rgba(201,169,110,.06);
 }
 .pairing-row:last-child{border-bottom:none;}
+.pairing-row-top{display:flex;align-items:center;gap:.45rem;}
 .pairing-dot{
   width:7px;height:7px;border-radius:50%;flex-shrink:0;
-  position:relative;top:1px;
 }
 .pairing-dot-tinto{background:linear-gradient(135deg,#c06060,#801818);}
 .pairing-dot-espumante{background:linear-gradient(135deg,#e8d48a,#c9a030);}
 .pairing-row-name{
   font-family:var(--fh);font-size:.84rem;font-weight:600;
-  color:#cdb880;white-space:nowrap;
+  color:#cdb880;
 }
-.pairing-row-sep{
-  color:rgba(201,169,110,.25);font-size:.7rem;flex-shrink:0;
-}
+.pairing-row-sep{display:none;}
 .pairing-row-note{
   font-size:.7rem;color:rgba(185,170,145,.55);
   font-style:italic;line-height:1.4;
+  padding-left:1.1rem;
 }
 
 /* Dry-aged items */
@@ -599,6 +599,8 @@ body.light .champ-premium-item-sub{color:rgba(120,70,20,.5);}
 body.light .champ-premium-item-desc{color:rgba(80,50,20,.55);}
 body.light .champ-premium-item-price{color:#7a4a18;}
 body.light .champ-premium-item-price span{color:rgba(120,70,20,.5);}
+
+.highlight-card-hidden{display:none !important;}
 
 /* ══ PRE-ORDER ══ */
 .item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
@@ -927,9 +929,6 @@ const SECTIONS = [
   {id:'peixes',    lPt:'Peixes',            lEn:'Fish',             lFr:'Poissons',
    img:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=1200&auto=format&fit=crop',
    sPt:'Do mar à mesa',sEn:'From the sea to the table',sFr:'De la mer à la table',legend:true,doneness:false},
-  {id:'sobremesas',lPt:'Sobremesas',        lEn:'Desserts',         lFr:'Desserts',
-   img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1200&q=80&auto=format&fit=crop',
-   sPt:'Para terminar com elegância',sEn:'To finish in style',sFr:'Pour finir en beauté',legend:true,doneness:false},
   {id:'bebidas',   lPt:'Bebidas & Cafetaria',lEn:'Drinks & Coffee', lFr:'Boissons & Café',
    img:'https://images.unsplash.com/photo-1596202415827-e842da5ef687?w=1200&q=80&auto=format&fit=crop',
    sPt:'Águas · Refrigerantes · Café',sEn:'Water · Soft Drinks · Coffee',sFr:'Eaux · Boissons · Café',legend:false,doneness:false},
@@ -951,6 +950,10 @@ const SECTIONS = [
   {id:'digestivos',lPt:'Digestivos',        lEn:'Digestifs',        lFr:'Digestifs',
    img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=1200&q=80&auto=format&fit=crop',
    sPt:'Para fechar em grande',sEn:'The perfect finale',sFr:'La parfaite conclusion',legend:false,doneness:false},
+  {id:'sobremesas',lPt:'Sobremesas',        lEn:'Desserts',         lFr:'Desserts',
+  img:'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1200&q=80&auto=format&fit=crop',
+  sPt:'Para terminar com elegância',sEn:'To finish in style',sFr:'Pour finir en beauté',legend:true,doneness:false},
+
 ];
 
 const AL = {
@@ -964,8 +967,8 @@ const AL = {
 };
 
 const VALID_SECTIONS = new Set([
-  'entradas','sopas','carnes','peixes','sobremesas',
-  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','digestivos'
+  'entradas','sopas','carnes','peixes',
+  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','sobremesas','digestivos'
 ]);
 
 const COL_MAP = {
@@ -974,14 +977,14 @@ const COL_MAP = {
   'descricao_pt':'desc_pt','descricao_en':'desc_en','descricao_fr':'desc_fr',
   'preco_dose':'price_full','preco_meia':'price_half','preco_terceiro':'price_third',
   'etiqueta_dose':'price_label_full','etiqueta_meia':'price_label_half','etiqueta_terceiro':'price_label_third',
-  'alergenios':'allergens','tipo':'wine_type','estado':'estado',
+  'alergenios':'allergens','tipo':'wine_type','estado':'estado','destaque':'destaque',
   // Legacy
   'section':'section','subsection':'subsection',
   'name_pt':'name_pt','name_en':'name_en','name_fr':'name_fr',
   'desc_pt':'desc_pt','desc_en':'desc_en','desc_fr':'desc_fr',
   'price_full':'price_full','price_half':'price_half','price_third':'price_third',
   'price_label_full':'price_label_full','price_label_half':'price_label_half','price_label_third':'price_label_third',
-  'allergens':'allergens','wine_type':'wine_type','estado':'estado',
+  'allergens':'allergens','wine_type':'wine_type','estado':'estado','destaque':'destaque',
 };
 
 // Normaliza preço — aceita: 3 / 3.0 / 3.00 / 3,00 / 3.00€ / 3,00€
@@ -1169,176 +1172,162 @@ function buildHero(sec){
   </div>`;
 }
 
-function buildChampagnePremium(rows){
-  const premium = rows.filter(r => r.section === 'champagne' && (r.wine_type || '').toLowerCase() === 'premium');
-  if(!premium.length) return '';
+// ══ GENERIC HIGHLIGHT CARD ══
+// Secções com card de destaque (coluna R = SIM)
+const HIGHLIGHT_SECTIONS = new Set(['carnes','champagne','vinhos','peixes','digestivos','sobremesas']);
+
+function isDestaque(r){ return (r.destaque||'').trim().toUpperCase() === 'SIM'; }
+
+function buildHighlightCard(rows, secId){
+  const highlighted = rows.filter(r => r.section === secId && isDestaque(r));
+  if(!highlighted.length) return '';
+
+  // Títulos e subtítulos por secção
+  const cfg = {
+    carnes:{
+      badge:{pt:'🔥 CORTES NOBRES | PREMIUM', en:'🔥DRY-AGED · PREMIUM', fr:'🔥SÉLECTION DRY AGED PREMIUM'},
+      title:{pt:'Cortes Nobres | Premium', en:'Noble Cuts | Premium', fr:'Coupes Nobles | Premium'},
+      sub:{pt:'A nossa seleção de cortes premium, maturados pacientemente para atingir a perfeição sensorial.',
+           en:'Our selection of premium cuts, patiently aged to reach sensory perfection.',
+           fr:'Notre sélection de coupes premium, patiemment maturées pour atteindre la perfection sensorielle.'},
+      extra: buildDryAgedExtra()
+    },
+    champagne:{
+      badge:{pt:'🥂✨ EXCLUSIVO', en:'🥂✨ EXCLUSIVE', fr:'🥂✨ EXCLUSIF'},
+      title:{pt:'Grandes Escolhas & Prestígio', en:'Prestige & Rare Selections', fr:'Prestige & Cuvées Rares'},
+      sub:{pt:'Rótulos memoráveis e colheitas de exceção para elevar o seu brinde.',
+           en:'Memorable labels and exceptional vintages to elevate your toast.',
+           fr:'Des étiquettes mémorables et des millésimes d\'exception para sublimer votre toast.'},
+      extra:''
+    },
+    vinhos:{
+      badge:{pt:'⭐ SELEÇÃO PREMIUM', en:'⭐ PREMIUM SELECTION', fr:'⭐ SÉLECTION PREMIUM'},
+      title:{pt:'Vinhos em Destaque', en:'Featured Wines', fr:'Vins à la Une'},
+      sub:{pt:'Uma seleção especial da nossa carta, escolhida pela equipa.',
+           en:'A special selection from our wine list, chosen by our team.',
+           fr:'Une sélection spéciale de notre carte, choisie par notre équipe.'},
+      extra:''
+    },
+    peixes:{
+      badge:{pt:'🐟 SUGESTÃO DO DIA', en:'⭐ CHEF\'S DAILY SUGGESTION', fr:'🐟 LA SUGGESTION DO JOUR'},
+      title:{pt:'Peixes em Destaque', en:'Featured Fish', fr:'Poissons à la Une'},
+      sub:{pt:'A nossa sugestão de hoje, fresquíssima e preparada com dedicação.',
+           en:'Our suggestion today — fresh, seasonal, prepared with care.',
+           fr:'Notre suggestion du jour — fraîche, saisonnière, préparée avec soin.'},
+      extra:''
+    },
+    digestivos:{
+      badge:{pt:'✨ DESTAQUE', en:'✨ HIGHLIGHT', fr:'✨ EN VEDETTE'},
+      title:{pt:'Seleção Especial', en:'Special Selection', fr:'Sélection Spéciale'},
+      sub:{pt:'As nossas escolhas especiais para terminar em grande.',
+           en:'Our special picks to end on a high note.',
+           fr:'Nos choix spéciaux pour finir en beauté.'},
+      extra:''
+    },
+    sobremesas:{
+      badge:{pt:'🍮 SUGESTÃO DA CASA', en:'🍮 SIGNATURE SELECTION', fr:'🍮 SUGGESTION DE LA MAISON'},
+      title:{pt:'Sobremesas em Destaque', en:'Featured Desserts', fr:'Desserts à la Une'},
+      sub:{pt:'As preferidas da nossa equipa — doces criadas com dedicação.',
+           en:'Our team\'s favourites — sweets made with dedication.',
+           fr:'Les préférées de notre équipe — douceurs préparées avec soin.'},
+      extra:''
+    },
+  };
+  const c = cfg[secId] || cfg.digestivos;
 
   let itemsHtml = '';
-  premium.forEach(r => {
-    const namePt = r.name_pt || '';
-    const nameEn = r.name_en || namePt;
-    const nameFr = r.name_fr || namePt;
-    const descPt = r.desc_pt || '';
-    const descEn = r.desc_en || descPt;
-    const descFr = r.desc_fr || descPt;
-    const sub    = r.subsection || '';
-    const price  = r.price_full || '';
-    const label  = r.price_label_full || '70cl';
-    itemsHtml += `<div class="champ-premium-item">
-      <div class="champ-premium-item-left">
-        ${sub ? `<div class="champ-premium-item-sub">${sub}</div>` : ''}
-        <div class="champ-premium-item-name">
-          <span class="t-pt">${namePt}</span><span class="t-en">${nameEn}</span><span class="t-fr">${nameFr}</span>
-        </div>
-        ${descPt ? `<div class="champ-premium-item-desc"><span class="t-pt">${descPt}</span><span class="t-en">${descEn}</span><span class="t-fr">${descFr}</span></div>` : ''}
-      </div>
-      ${price ? `<div class="champ-premium-item-price">${price}<span>${label}</span></div>` : ''}
-    </div>`;
-  });
-
-  return `<div class="champ-premium-section">
-    <div class="champ-premium-header">
-      <div class="champ-premium-badge">
-        <span class="t-pt">✨ EXCLUSIVO</span>
-        <span class="t-en">✨ EXCLUSIVE</span>
-        <span class="t-fr">✨ EXCLUSIF</span>
-      </div>
-      <div class="champ-premium-title">
-        <span class="t-pt">Grandes Escolhas & Prestígio</span>
-        <span class="t-en">Prestige & Rare Selections</span>
-        <span class="t-fr">Prestige & Cuvées Rares</span>
-      </div>
-      <div class="champ-premium-subtitle">
-        <span class="t-pt">Rótulos memoráveis e colheitas de exceção para elevar o seu brinde.</span>
-        <span class="t-en">Memorable labels and exceptional vintages to elevate your toast.</span>
-        <span class="t-fr">Des étiquettes mémorables et des millésimes d'exception para sublimer votre toast.</span>
-      </div>
-    </div>
-    <div class="champ-premium-body">
-    <div class="champ-premium-items-title">
-      <span class="t-pt">A Nossa Cave</span>
-      <span class="t-en">Our Cellar Selection</span>
-      <span class="t-fr">La Sélection de Notre Cave</span>
-    </div>
-      ${itemsHtml}
-    </div>
-  </div>`;
-}
-
-function buildDryAged(rows){
-  const cortesnobres = rows.filter(r => r.section === 'carnes' && (r.wine_type || '').toLowerCase().includes('cortesnobres'));
-  if(!cortesnobres.length) return '';
-
-  const lang = getLang();
-
-  const titles = {
-    pt:'Cortes Nobres | Premium',
-    en:'Noble Cuts | Premium',
-    fr:'Coupes Nobles | Premium'
-  };
-  const subtitles = {
-    pt:'A nossa seleção de cortes premium, maturados pacientemente para atingir a perfeição sensorial.',
-    en:'Our selection of premium cuts, patiently aged to reach sensory perfection.',
-    fr:'Notre sélection de coupes premium, patiemment maturées pour atteindre la perfection sensorielle.'
-  };
-  const breedTitle = {
-    pt:'Conheça os cortes',
-    en:'Meet the cuts',
-    fr:'Découvrez les coupes'
-  };
-  const angusDesc = {
-    pt:'Mais suave, mais marmoreio interno (gordura entremeada), sabor mais adocicado.',
-    en:'Milder, with more internal marbling (interspersed fat), a sweeter flavour.',
-    fr:'Plus doux, plus de persillage interne (graisse entremêlée), saveur plus sucrée.'
-  };
-  const simDesc = {
-    pt:'Sabor mais potente, gordura exterior mais rica e amarela, estrutura de carne com mais personalidade.',
-    en:'More intense flavour, richer and yellower exterior fat, a more characterful meat structure.',
-    fr:'Saveur plus puissante, graisse extérieure plus riche et jaune, structure de viande avec plus de personnalité.'
-  };
-  const angusTags = {pt:['Marmoreio', 'Suave', 'Adocicado'], en:['Marbling','Mild','Sweet'],fr:['Persillage','Doux','Sucré']};
-  const simTags   = {pt:['Personalidade','Potente','Gordura Rica'],en:['Character','Bold','Rich Fat'],fr:['Caractère','Puissant','Gras Riche']};
-  const itemsLabel = {pt:'Disponível agora',en:'Available now',fr:'Disponible maintenant'};
-
-  let itemsHtml = '';
-  cortesnobres.forEach(r => {
-    const namePt = r.name_pt || '';
-    const nameEn = r.name_en || namePt;
-    const nameFr = r.name_fr || namePt;
-    const descPt = r.desc_pt || '';
-    const descEn = r.desc_en || descPt;
-    const descFr = r.desc_fr || descPt;
-    const price = r.price_full ? r.price_full : '';
-    const label = r.price_label_full || 'Dose';
+  highlighted.forEach(r => {
+    const price = r.price_full || '';
+    const label = r.price_label_full || '';
     itemsHtml += `<div class="dryaged-item">
       <div class="dryaged-item-left">
+        ${r.subsection && r.subsection !== '__' ? `<div class="champ-premium-item-sub">${r.subsection}</div>` : ''}
         <div class="dryaged-item-name">
-          <span class="t-pt">${namePt}</span><span class="t-en">${nameEn}</span><span class="t-fr">${nameFr}</span>
+          <span class="t-pt">${r.name_pt||''}</span><span class="t-en">${r.name_en||r.name_pt||''}</span><span class="t-fr">${r.name_fr||r.name_pt||''}</span>
         </div>
-        ${descPt ? `<div class="dryaged-item-desc"><span class="t-pt">${descPt}</span><span class="t-en">${descEn}</span><span class="t-fr">${descFr}</span></div>` : ''}
+        ${r.desc_pt ? `<div class="dryaged-item-desc"><span class="t-pt">${r.desc_pt}</span><span class="t-en">${r.desc_en||r.desc_pt}</span><span class="t-fr">${r.desc_fr||r.desc_pt}</span></div>` : ''}
       </div>
       ${price ? `<div class="dryaged-item-price">${price}<span>${label}</span></div>` : ''}
     </div>`;
   });
 
-  return `<div class="dryaged-section">
-    <div class="dryaged-header">
-      <div class="dryaged-badge"><span class="dryaged-badge-icon">🔥</span> Dry-Aged · Premium</div>
-      <div class="dryaged-title"><span class="t-pt">${titles.pt}</span><span class="t-en">${titles.en}</span><span class="t-fr">${titles.fr}</span></div>
-      <div class="dryaged-subtitle"><span class="t-pt">${subtitles.pt}</span><span class="t-en">${subtitles.en}</span><span class="t-fr">${subtitles.fr}</span></div>
+  // Use dryaged styles for carnes, champ-premium styles for others for visual variety
+  const useAlt = secId !== 'carnes';
+  const wrapClass = useAlt ? 'champ-premium-section' : 'dryaged-section';
+  const headClass = useAlt ? 'champ-premium-header' : 'dryaged-header';
+  const badgeClass = useAlt ? 'champ-premium-badge' : 'dryaged-badge';
+  const titleClass = useAlt ? 'champ-premium-title' : 'dryaged-title';
+  const subClass   = useAlt ? 'champ-premium-subtitle' : 'dryaged-subtitle';
+  const bodyClass  = useAlt ? 'champ-premium-body' : 'dryaged-body';
+  const labelClass = useAlt ? 'champ-premium-items-title' : 'dryaged-items-title';
+  const cardId     = `highlight-card-${secId}`;
+
+  return `<div class="${wrapClass}" id="${cardId}">
+    <div class="${headClass}">
+      <div class="${badgeClass}">${c.badge}</div>
+      <div class="${titleClass}"><span class="t-pt">${c.title.pt}</span><span class="t-en">${c.title.en}</span><span class="t-fr">${c.title.fr}</span></div>
+      <div class="${subClass}"><span class="t-pt">${c.sub.pt}</span><span class="t-en">${c.sub.en}</span><span class="t-fr">${c.sub.fr}</span></div>
     </div>
-    <div class="dryaged-body">
-      <div class="dryaged-breeds">
-        <div class="breed-card">
-          <div class="breed-card-name">🐄 Angus <span class="breed-card-name-sub">Black Angus (Irlanda/Espanha)</span></div>
-          <div class="breed-divider"></div>
-          <div class="breed-card-desc"><span class="t-pt">${angusDesc.pt}</span><span class="t-en">${angusDesc.en}</span><span class="t-fr">${angusDesc.fr}</span></div>
-          <div class="breed-card-tags">${angusTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${angusTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${angusTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
-        </div>
-        <div class="breed-card">
-          <div class="breed-card-name">🐄 Simmental <span class="breed-card-name-sub">Chuletero Simmental (Alemanha)</span></div>
-          <div class="breed-divider"></div>
-          <div class="breed-card-desc"><span class="t-pt">${simDesc.pt}</span><span class="t-en">${simDesc.en}</span><span class="t-fr">${simDesc.fr}</span></div>
-          <div class="breed-card-tags">${simTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${simTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${simTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
-        </div>
-      </div>
-      <div class="dryaged-items-title"><span class="t-pt">${itemsLabel.pt}</span><span class="t-en">${itemsLabel.en}</span><span class="t-fr">${itemsLabel.fr}</span></div>
+    <div class="${bodyClass}">
+      ${c.extra}
+      <div class="${labelClass}"><span class="t-pt">Disponível agora</span><span class="t-en">Available now</span><span class="t-fr">Disponible maintenant</span></div>
       ${itemsHtml}
-      <div class="dryaged-pairing">
-        <div class="dryaged-pairing-label">
-          <span class="t-pt">🍷 Harmonização da nossa lista</span>
-          <span class="t-en">🍷 Pairings from our list</span>
-          <span class="t-fr">🍷 Accords de notre carte</span>
-        </div>
-        <div class="pairing-row">
-          <span class="pairing-dot pairing-dot-tinto"></span>
-          <span class="pairing-row-name">Quinta da Leda</span>
-          <span class="pairing-row-sep">—</span>
-          <span class="pairing-row-note"><span class="t-pt">Douro Tinto · fundo profundo, ideal para Angus</span><span class="t-en">Douro Red · deep and refined, ideal for Angus</span><span class="t-fr">Douro Rouge · profond et raffiné, idéal pour Angus</span></span>
-        </div>
-        <div class="pairing-row">
-          <span class="pairing-dot pairing-dot-tinto"></span>
-          <span class="pairing-row-name">Callabriga</span>
-          <span class="pairing-row-sep">—</span>
-          <span class="pairing-row-note"><span class="t-pt">Douro Tinto · encorpado e balsâmico, ideal para Simmental</span><span class="t-en">Douro Red · full-bodied and balsamic, ideal for Simmental</span><span class="t-fr">Douro Rouge · corsé et balsamique, idéal pour Simmental</span></span>
-        </div>
-        <div class="pairing-row">
-          <span class="pairing-dot pairing-dot-tinto"></span>
-          <span class="pairing-row-name">Quinta de Castelares G. Reserva</span>
-          <span class="pairing-row-sep">—</span>
-          <span class="pairing-row-note"><span class="t-pt">Douro Tinto · tosta e taninos sedosos para o Tomahawk</span><span class="t-en">Douro Red · toasty notes and silky tannins for Tomahawk</span><span class="t-fr">Douro Rouge · notes grillées, tanins soyeux pour le Tomahawk</span></span>
-        </div>
-        <div class="pairing-row">
-          <span class="pairing-dot pairing-dot-espumante"></span>
-          <span class="pairing-row-name">Murganheira Unito Bruto</span>
-          <span class="pairing-row-sep">—</span>
-          <span class="pairing-row-note"><span class="t-pt">Espumante · acidez a contrastar com a gordura maturada</span><span class="t-en">Sparkling · acidity to contrast the aged fat</span><span class="t-fr">Pétillant · acidité en contraste avec le gras maturé</span></span>
-        </div>
-      </div>
+      ${secId==='carnes' ? buildPairingBlock() : ''}
     </div>
   </div>`;
 }
 
+function buildDryAgedExtra(){
+  const angusDesc={pt:'Mais suave, mais marmoreio interno (gordura entremeada), sabor mais adocicado.',en:'Milder, with more internal marbling (interspersed fat), a sweeter flavour.',fr:'Plus doux, plus de persillage interne (graisse entremêlée), saveur plus sucrée.'};
+  const simDesc={pt:'Sabor mais potente, gordura exterior mais rica e amarela, estrutura de carne com mais personalidade.',en:'More intense flavour, richer and yellower exterior fat, a more characterful meat structure.',fr:'Saveur plus puissante, graisse extérieure plus riche et jaune, structure de viande avec plus de personnalité.'};
+  const angusTags={pt:['Marmoreio','Suave','Adocicado'],en:['Marbling','Mild','Sweet'],fr:['Persillage','Doux','Sucré']};
+  const simTags={pt:['Personalidade','Potente','Gordura Rica'],en:['Character','Bold','Rich Fat'],fr:['Caractère','Puissant','Gras Riche']};
+  return `<div class="dryaged-breeds">
+    <div class="breed-card">
+      <div class="breed-card-name">🐄 Angus <span class="breed-card-name-sub">Black Angus (Irlanda/Espanha)</span></div>
+      <div class="breed-divider"></div>
+      <div class="breed-card-desc"><span class="t-pt">${angusDesc.pt}</span><span class="t-en">${angusDesc.en}</span><span class="t-fr">${angusDesc.fr}</span></div>
+      <div class="breed-card-tags">${angusTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${angusTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${angusTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
+    </div>
+    <div class="breed-card">
+      <div class="breed-card-name">🐄 Simmental <span class="breed-card-name-sub">Chuletero Simmental (Alemanha)</span></div>
+      <div class="breed-divider"></div>
+      <div class="breed-card-desc"><span class="t-pt">${simDesc.pt}</span><span class="t-en">${simDesc.en}</span><span class="t-fr">${simDesc.fr}</span></div>
+      <div class="breed-card-tags">${simTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${simTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${simTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+function buildPairingBlock(){
+  return `<div class="dryaged-pairing">
+    <div class="dryaged-pairing-label">
+      <span class="t-pt">🍷 Harmonização da nossa lista</span>
+      <span class="t-en">🍷 Pairings from our list</span>
+      <span class="t-fr">🍷 Accords de notre carte</span>
+    </div>
+    <div class="pairing-row">
+      <div class="pairing-row-top"><span class="pairing-dot pairing-dot-tinto"></span><span class="pairing-row-name">Quinta da Leda</span></div>
+      <span class="pairing-row-note"><span class="t-pt">Douro Tinto · fundo profundo, ideal para Angus</span><span class="t-en">Douro Red · deep and refined, ideal for Angus</span><span class="t-fr">Douro Rouge · profond et raffiné, idéal pour Angus</span></span>
+    </div>
+    <div class="pairing-row">
+      <div class="pairing-row-top"><span class="pairing-dot pairing-dot-tinto"></span><span class="pairing-row-name">Callabriga</span></div>
+      <span class="pairing-row-note"><span class="t-pt">Douro Tinto · encorpado e balsâmico, ideal para Simmental</span><span class="t-en">Douro Red · full-bodied and balsamic, ideal for Simmental</span><span class="t-fr">Douro Rouge · corsé et balsamique, idéal pour Simmental</span></span>
+    </div>
+    <div class="pairing-row">
+      <div class="pairing-row-top"><span class="pairing-dot pairing-dot-tinto"></span><span class="pairing-row-name">Quinta de Castelares G. Reserva</span></div>
+      <span class="pairing-row-note"><span class="t-pt">Douro Tinto · tosta e taninos sedosos para o Tomahawk</span><span class="t-en">Douro Red · toasty notes and silky tannins for Tomahawk</span><span class="t-fr">Douro Rouge · notes grillées, tanins soyeux pour le Tomahawk</span></span>
+    </div>
+    <div class="pairing-row">
+      <div class="pairing-row-top"><span class="pairing-dot pairing-dot-espumante"></span><span class="pairing-row-name">Murganheira Unito Bruto</span></div>
+      <span class="pairing-row-note"><span class="t-pt">Espumante · acidez a contrastar com a gordura maturada</span><span class="t-en">Sparkling · acidity to contrast the aged fat</span><span class="t-fr">Pétillant · acidité en contraste avec le gras maturé</span></span>
+    </div>
+  </div>`;
+}
+
+function buildChampagnePairing(){ return ''; }
+
+function buildDryAged(rows){ return buildHighlightCard(rows,'carnes'); }
+function buildChampagnePremium(rows){ return buildHighlightCard(rows,'champagne'); }
 function buildMenu(rows){
   const navEl=document.getElementById('nav-inner');
   const pageEl=document.getElementById('page-content');
@@ -1413,7 +1402,7 @@ if(sec.id==='champagne'){
     }
         if(sec.id==='carnes') html+=buildDryAged(rows);
     if(sec.id==='champagne') html+=buildChampagnePremium(rows);
-    if(sec.doneness) html+=buildDoneness();
+    if(HIGHLIGHT_SECTIONS.has(sec.id) && !['carnes','champagne'].includes(sec.id)) html+=buildHighlightCard(rows,sec.id);    if(sec.doneness) html+=buildDoneness();
     if(sec.id==='vinhos'){
       html+=`<div class="wine-filter" id="wine-filter">
         <button class="wine-filter-btn wf-active-all" onclick="setWineFilter('all',this)">
@@ -1442,9 +1431,7 @@ if(sec.id==='champagne'){
       const subRows=bySub[sub];
       if(sub==='Vinho Verde Regional'){html+=buildVerdeTinto(subRows);return;}
       const visibleRows=subRows.filter(r=>{
-        const t=(r.wine_type||'').toLowerCase();
-        if(sec.id==='carnes' && t==='cortesnobres') return false;
-        if(sec.id==='champagne' && t==='premium') return false;
+        if(HIGHLIGHT_SECTIONS.has(sec.id) && isDestaque(r)) return false;
         return true;
       });
       if(visibleRows.length===0) return;
@@ -1490,6 +1477,8 @@ function setDigFilter(tipo, btn){
     }
     sh.classList.toggle('sub-heading-hidden', allHidden);
   });
+  const card = document.getElementById('highlight-card-digestivos');
+  if(card) card.classList.toggle('highlight-card-hidden', tipo !== 'all');
 }
 function setChampagneFilter(tipo, btn){
   document.querySelectorAll('#champagne .champ-filter-btn').forEach(b=>{
@@ -1512,6 +1501,9 @@ function setChampagneFilter(tipo, btn){
     }
     sh.classList.toggle('sub-heading-hidden', allHidden);
   });
+  // Mostrar/ocultar card de destaque
+  const card = document.getElementById('highlight-card-champagne');
+  if(card) card.classList.toggle('highlight-card-hidden', tipo !== 'all');
 }
 function setWineFilter(tipo, btn){
   document.querySelectorAll('.wine-filter-btn').forEach(b=>{
@@ -1533,6 +1525,8 @@ function setWineFilter(tipo, btn){
     }
     sh.classList.toggle('sub-heading-hidden', allHidden);
   });
+  const card = document.getElementById('highlight-card-vinhos');
+  if(card) card.classList.toggle('highlight-card-hidden', tipo !== 'all');
 }
 
 function showSourceBadge(source){
@@ -1549,12 +1543,12 @@ function showSourceBadge(source){
     },
     csv:{
       bg:'#ff9800',color:'#fff',shadow:'rgba(255,152,0,.5)',dot:'#ffe0b2',
-      label:{pt:'Actualizar Menu',en:'Tap to Refresh',fr:'Actualiser'},
+      label:{pt:'Clique para Actualizar',en:'Tap to Refresh',fr:'Actualiser'},
       title:'⚠️ A usar CSV local — clique para tentar a Google Sheet',clickable:true
     },
     embedded:{
       bg:'#ffc107',color:'#1a1208',shadow:'rgba(255,193,7,.5)',dot:'#fff8e1',
-      label:{pt:'Actualizar Menu',en:'Tap to Refresh',fr:'Actualiser'},
+      label:{pt:'Clique para Actualizar',en:'Tap to Refresh',fr:'Actualiser'},
       title:'⚠️ A usar dados embutidos — clique para tentar a Google Sheet',clickable:true
     }
   };
@@ -1659,7 +1653,7 @@ function setDon(btn,type){
   loadMenu();
 })();
 
-const FALLBACK_CSV = `secção,subsecção,nome_pt,nome_en,nome_fr,descricao_pt,descricao_en,descricao_fr,preco_dose,preco_meia,preco_terceiro,etiqueta_dose,etiqueta_meia,etiqueta_terceiro,alergenios,tipo,estado
+const FALLBACK_CSV = `secção,subsecção,nome_pt,nome_en,nome_fr,descricao_pt,descricao_en,descricao_fr,preco_dose,preco_meia,preco_terceiro,etiqueta_dose,etiqueta_meia,etiqueta_terceiro,alergenios,tipo,estado,destaque
 🥗  ENTRADAS,,,,,,,,,,,,,,,,
 entradas,Entradas | Starters | Entrées,Azeitonas,Olives,Olives,Azeitonas temperadas da casa servidas como petisco de boas-vindas,House-seasoned olives served as a welcome snack,Olives assaisonnées maison servies en amuse-bouche,1.8,,,,,,,,ativo
 entradas,Entradas | Starters | Entrées,Ameijoa à Bolhão Pato,Clams Bolhão Pato,Palourdes à la Bolhão Pato,Ameijoas salteadas com azeite alho coentros e vinho branco,"Clams sautéed with olive oil, garlic, coriander and white wine","Palourdes sautées à l'huile d'olive, ail, coriandre et vin blanc",20,,,,,,🦪🧪,,ativo
@@ -1695,9 +1689,9 @@ carnes,Carnes | Meats | Viandes,Picanha Laminada (2p),Sliced Rump (for 2),Rumste
 carnes,Carnes | Meats | Viandes,Posta Laminada (2p),Sliced Veal Steak (for 2),Côte de Veau Lamée (pour 2),Posta de vitela laminada grelhada de sabor delicado,Sliced grilled veal steak with a delicate flavour,Côte de veau lamée grillée au goût délicat,30,,,Dose,,,🧪,,ativo
 carnes,Carnes | Meats | Viandes,Posta à Tasquinha,Tasquinha-Style Veal,Côte de Veau Tasquinha,Posta de vitela grelhada com molho especial da tasquinha,Grilled veal steak with the tasquinha special sauce,Côte de veau grillée avec sauce spéciale tasquinha,22,,,Dose,,,🧪,,ativo
 carnes,Carnes | Meats | Viandes,Tomahawk Premium (3p),Tomahawk Premium (for 3),Tomahawk Premium (pour 3),"Corte suculento, marmorização superior e osso longo. Ideal para partilhar entre 3 pessoas.","Juicy cut, superior marbling, long bone. Perfect for sharing between 3 people.","Coupe juteuse, persillage supérieur et os long. Idéal à partager à 3.",50,,,Dose,,,,,
-carnes,Carnes | Meats | Viandes,Tomahawk Premium Maturado (3p),Dry-Aged Premium Tomahawk (for 3),Tomahawk Premium Maturé (pour 3),Maturação Dry Aged para sabor intenso e ternura máxima. Experiência gourmet para 3.,Dry Aged for intense flavor and maximum tenderness. Gourmet experience for 3.,"Maturation Dry Aged, saveur intense et tendreté maximale. Expérience gourmet à 3.",65,,,Dose,,,🧪,Maturadas,ativo
-carnes,Carnes | Meats | Viandes,Entrecôte Angus Maturado (1p),Dry-Aged Angus Entrecôte (for 1),Entrecôte Angus Maturé (pour 1),"Angus Black maturado 28 dias. Marmoreio intenso, sabor adocicado e textura derretida.","28-day aged Black Angus. Intense marbling, sweet flavour and melt-in-mouth texture.","Angus Black maturé 28 jours. Persillage intense, saveur sucrée, texture fondante.",48,,,Dose,,,🧪,Maturadas,ativo
-carnes,Carnes | Meats | Viandes,Bife Simmental Maturado (1p),Dry-Aged Simmental Steak (for 1),Steak Simmental Maturé (pour 1),"Simmental maturado 21 dias. Gordura exterior rica e amarela, sabor potente e estrutura com personalidade.","21-day aged Simmental. Rich yellow exterior fat, bold flavour and characterful meat structure.","Simmental maturé 21 jours. Graisse extérieure riche et jaune, saveur puissante, structure caractérielle.",42,,,Dose,,,🧪,Maturadas,ativo
+carnes,Carnes | Meats | Viandes,Tomahawk Premium Maturado (3p),Dry-Aged Premium Tomahawk (for 3),Tomahawk Premium Maturé (pour 3),Maturação Dry Aged para sabor intenso e ternura máxima. Experiência gourmet para 3.,Dry Aged for intense flavor and maximum tenderness. Gourmet experience for 3.,"Maturation Dry Aged, saveur intense et tendreté maximale. Expérience gourmet à 3.",65,,,Dose,,,🧪,CortesNobres,ativo
+carnes,Carnes | Meats | Viandes,Entrecôte Angus Maturado (1p),Dry-Aged Angus Entrecôte (for 1),Entrecôte Angus Maturé (pour 1),"Angus Black maturado 28 dias. Marmoreio intenso, sabor adocicado e textura derretida.","28-day aged Black Angus. Intense marbling, sweet flavour and melt-in-mouth texture.","Angus Black maturé 28 jours. Persillage intense, saveur sucrée, texture fondante.",48,,,Dose,,,🧪,CortesNobres,ativo
+carnes,Carnes | Meats | Viandes,Bife Simmental Maturado (1p),Dry-Aged Simmental Steak (for 1),Steak Simmental Maturé (pour 1),"Simmental maturado 21 dias. Gordura exterior rica e amarela, sabor potente e estrutura com personalidade.","21-day aged Simmental. Rich yellow exterior fat, bold flavour and characterful meat structure.","Simmental maturé 21 jours. Graisse extérieure riche et jaune, saveur puissante, structure caractérielle.",42,,,Dose,,,🧪,CortesNobres,ativo
 carnes,Por Encomenda · Sob reserva prévia,Pica no Chão,Pica no Chão,Pica no Chão,Prato típico português — Arroz de Cabidela com Frango Caseiro Estufado e Arroz Fresco. Sob encomenda prévia.,Traditional Portuguese dish — chicken cabidela rice with home-stewed chicken,Plat typique portugais — riz cabidela avec poulet mijoté maison,100,,,Dose,,,🌾🥚🧪,,rascunho
 carnes,Carnes | Meats | Viandes,Cabrito Assado no Forno,Oven-Roasted Kid Goat,Chevreau Rôti au Four,Cabrito assado lentamente no forno — apenas aos Domingos. Textura macia e sabor inconfundível. Sob encomenda prévia.,Slowly oven-roasted kid goat — Sundays only. Must be ordered in advance.,Chevreau rôti lentement au four — Dimanches seulement. Sur commande préalable.,46,24,,Dose,Meia,,,,so domingo
 carnes,Carnes | Meats | Viandes,Vitela Assada no Forno,Oven-Roasted Veal,Veau Rôti au Four,Vitela assada lentamente no forno com ervas aromáticas — apenas aos Domingos. Sob encomenda prévia.,Slowly oven-roasted veal — Sundays only. Must be ordered in advance.,Veau rôti lentement au four — Dimanches seulement. Sur commande préalable.,28,15,,Dose,Meia,,,,so domingo
@@ -1759,85 +1753,72 @@ vinhoscasa,Maduro Tinto,Cabeça de Gaio,Cabeça de Gaio,Cabeça de Gaio,"Vinho t
 vinhoscasa,Maduro Tinto,Tasquinha do Cerqueira,Tasquinha do Cerqueira,Tasquinha do Cerqueira,Vinho tinto da casa suave e equilibrado,Smooth and balanced house red wine,Vin rouge de la maison doux et équilibré,9,5,,75cl,37.5cl,,,Tinto,ativo
 vinhoscasa,Vinho Verde Regional,Vinho Verde Regional,Verde Tinto in the Bowl,Verde Tinto dans le Bol,Vinho verde tinto servido de forma tradicional na tigela — experiência única da casa,Traditional red vinho verde served in a terracotta bowl — a unique house experience,Vinho verde rouge servi dans le bol traditionnel — expérience unique de la maison,15,12,5,Caneca Grande,Caneca Média,Caneca Pequena,🧪,Tinto,ativo
 🍾  CARTA DE VINHOS,,,,,,,,,,,,,,,,
-vinhos,Dão · Branco,Casa Albuquerque Encruzado (75cl),,,"100% Encruzado. Elegante, mineral e com a frescura típica do Dão. Notas de citrinos e final longo.","100% Encruzado. Elegant, mineral, and with Dão's signature freshness. Citrus notes and a long finish.","100% Encruzado. Élégant, minéral et d'une fraîcheur typique du Dão. Notes d'agrumes et finale persistante.",22,,,75cl,,,🧪,Branco,ativo
-vinhos,Dão · Branco,Casa Santar Reserva (75cl),,,Reserva elegante e complexo com fruta madura e taninos bem integrados.,Elegant and complex Reserva with ripe fruit and well-integrated tannins.,"Réserve élégante et complexe, fruits mûrs et tanins bien intégrés.",23,,,75cl,,,🧪,Branco,ativo
-vinhos,Dão · Branco,Bella Elegance Chavignon Blanc (75cl),,,"Perfil vibrante e aromático. Notas de fruta tropical e erva cortada, com uma acidez equilibrada.","Vibrant and aromatic profile. Notes of tropical fruit and cut grass, with balanced acidity.","Profil vibrant et aromatique. Notes de fruits tropicaux et d'herbe coupée, avec une équilibrée.",22,,,75cl,,,🧪,Branco,ativo
-vinhos,Dão · Branco,MOB Lote 3 (75cl),,,"Blend de castas autóctones do Dão. Mineral, tenso e de grande identidade.","Native Dão varieties blend. Mineral, tense and with great identity.","Assemblage de cépages autochtones du Dão. Minéral, tendu, grande identité.",20,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Assobio (75cl),,,"Fresco e cítrico, com boa acidez e carácter atlântico.",Fresh and citrusy with good acidity and Atlantic character.,"Frais et citronné, bonne acidité et caractère atlantique.",14,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,CARM Reserva (75cl),,,"Elegante e mineral, notas de fruta tropical e final persistente.","Elegant and mineral, tropical fruit notes and a lingering finish.","Élégant et minéral, fruits tropicaux et finale persistante.",24,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Despercebido (75cl),,,"Expressivo e floral, com mineralidade marcante de carácter atlântico.",Expressive and floral with a distinctive Atlantic mineral character.,"Expressif et floral, minéralité marquée de caractère atlantique.",15,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Dona Ermelinda Reserva (75cl),,,"Equilibrado e elegante, notas de fruta branca e frescura agradável.",Balanced and elegant with white fruit notes and pleasant freshness.,"Équilibré et élégant, fruits blancs et fraîcheur agréable.",14,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Duas Quintas (75cl),,,Dois terroirs numa harmonia perfeita de fruta madura e estrutura equilibrada.,Two terroirs in perfect harmony of ripe fruit and balanced structure.,"Deux terroirs en parfaite harmonie, fruits mûrs et structure équilibrée.",22,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Manoella (75cl),,,"Complexo e envolvente com notas de maçã, pêra e toque de especiaria.","Complex and engaging with apple, pear and a hint of spice.","Complexe et enveloppant, pomme, poire et pointe d'épice.",28,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Memórias Da Nossa Terra {Esposende} Reserva (75cl),,,Reserva regional fresco e frutuoso com boa estrutura.,Fresh and fruity regional Reserva with good structure.,"Réserve régionale fraîche et fruitée, bonne structure.",14,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Monte Da Vaqueira (75cl),,,"Leve e refrescante, ideal para pratos de peixe e marisco.","Light and refreshing, ideal with fish and seafood.","Léger et rafraîchissant, idéal avec poissons et fruits de mer.",12,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Quinta De Castelares (75cl),,,Seco e mineral com acidez vibrante e notas de pêssego.,Dry and mineral with vibrant acidity and peach notes.,"Sec et minéral, acidité vibrante et notes de pêche.",14,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Quinta De Cidro Chardonnay (75cl),,,Chardonnay de elegância invulgar no Douro. Cremoso com notas de baunilha e avelã.,Unusually elegant Douro Chardonnay. Creamy with vanilla and hazelnut notes.,"Chardonnay d'une élégance rare dans le Douro. Crémeux, vanille et noisette.",35,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Quinta De Crasto (75cl),,,"Clássico do Douro com fruta escura, taninos firmes e boa longevidade.","Douro classic with dark fruit, firm tannins and good ageing potential.","Classique du Douro, fruits noirs, tanins fermes et bon potentiel de garde.",20,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Ribeiro Santos Encruzado (75cl),,,Encruzado de altitude. Floral e tenso com mineralidade marcante.,High-altitude Encruzado. Floral and tense with remarkable minerality.,"Encruzado d'altitude. Floral et tendu, minéralité remarquable.",18,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Vallado (75cl),,,Acessível e versátil com fruta fresca e final suave.,Approachable and versatile with fresh fruit and a soft finish.,"Accessible et polyvalent, fruits frais et finale douce.",16,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Vallado 3 Melros (75cl),,,Blend elegante com complexidade e textura superiores ao base.,Elegant blend with superior complexity and texture.,"Assemblage élégant, complexité et texture supérieures.",17,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Branco,Vallado Prima (75cl),,,Entrada de gama com frescura e facilidade de beber.,Entry-level with freshness and easy drinking.,"Entrée de gamme, fraîcheur et facile à boire.",17,,,75cl,,,🧪,Branco,ativo
-vinhos,Douro · Tinto,Assobio (75cl),,,"Fresco e cítrico, com boa acidez e carácter atlântico.",Fresh and citrusy with good acidity and Atlantic character.,"Frais et citronné, bonne acidité et caractère atlantique.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,CARM (75cl),,,"Tinto de carácter com fruta vermelha, ervas e mineralidade.","Character red with red fruit, herbs and minerality.","Rouge de caractère, fruits rouges, herbes et minéralité.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,CARM Reserva (75cl),,,"Elegante e mineral, notas de fruta tropical e final persistente.","Elegant and mineral, tropical fruit notes and a lingering finish.","Élégant et minéral, fruits tropicaux et finale persistante.",24,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Callabriga (Casa Ferreirinha) (75cl),,,"Encorpado e complexo com fruta madura, especiaria e notas balsâmicas.","Full-bodied and complex with ripe fruit, spice and balsamic notes.","Corsé et complexe, fruits mûrs, épices et notes balsamiques.",35,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Dona Ermelinda (75cl),,,"Um clássico de perfil generoso. Notas intensas de frutos vermelhos, compotas e suaves toques de baunilha provenientes do estágio em madeira.","A classic with a generous profile. Intense notes of red fruits, jams, and soft hints of vanilla from oak aging.","Un classique au profil généreux. Notes intenses de fruits rouges, confitures et douces touches de vanille issues de l'élevage en fûts.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Duas Quintas (75cl),,,Dois terroirs numa harmonia perfeita de fruta madura e estrutura equilibrada.,Two terroirs in perfect harmony of ripe fruit and balanced structure.,"Deux terroirs en parfaite harmonie, fruits mûrs et structure équilibrée.",24,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Espada Cinta Reserva (75cl),,,"Um Douro clássico e robusto. Notas de frutos negros maduros, especiarias e taninos firmes.","A classic, robust Douro red. Notes of ripe black fruits, spices, and firm tannins.","Un Douro classique et robuste. Notes de fruits noirs mûrs, d'épices et de tanins fermes.",18,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Esteva,,,"Jovem e descomplicado, perfeito para o quotidiano.","Young and uncomplicated, perfect for everyday drinking.","Jeune et simple, parfait pour tous les jours.",14,7.5,,75cl,37.5cl,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Manoella (75cl),,,"Complexo e envolvente com notas de maçã, pêra e toque de especiaria.","Complex and engaging with apple, pear and a hint of spice.","Complexe et enveloppant, pomme, poire et pointe d'épice.",28,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Meandro (75cl),,,"Complexo e sedutor. Aroma intenso a fruta vermelha e floral, com uma elegância excecional.","Complex and seductive. Intense red fruit and floral aromas, with exceptional elegance.","Complexe et séducteur. Arôme intense de fruits rouges et notes florales, d'une élégance exceptionnelle.",,,,,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Memórias Da Nossa Terra [Esposende] Reserva (75cl),,,"Homenagem à tradição. Encorpado, com estágio em madeira que lhe confere notas de baunilha e tostados.","A tribute to tradition. Full-bodied, oak-aged with notes of vanilla and toasted oak.","Hommage à la tradition. Corpulent, élevé en fût de chêne avec des notes de vanille et de torréfaction.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Papa Figos (75cl),,,Encantador e fresco com fruta vermelha vibrante e fácil de beber.,Charming and fresh with vibrant red fruit.,"Charmant et frais, fruits rouges vibrants.",16,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Quinta De Castelares (75cl),,,Seco e mineral com acidez vibrante e notas de pêssego.,Dry and mineral with vibrant acidity and peach notes.,"Sec et minéral, acidité vibrante et notes de pêche.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Quinta De Castelares Grande Reserva (75cl),,,"Grande Reserva de excelência com tosta, fruta madura e taninos sedosos.","Outstanding Grande Reserva with toasty notes, ripe fruit and silky tannins.","Grande Réserve d'excellence, notes grillées, fruits mûrs et tanins soyeux.",42,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Quinta De Castelares Reserva (75cl),,,Reserva equilibrado com fruta elegante e acabamento refinado.,Balanced Reserva with elegant fruit and a refined finish.,"Réserve équilibré, fruits élégants et finale raffinée.",26,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Quinta De Crasto,,,"Clássico do Douro com fruta escura, taninos firmes e boa longevidade.","Douro classic with dark fruit, firm tannins and good ageing potential.","Classique du Douro, fruits noirs, tanins fermes et bon potentiel de garde.",20,10,,75cl,37.5cl,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Quinta De Crasto Superior (75cl),,,"Superior em concentração, complexidade e elegância.","Superior in concentration, complexity and elegance.","Supérieur en concentration, complexité et élégance.",28,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Vallado (75cl),,,Acessível e versátil com fruta fresca e final suave.,Approachable and versatile with fresh fruit and a soft finish.,"Accessible et polyvalent, fruits frais et finale douce.",16,,,75cl,,,🧪,Tinto,ativo
-vinhos,Douro · Tinto,Vallado 3 Melros (75cl),,,Blend elegante com complexidade e textura superiores ao base.,Elegant blend with superior complexity and texture.,"Assemblage élégant, complexité et texture supérieures.",17,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,40 Castas Reserva (75cl),,,"Lote complexo de várias castas. Harmonioso, com taninos aveludados e frescura persistente.","A complex blend of various grape varieties. Harmonious, with velvety tannins and persistent freshness.","Assemblage complexe de plusieurs cépages. Harmonieux, aux tanins veloutés et fraîcheur persistante.",24,,,75cl,,,,Tinto,ativo
-vinhos,Dão · Tinto,Bella Elegance Touriga Nacional (75cl),,,"A essência da casta rainha do Dão. Apresenta notas florais a violetas, fruta preta e uma frescura mineral distinta.","The essence of Dão's flagship grape. Features floral notes of violets, black fruit, and a distinct mineral freshness.","L'essence du cépage roi du Dão. Présente des notes florales de violettes, de fruits noirs et une fraîcheur minérale distincte.",22,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Bella Elegance Cabernet Franc (75cl),,,Cabernet Franc no Dão. Floral e elegante com taninos sedosos e final longo.,Cabernet Franc in Dão. Floral and elegant with silky tannins and a long finish.,"Cabernet Franc dans le Dão. Floral et élégant, tanins soyeux et longue finale.",22,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Cabriz Colheita 2023 (75cl),,,Dão acessível e frutado. Perfeita introdução à região.,Accessible and fruity Dão. A perfect introduction to the region.,Dão accessible et fruité. Parfaite introduction à la région.,12,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Casa Albuquerque (75cl),,,"Vinho de quinta com personalidade, fruta vermelha e toque especiado.","Estate wine with personality, red fruit and a spiced touch.","Vin de domaine avec personnalité, fruits rouges et touche épicée.",20,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Casa Santar Reserva (75cl),,,Reserva elegante e complexo com fruta madura e taninos bem integrados.,Elegant and complex Reserva with ripe fruit and well-integrated tannins.,"Réserve élégante et complexe, fruits mûrs et tanins bien intégrés.",25,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,MOB Lote 3 (75cl),,,"Blend de castas autóctones do Dão. Mineral, tenso e de grande identidade.","Native Dão varieties blend. Mineral, tense and with great identity.","Assemblage de cépages autochtones du Dão. Minéral, tendu, grande identité.",20,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Ribeiro Santo Reserva (75cl),,,Reserva de textura sedosa com notas florais e final persistente.,Silky-textured Reserva with floral notes and a persistent finish.,"Réserve à la texture soyeuse, notes florales et finale persistante.",18,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Vallado Superior (75cl),,,Elegância superior do Dão. Mineral e fresco com boa longevidade.,Superior Dão elegance. Mineral and fresh with good ageing potential.,"Élégance supérieure du Dão. Minéral et frais, bon potentiel de garde.",24,,,75cl,,,🧪,Tinto,ativo
-vinhos,Dão · Tinto,Vendaval (75cl),,,Jovem e expressivo com fruta vermelha vibrante e boa frescura.,Young and expressive with vibrant red fruit and good freshness.,"Jeune et expressif, fruits rouges vibrants et bonne fraîcheur.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Branco,Adega de Borba (75cl),,,Branco alentejano fresco e fácil de beber com notas de fruta tropical.,Fresh and easy Alentejo white with tropical fruit notes.,"Blanc de l'Alentejo frais, notes de fruits tropicaux.",12,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Esporão Reserva (75cl),,,"Um dos melhores brancos do Alentejo. Complexo, cremoso e mineral.","One of Alentejo's finest. Complex, creamy and mineral.","L'un des meilleurs de l'Alentejo. Complexe, crémeux et minéral.",28,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Marcolino Sebo (75cl),,,"Branco alentejano equilibrado e refrescante. Notas de fruta de caroço e citrinos, com um final de boca limpo e persistente.","A balanced and refreshing Alentejo white. Notes of stone fruit and citrus, with a clean and persistent finish.","Un blanc de l'Alentejo équilibré et rafraîchissant. Notes de fruits à noyau et d'agrumes, avec une finale propre et persistante.",18,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Monte Da Peceguina (75cl),,,Fino e elegante da Herdade da Malhadinha. Frutado e envolvente.,Fine and elegant from Herdade da Malhadinha. Fruity and engaging.,Fin et élégant de Herdade da Malhadinha. Fruité et enveloppant.,22,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Monte Das Servas (75cl),,,Aromático e suave com notas de pêssego e flor de laranjeira.,Aromatic and smooth with peach and orange blossom notes.,"Aromatique et doux, notes de pêche et fleur d'oranger.",14,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Monte Da Vaqueira (75cl),,,"Leve e refrescante, ideal para pratos de peixe e marisco.","Light and refreshing, ideal with fish and seafood.","Léger et rafraîchissant, idéal avec poissons et fruits de mer.",12,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Monte Velho,,,Frescura e leveza alentejana. Fruta branca e final limpo.,Alentejo lightness. White fruit and a clean finish.,Légèreté de l'Alentejo. Fruits blancs et finale nette.,12,5,,75cl,37.5cl,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Tiago Cabaço .com,,,"Jovem, fresco e versátil. Excelente equilíbrio entre fruta e acidez. Ideal para momentos descontraídos.","Young, fresh, and versatile. Great balance between fruit and acidity. Perfect for casual moments.","Jeune, frais et polyvalent. Excellent équilibre entre fruit et acidité. Idéal pour des moments décontractés.",14,7.5,,75cl,37.5cl,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Tiago Cabaço Vinhas Velhas (75cl),,,Vinhas velhas que conferem profundidade e mineralidade notáveis.,Old vines giving remarkable depth and minerality.,Vieilles vignes conférant profondeur et minéralité remarquables.,22,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Trinca Bolotas (75cl),,,"Espontâneo, frutado e com o espírito genuíno do Alentejo.","Spontaneous, fruity and with the genuine spirit of Alentejo.","Spontané, fruité et avec l'esprit authentique de l'Alentejo.",15,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Branco,Vinha De Defesa (75cl),,,Fresco e aromático com notas de limão e ervas aromáticas.,Fresh and aromatic with lemon and herb notes.,"Frais et aromatique, notes de citron et herbes aromatiques.",14,,,75cl,,,🧪,Branco,ativo
-vinhos,Alentejo · Tinto,Adega de Borba (75cl),,,Branco alentejano fresco e fácil de beber com notas de fruta tropical.,Fresh and easy Alentejo white with tropical fruit notes.,"Blanc de l'Alentejo frais, notes de fruits tropicaux.",12,5,,75cl,37.5cl,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Esporão Reserva (75cl),,,"Um dos melhores brancos do Alentejo. Complexo, cremoso e mineral.","One of Alentejo's finest. Complex, creamy and mineral.","L'un des meilleurs de l'Alentejo. Complexe, crémeux et minéral.",28,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Instinto Forte (75cl),,,Perfil moderno e cativante. Fruta madura evidente e final de boca muito macio.,Modern and captivating profile. Evident ripe fruit and a very smooth finish.,Profil moderne et captivant. Fruits mûrs évidents et finale très souple.,22,,,75cl,,,,Tinto,ativo
-vinhos,Alentejo · Tinto,Herdade Dos Grous 23 Barricas (75cl),,,Fermentado em 23 barricas de carvalho. Textura e complexidade únicas.,Fermented in 23 oak barrels. Unique texture and complexity.,Fermenté en 23 barriques de chêne. Texture et complexité uniques.,48,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Herdade Dos Grous Moon Harvested (75cl),,,"Colheita nocturna para preservar aromas. Fresco, aromático e expressivo.","Night harvest to preserve aromas. Fresh, aromatic and expressive.","Vendange nocturne. Frais, aromatique et expressif.",48,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Monte Da Peceguina (75cl),,,Fino e elegante da Herdade da Malhadinha. Frutado e envolvente.,Fine and elegant from Herdade da Malhadinha. Fruity and engaging.,Fin et élégant de Herdade da Malhadinha. Fruité et enveloppant.,22,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Monte Das Servas (75cl),,,Aromático e suave com notas de pêssego e flor de laranjeira.,Aromatic and smooth with peach and orange blossom notes.,"Aromatique et doux, notes de pêche et fleur d'oranger.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Monte Da Vaqueira (75cl),,,"Leve e refrescante, ideal para pratos de peixe e marisco.","Light and refreshing, ideal with fish and seafood.","Léger et rafraîchissant, idéal avec poissons et fruits de mer.",24,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Monte Velho,,,Frescura e leveza alentejana. Fruta branca e final limpo.,Alentejo lightness. White fruit and a clean finish.,Légèreté de l'Alentejo. Fruits blancs et finale nette.,12,5,,75cl,37.5cl,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Tiago Cabaço .com,,,"Jovem, fresco e versátil. Excelente equilíbrio entre fruta e acidez. Ideal para momentos descontraídos.","Young, fresh, and versatile. Great balance between fruit and acidity. Perfect for casual moments.","Jeune, frais et polyvalent. Excellent équilibre entre fruit et acidité. Idéal pour des moments décontractés.",14,7.5,,75cl,37.5cl,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Tiago Cabaço Vinhas Velhas (75cl),,,Vinhas velhas que conferem profundidade e mineralidade notáveis.,Old vines giving remarkable depth and minerality.,Vieilles vignes conférant profondeur et minéralité remarquables.,22,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Trinca Bolotas (75cl),,,"Um favorito do Alentejo. Redondo, rico em fruta e extremamente fácil de gostar.","An Alentejo favorite. Round, rich in fruit, and extremely easy to enjoy.","Un favori de l'Alentejo. Rond, riche en fruits et extrêmement facile à déguster.",15,,,75cl,,,🧪,Tinto,ativo
-vinhos,Alentejo · Tinto,Vinha Da Defesa (75cl),,,Frutado e acessível com taninos suaves e bom corpo.,Fruity and accessible with soft tannins and good body.,"Fruité et accessible, tanins souples et bon corps.",14,,,75cl,,,🧪,Tinto,ativo
-vinhos,Vinhos Verdes · Branco,Aveleda Fonte (75cl),,,"Referência nacional. Leve, ligeiramente frisante, limão e pêssego.","National benchmark. Light, slightly sparkling, lemon and peach.","Référence nationale. Léger, légèrement pétillant, citron et pêche.",10,,,75cl,,,🧪,Branco,ativo
-vinhos,Vinhos Verdes · Branco,Aveleda Solos Xisto (75cl),,,"Alvarinho de xisto. Complexo, mineral e de elegância surpreendente.","Schist Alvarinho. Complex, mineral and surprisingly elegant.","Alvarinho de schiste. Complexe, minéral et d'une élégance surprenante.",18,,,75cl,,,🧪,Branco,ativo
-vinhos,Vinhos Verdes · Branco,Casal Garcia (75cl),,,"O Verde mais famoso do mundo. Fresco, frisante e irresistível.","The world's most famous Verde. Fresh, sparkling and irresistible.","Le Verde le plus célèbre au monde. Frais, pétillant et irrésistible.",10,,,75cl,,,🧪,Branco,ativo
-vinhos,Vinhos Verdes · Branco,Gerações Alvarinho (75cl),,,Aromático e frutado com pêssego e flor branca.,Aromatic and fruity with peach and white flower.,"Aromatique et fruité, pêche et fleur blanche.",18,,,75cl,,,🧪,Branco,ativo
-vinhos,Vinhos Verdes · Branco,Graça Da Pedra Alvarinho (75cl),,,"Alvarinho de granito. Elegante, mineral e com acidez vibrante.","Granite Alvarinho. Elegant, mineral and with vibrant acidity.","Alvarinho de granit. Élégant, minéral et avec acidité vibrante.",20,,,75cl,,,🧪,Branco,ativo
-vinhos,Vinhos Verdes · Branco,Soalheiro Alvarinho,,,"Um dos melhores Alvarinhos de Monção. Floral, complexo e longo.","One of the finest Alvarinhos from Monção. Floral, complex and long.","L'un des meilleurs Alvarinhos de Monção. Floral, complexe et long.",17,9.5,,75cl,37.5cl,,🧪,Branco,ativo
-vinhos,Vinhos Verdes · Branco,Socalcos Do Bouro (75cl),,,"Alvarinho de socalcos antigos. Fresco, mineral e com personalidade.","Alvarinho from ancient terraces. Fresh, mineral and full of personality.","Alvarinho de terrasses anciennes. Frais, minéral et plein de personnalité.",17,,,75cl,,,🧪,Branco,ativo
+vinhos,Douro · Branco,Assobio,,,"Fresco e cítrico, com boa acidez e carácter atlântico.",Fresh and citrusy with good acidity and Atlantic character.,"Frais et citronné, bonne acidité et caractère atlantique.",14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,CARM Reserva,,,"Elegante e mineral, notas de fruta tropical e final persistente.","Elegant and mineral, tropical fruit notes and a lingering finish.","Élégant et minéral, fruits tropicaux et finale persistante.",24,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Despercebido,,,"Expressivo e floral, com mineralidade marcante de carácter atlântico.",Expressive and floral with a distinctive Atlantic mineral character.,"Expressif et floral, minéralité marquée de caractère atlantique.",15,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Dona Ermelinda Reserva,,,"Equilibrado e elegante, notas de fruta branca e frescura agradável.",Balanced and elegant with white fruit notes and pleasant freshness.,"Équilibré et élégant, fruits blancs et fraîcheur agréable.",14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Manoella,,,"Complexo e envolvente com notas de maçã, pêra e toque de especiaria.","Complex and engaging with apple, pear and a hint of spice.","Complexe et enveloppant, pomme, poire et pointe d'épice.",28,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Memórias Da Nossa Terra {Esposende} Reserva,,,Reserva regional fresco e frutuoso com boa estrutura.,Fresh and fruity regional Reserva with good structure.,"Réserve régionale fraîche et fruitée, bonne structure.",14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Monte Da Vaqueira,,,"Leve e refrescante, ideal para pratos de peixe e marisco.","Light and refreshing, ideal with fish and seafood.","Léger et rafraîchissant, idéal avec poissons et fruits de mer.",12,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Quinta De Castelares,,,Seco e mineral com acidez vibrante e notas de pêssego.,Dry and mineral with vibrant acidity and peach notes.,"Sec et minéral, acidité vibrante et notes de pêche.",14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Quinta De Cidro Chardonnay,,,Chardonnay de elegância invulgar no Douro. Cremoso com notas de baunilha e avelã.,Unusually elegant Douro Chardonnay. Creamy with vanilla and hazelnut notes.,"Chardonnay d'une élégance rare dans le Douro. Crémeux, vanille et noisette.",35,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Ribeiro Santos Encruzado,,,Encruzado de altitude. Floral e tenso com mineralidade marcante.,High-altitude Encruzado. Floral and tense with remarkable minerality.,"Encruzado d'altitude. Floral et tendu, minéralité remarquable.",18,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Vallado,,,Acessível e versátil com fruta fresca e final suave.,Approachable and versatile with fresh fruit and a soft finish.,"Accessible et polyvalent, fruits frais et finale douce.",16,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Vallado 3 Melros,,,Blend elegante com complexidade e textura superiores ao base.,Elegant blend with superior complexity and texture.,"Assemblage élégant, complexité et texture supérieures.",17,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Branco,Vallado Prima,,,Entrada de gama com frescura e facilidade de beber.,Entry-level with freshness and easy drinking.,"Entrée de gamme, fraîcheur et facile à boire.",17,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Douro · Tinto,Assobio,,,"Fresco e cítrico, com boa acidez e carácter atlântico.",Fresh and citrusy with good acidity and Atlantic character.,"Frais et citronné, bonne acidité et caractère atlantique.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,CARM,,,"Tinto de carácter com fruta vermelha, ervas e mineralidade.","Character red with red fruit, herbs and minerality.","Rouge de caractère, fruits rouges, herbes et minéralité.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,CARM Reserva,,,"Elegante e mineral, notas de fruta tropical e final persistente.","Elegant and mineral, tropical fruit notes and a lingering finish.","Élégant et minéral, fruits tropicaux et finale persistante.",24,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Callabriga,,,"Encorpado e complexo com fruta madura, especiaria e notas balsâmicas.","Full-bodied and complex with ripe fruit, spice and balsamic notes.","Corsé et complexe, fruits mûrs, épices et notes balsamiques.",35,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Dona Ermelinda,,,,,,14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Duas Quintas,,,Dois terroirs numa harmonia perfeita de fruta madura e estrutura equilibrada.,Two terroirs in perfect harmony of ripe fruit and balanced structure.,"Deux terroirs en parfaite harmonie, fruits mûrs et structure équilibrée.",22,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Esteva,,,"Jovem e descomplicado, perfeito para o quotidiano.","Young and uncomplicated, perfect for everyday drinking.","Jeune et simple, parfait pour tous les jours.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Manoella,,,"Complexo e envolvente com notas de maçã, pêra e toque de especiaria.","Complex and engaging with apple, pear and a hint of spice.","Complexe et enveloppant, pomme, poire et pointe d'épice.",28,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Memórias Da Nossa Terra [Esposende] Reserva,,,,,,14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Papa Figos,,,Encantador e fresco com fruta vermelha vibrante e fácil de beber.,Charming and fresh with vibrant red fruit.,"Charmant et frais, fruits rouges vibrants.",16,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Quinta Da Leda,,,"Ícone do Douro. Profundo, complexo e elegante. Uma experiência única.","Douro icon. Deep, complex and elegant. A unique experience.","Icône du Douro. Profond, complexe et élégant. Une expérience unique.",85,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Quinta De Castelares,,,Seco e mineral com acidez vibrante e notas de pêssego.,Dry and mineral with vibrant acidity and peach notes.,"Sec et minéral, acidité vibrante et notes de pêche.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Quinta De Castelares Grande Reserva,,,"Grande Reserva de excelência com tosta, fruta madura e taninos sedosos.","Outstanding Grande Reserva with toasty notes, ripe fruit and silky tannins.","Grande Réserve d'excellence, notes grillées, fruits mûrs et tanins soyeux.",42,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Quinta De Castelares Reserva,,,Reserva equilibrado com fruta elegante e acabamento refinado.,Balanced Reserva with elegant fruit and a refined finish.,"Réserve équilibré, fruits élégants et finale raffinée.",26,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Quinta De Crasto,,,"Clássico do Douro com fruta escura, taninos firmes e boa longevidade.","Douro classic with dark fruit, firm tannins and good ageing potential.","Classique du Douro, fruits noirs, tanins fermes et bon potentiel de garde.",20,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Quinta De Crasto Superior,,,"Superior em concentração, complexidade e elegância.","Superior in concentration, complexity and elegance.","Supérieur en concentration, complexité et élégance.",28,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Vallado,,,Acessível e versátil com fruta fresca e final suave.,Approachable and versatile with fresh fruit and a soft finish.,"Accessible et polyvalent, fruits frais et finale douce.",16,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Douro · Tinto,Vallado 3 Melros,,,Blend elegante com complexidade e textura superiores ao base.,Elegant blend with superior complexity and texture.,"Assemblage élégant, complexité et texture supérieures.",17,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Bella Elegance Cabernet Franc,,,Cabernet Franc no Dão. Floral e elegante com taninos sedosos e final longo.,Cabernet Franc in Dão. Floral and elegant with silky tannins and a long finish.,"Cabernet Franc dans le Dão. Floral et élégant, tanins soyeux et longue finale.",22,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Cabriz Colheita,,,Dão acessível e frutado. Perfeita introdução à região.,Accessible and fruity Dão. A perfect introduction to the region.,Dão accessible et fruité. Parfaite introduction à la région.,12,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Casa Albuquerque,,,"Vinho de quinta com personalidade, fruta vermelha e toque especiado.","Estate wine with personality, red fruit and a spiced touch.","Vin de domaine avec personnalité, fruits rouges et touche épicée.",20,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Casa Santana Reserva,,,Reserva elegante e complexo com fruta madura e taninos bem integrados.,Elegant and complex Reserva with ripe fruit and well-integrated tannins.,"Réserve élégante et complexe, fruits mûrs et tanins bien intégrés.",25,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,MOB Lote 3,,,"Blend de castas autóctones do Dão. Mineral, tenso e de grande identidade.","Native Dão varieties blend. Mineral, tense and with great identity.","Assemblage de cépages autochtones du Dão. Minéral, tendu, grande identité.",20,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Monte Da Vaqueira,,,"Leve e refrescante, ideal para pratos de peixe e marisco.","Light and refreshing, ideal with fish and seafood.","Léger et rafraîchissant, idéal avec poissons et fruits de mer.",24,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Ribeiro Santo Reserva,,,Reserva de textura sedosa com notas florais e final persistente.,Silky-textured Reserva with floral notes and a persistent finish.,"Réserve à la texture soyeuse, notes florales et finale persistante.",18,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Vallado Superior,,,Elegância superior do Dão. Mineral e fresco com boa longevidade.,Superior Dão elegance. Mineral and fresh with good ageing potential.,"Élégance supérieure du Dão. Minéral et frais, bon potentiel de garde.",24,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Dão · Tinto,Vendaval,,,Jovem e expressivo com fruta vermelha vibrante e boa frescura.,Young and expressive with vibrant red fruit and good freshness.,"Jeune et expressif, fruits rouges vibrants et bonne fraîcheur.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Branco,Borba,,,Branco alentejano fresco e fácil de beber com notas de fruta tropical.,Fresh and easy Alentejo white with tropical fruit notes.,"Blanc de l'Alentejo frais, notes de fruits tropicaux.",12,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Esporão Reserva,,,"Um dos melhores brancos do Alentejo. Complexo, cremoso e mineral.","One of Alentejo's finest. Complex, creamy and mineral.","L'un des meilleurs de l'Alentejo. Complexe, crémeux et minéral.",25,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Herdade Dos Grous 23 Barricas,,,Fermentado em 23 barricas de carvalho. Textura e complexidade únicas.,Fermented in 23 oak barrels. Unique texture and complexity.,Fermenté en 23 barriques de chêne. Texture et complexité uniques.,48,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Herdade Dos Grous Moon Harvested,,,"Colheita nocturna para preservar aromas. Fresco, aromático e expressivo.","Night harvest to preserve aromas. Fresh, aromatic and expressive.","Vendange nocturne. Frais, aromatique et expressif.",48,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Monte Da Peceguina,,,Fino e elegante da Herdade da Malhadinha. Frutado e envolvente.,Fine and elegant from Herdade da Malhadinha. Fruity and engaging.,Fin et élégant de Herdade da Malhadinha. Fruité et enveloppant.,22,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Monte Das Servas,,,Aromático e suave com notas de pêssego e flor de laranjeira.,Aromatic and smooth with peach and orange blossom notes.,"Aromatique et doux, notes de pêche et fleur d'oranger.",14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Monte Velho,,,Frescura e leveza alentejana. Fruta branca e final limpo.,Alentejo lightness. White fruit and a clean finish.,Légèreté de l'Alentejo. Fruits blancs et finale nette.,12,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Tiago Cabaço .com,,,,,,14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Tiago Cabaço Vinhas Velhas,,,Vinhas velhas que conferem profundidade e mineralidade notáveis.,Old vines giving remarkable depth and minerality.,Vieilles vignes conférant profondeur et minéralité remarquables.,22,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Trinca Bolotas,,,"Espontâneo, frutado e com o espírito genuíno do Alentejo.","Spontaneous, fruity and with the genuine spirit of Alentejo.","Spontané, fruité et avec l'esprit authentique de l'Alentejo.",15,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Branco,Vinha De Defesa,,,Fresco e aromático com notas de limão e ervas aromáticas.,Fresh and aromatic with lemon and herb notes.,"Frais et aromatique, notes de citron et herbes aromatiques.",14,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Alentejo · Tinto,Borba,,,Branco alentejano fresco e fácil de beber com notas de fruta tropical.,Fresh and easy Alentejo white with tropical fruit notes.,"Blanc de l'Alentejo frais, notes de fruits tropicaux.",12,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Esporão Reserva,,,"Um dos melhores brancos do Alentejo. Complexo, cremoso e mineral.","One of Alentejo's finest. Complex, creamy and mineral.","L'un des meilleurs de l'Alentejo. Complexe, crémeux et minéral.",28,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Monte Da Peceguina,,,Fino e elegante da Herdade da Malhadinha. Frutado e envolvente.,Fine and elegant from Herdade da Malhadinha. Fruity and engaging.,Fin et élégant de Herdade da Malhadinha. Fruité et enveloppant.,22,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Monte Das Servas,,,Aromático e suave com notas de pêssego e flor de laranjeira.,Aromatic and smooth with peach and orange blossom notes.,"Aromatique et doux, notes de pêche et fleur d'oranger.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Monte Velho,,,Frescura e leveza alentejana. Fruta branca e final limpo.,Alentejo lightness. White fruit and a clean finish.,Légèreté de l'Alentejo. Fruits blancs et finale nette.,12,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Tiago Cabaço .com,,,,,,14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Tiago Cabaço Vinhas Velhas,,,Vinhas velhas que conferem profundidade e mineralidade notáveis.,Old vines giving remarkable depth and minerality.,Vieilles vignes conférant profondeur et minéralité remarquables.,22,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Alentejo · Tinto,Vinha Da Defesa,,,Frutado e acessível com taninos suaves e bom corpo.,Fruity and accessible with soft tannins and good body.,"Fruité et accessible, tanins souples et bon corps.",14,,,75cl,37.5cl,,🧪,Tinto,ativo
+vinhos,Vinhos Verdes · Branco,Aveleda Fonte,,,"Referência nacional. Leve, ligeiramente frisante, limão e pêssego.","National benchmark. Light, slightly sparkling, lemon and peach.","Référence nationale. Léger, légèrement pétillant, citron et pêche.",10,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Vinhos Verdes · Branco,Aveleda Solos Xisto,,,"Alvarinho de xisto. Complexo, mineral e de elegância surpreendente.","Schist Alvarinho. Complex, mineral and surprisingly elegant.","Alvarinho de schiste. Complexe, minéral et d'une élégance surprenante.",18,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Vinhos Verdes · Branco,Casal Garcia,,,"O Verde mais famoso do mundo. Fresco, frisante e irresistível.","The world's most famous Verde. Fresh, sparkling and irresistible.","Le Verde le plus célèbre au monde. Frais, pétillant et irrésistible.",10,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Vinhos Verdes · Branco,Gerações Alvarinho,,,Aromático e frutado com pêssego e flor branca.,Aromatic and fruity with peach and white flower.,"Aromatique et fruité, pêche et fleur blanche.",18,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Vinhos Verdes · Branco,Graça Da Pedra Alvarinho,,,"Alvarinho de granito. Elegante, mineral e com acidez vibrante.","Granite Alvarinho. Elegant, mineral and with vibrant acidity.","Alvarinho de granit. Élégant, minéral et avec acidité vibrante.",20,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Vinhos Verdes · Branco,Soalheiro Alvarinho,,,"Um dos melhores Alvarinhos de Monção. Floral, complexo e longo.","One of the finest Alvarinhos from Monção. Floral, complex and long.","L'un des meilleurs Alvarinhos de Monção. Floral, complexe et long.",17,,,75cl,37.5cl,,🧪,Branco,ativo
+vinhos,Vinhos Verdes · Branco,Socalcos Do Bouro,,,"Alvarinho de socalcos antigos. Fresco, mineral e com personalidade.","Alvarinho from ancient terraces. Fresh, mineral and full of personality.","Alvarinho de terrasses anciennes. Frais, minéral et plein de personnalité.",17,,,75cl,37.5cl,,🧪,Branco,ativo
 vinhos,Dão · Rosé,Caseirinho,,,"Vinho rosé leve e fresco, com notas de frutos vermelhos e boa acidez. Ideal para dias quentes e pratos leves.",Light and fresh rosé wine with red berry notes and lively acidity. Perfect for warm days and light dishes.,"Vin rosé léger et frais, aux notes de fruits rouges et à l’acidité équilibrée. Idéal pour les journées chaudes et les plats légers.",12,6,,75cl,37.5cl,,🧪,Rosé,ativo
 vinhos,Douro · Rosé,Carm,,,"Rosé elegante e aromático do Douro, com aromas florais e fruta vermelha fresca. Excelente como aperitivo ou com saladas e peixe.",Elegant and aromatic Douro rosé with floral aromas and fresh red fruit notes. Excellent as an aperitif or with salads and fish.,"Rosé élégant et aromatique du Douro, avec des arômes floraux et des notes de fruits rouges frais. Excellent en apéritif ou avec des salades et du poisson.",14,6,,75cl,37.5cl,,🧪,Rosé,ativo
 vinhos,Douro · Rosé,Quinta de Castelares Pinot Noir,,,"Rosé produzido a partir de Pinot Noir, delicado e equilibrado, com notas de morango e framboesa. Harmoniza bem com sushi e marisco.","Rosé made from Pinot Noir grapes, delicate and balanced, with strawberry and raspberry notes. Pairs well with sushi and seafood.","Rosé élaboré à partir de Pinot Noir, délicat et équilibré, avec des notes de fraise et de framboise. S’accorde très bien avec les sushis et les fruits de mer.",18,6,,75cl,37.5cl,,🧪,Rosé,ativo
@@ -1858,6 +1839,9 @@ cocktails,Sangrias,Sangria de Frutos Vermelhos,Red Berry Sangria,Sangria aux Fru
 🥂  CHAMPAGNE & ESPUMANTE,,,,,,,,,,,,,,,,
 champagne,Champagne,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.","Elegant and balanced Champagne with notes of fresh fruit and maturity.","Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Premium,ativo
 champagne,Champagne,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Premium,ativo
+champagne,Champagne,Moet & Chandon Champagne Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Bruto,ativo
+champagne,Champagne,Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Rosé,ativo
+champagne,Champagne,Dom Perignon Champagne Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Premium,ativo
 champagne,Espumante,Terras do Demo Espumante Távora-Varosa Bruto Branco (70cl),Terras do Demo Sparkling Wine Távora-Varosa Brut White (70cl),Vin Mousseux Terras do Demo Távora-Varosa Brut Blanc (70cl),"Espumante Távora-Varosa fresco, com bolha fina e excelente acidez.","Fresh Távora-Varosa sparkling wine, with fine bubbles and excellent acidity.","Vin mousseux Távora-Varosa frais, avec des bulles fines et une excellente acidité.",20,,,70cl,,,🧪,Bruto,ativo
 champagne,Espumante,Murganheira Reserva Bruto (70cl),Murganheira Reserve Brut (70cl),Murganheira Réserve Brut (70cl),"Um clássico equilibrado, com aromas frutados e uma elegância intemporal.","A balanced classic, with fruity aromas and timeless elegance.","Un classique équilibré, aux arômes fruités et d'une élégance intemporelle.",27,,,70cl,,,🧪,Bruto,ativo
 champagne,Espumante,Murganheira Reserva Meio Seco (70cl),Murganheira Reserve Semi-Dry (70cl),Murganheira Réserve Demi-Sec (70cl),"Ligeiramente doce e suave, ideal para quem prefere menos acidez.","Slightly sweet and smooth, ideal for those who prefer less acidity.","Légèrement doux et onctueux, idéal pour ceux qui préfèrent moins d'acidité.",25,,,70cl,,,🧪,Meio Seco,ativo
@@ -1869,11 +1853,11 @@ champagne,Espumante,Murganheira Unito Bruto (70cl),Murganheira Unito Brut (70cl)
 champagne,Espumante,Raposeira Velha Reserva (70cl),Raposeira Old Reserve (70cl),Raposeira Vieille Réserve (70cl),"Espumante clássico de Lamego, com envelhecimento em cave e perfil maduro.","Classic sparkling wine from Lamego, cave-aged with a mature profile.","Vin mousseux classique de Lamego, vieilli en cave avec um perfil mûr.",27,,,70cl,,,🧪,Bruto,ativo
 champagne,Espumante,Raposeira Rosé (70cl),Raposeira Rosé (70cl),Raposeira Rosé (70cl),"Leve e refrescante, ideal para momentos de celebração e aperitivos.","Light and refreshing, ideal for celebratory moments and appetizers.","Léger et rafraîchissant, idéal pour les moments de célébration et les apéritifs.",20,,,70cl,,,🧪,Rosé,ativo
 🥃  DIGESTIVOS,,,,,,,,,,,,,,,,
-digestivos,Champagne,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.",Elegant and balanced Champagne with notes of fresh fruit and maturity.,"Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Champanhe,
-digestivos,Champagne,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Champanhe,
-digestivos,Champagne,Moet & Chandon Champanhe Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Champanhe,rascunho
-digestivos,Champagne,Moet & Chandon Champanhe Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Champanhe,rascunho
-digestivos,Champagne,Dom Perignon Champanhe Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Champanhe,rascunho
+digestivos,Champagne,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.",Elegant and balanced Champagne with notes of fresh fruit and maturity.,"Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Champagne,
+digestivos,Champagne,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Champagne,
+digestivos,Champagne,Moet & Chandon Champagne Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Champagne,rascunho
+digestivos,Champagne,Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Champagne,rascunho
+digestivos,Champagne,Dom Perignon Champagne Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Champagne,rascunho
 digestivos,Digestivos,Aguardente Macieira  (5 cl),Macieira Brandy  (5 cl),Eau-de-vie Macieira  (5 cl),"Aguardente portuguesa icónica, com aromas suaves de fruta e envelhecimento em carvalho.","Iconic Portuguese brandy, with smooth fruit aromas and oak aging.","Eau-de-vie portugaise emblématique, aux arômes de fruits doux et vieillie en fût de chêne.",4,,,5 cl,,,,Digestivo,ativo
 digestivos,Digestivos,"Aguardente CR&F (Carvalho, Ribeiro & Ferreira) (5cl)","CR&F Brandy (Carvalho, Ribeiro & Ferreira) (5cl)","Eau-de-vie CR&F (Carvalho, Ribeiro & Ferreira) (5cl)","Aguardente velha reserva, complexa, com notas amadeiradas e final persistente.","Old reserve brandy, complex with woody notes and a persistent finish.","Eau-de-vie vieille réserve, complexe avec des notes boisées et une finale persistante.",5,,,5 cl,,,,Digestivo,ativo
 digestivos,Digestivos,Aguardente Vinica Velha (5cl),Old Wine Brandy (5cl),Eau-de-vie de Vin Vieille (5cl),"Destilado de vinho de alta qualidade, envelhecido com notas de frutos secos e baunilha.","High-quality wine spirit, aged with notes of dried fruits and vanilla.","Eau-de-vie de vin de haute qualité, vieillie avec des notes de fruits secs et de vanille.",10,,,5 cl,,,,Digestivo,ativo
