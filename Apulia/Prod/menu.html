@@ -291,6 +291,315 @@ body.light .novidade-badge{background:rgba(20,100,20,.1);border-color:rgba(30,13
 .don-lbl{font-size:.59rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);font-weight:500;}
 .don-note{margin-top:.5rem;font-size:.66rem;color:var(--muted);font-style:italic;border-top:1px solid var(--border);padding-top:.48rem;}
 
+/* ══ DRY-AGED PREMIUM SECTION ══ */
+.dryaged-section{
+  margin:1.6rem 0 1.2rem;
+  border-radius:14px;
+  overflow:hidden;
+  background:#261a0e;
+  border:1px solid rgba(201,169,110,.3);
+  box-shadow:0 4px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(201,169,110,.12);
+  position:relative;
+}
+body.light .dryaged-section{
+  background:#f5ece0;
+  border-color:rgba(139,105,20,.35);
+  box-shadow:0 4px 20px rgba(120,70,20,.12),inset 0 1px 0 rgba(180,130,20,.2);
+}
+.dryaged-header{
+  background:linear-gradient(135deg,#1e1208 0%,#2e1c0e 50%,#221508 100%);
+  padding:1.4rem 1.5rem 1rem;
+  position:relative;
+  border-bottom:1px solid rgba(201,169,110,.18);
+}
+body.light .dryaged-header{
+  background:linear-gradient(135deg,#eddcca 0%,#e8d4bc 50%,#ead8c4 100%);
+  border-bottom-color:rgba(139,105,20,.2);
+}
+.dryaged-header::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(201,169,110,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.dryaged-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,rgba(201,169,110,.2),rgba(212,80,10,.15));
+  border:1px solid rgba(201,169,110,.45);
+  color:#e2c99a;
+  font-family:var(--fb);font-size:.58rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  padding:.28rem .8rem;border-radius:20px;
+  margin-bottom:.7rem;
+  box-shadow:0 0 12px rgba(201,169,110,.12);
+}
+.dryaged-badge-icon{font-size:.9rem;line-height:1;}
+.dryaged-title{
+  font-family:var(--fh);font-size:1.35rem;font-weight:700;
+  color:#e8d5b0;letter-spacing:.04em;line-height:1.15;
+  text-shadow:0 2px 16px rgba(201,169,110,.25);
+}
+.dryaged-subtitle{
+  font-size:.72rem;color:rgba(201,169,110,.65);
+  margin-top:.28rem;letter-spacing:.06em;font-style:italic;
+}
+.dryaged-body{padding:1rem 1.5rem 1.4rem;}
+
+/* Breed comparison cards */
+.dryaged-breeds{
+  display:grid;grid-template-columns:1fr 1fr;gap:.75rem;
+  margin-bottom:1.2rem;
+}
+@media(max-width:500px){.dryaged-breeds{grid-template-columns:1fr;}}
+.breed-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(201,169,110,.18);
+  border-radius:10px;
+  padding:.9rem 1rem;
+  position:relative;overflow:hidden;
+  transition:border-color .25s,background .25s;
+}
+.breed-card:hover{
+  border-color:rgba(201,169,110,.38);
+  background:rgba(201,169,110,.06);
+}
+.breed-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,.5),transparent);
+}
+.breed-card-name{
+  font-family:var(--fh);font-size:1rem;font-weight:700;
+  color:#e2c99a;letter-spacing:.03em;margin-bottom:.18rem;
+  display:flex;align-items:center;gap:.45rem;
+}
+.breed-card-name-sub{
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(201,169,110,.55);font-family:var(--fb);font-weight:400;
+}
+.breed-divider{width:28px;height:1px;background:rgba(201,169,110,.3);margin:.4rem 0;}
+.breed-card-desc{
+  font-size:.74rem;color:rgba(229,218,198,.75);line-height:1.55;font-style:italic;
+}
+.breed-card-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem;}
+.breed-tag{
+  font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.22);
+  color:rgba(201,169,110,.8);padding:.15rem .5rem;border-radius:10px;
+  font-family:var(--fb);font-weight:600;
+}
+
+/* Dry-aged wine pairing */
+.dryaged-pairing{
+  margin-top:1rem;
+  border-top:1px solid rgba(201,169,110,.12);
+  padding-top:.9rem;
+}
+.dryaged-pairing-label{
+  font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(201,169,110,.45);font-family:var(--fb);font-weight:700;
+  margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem;
+}
+.dryaged-pairing-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(201,169,110,.15),transparent);
+}
+.pairing-row{
+  display:flex;align-items:baseline;gap:.55rem;
+  padding:.32rem 0;
+  border-bottom:1px solid rgba(201,169,110,.06);
+}
+.pairing-row:last-child{border-bottom:none;}
+.pairing-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+  position:relative;top:1px;
+}
+.pairing-dot-tinto{background:linear-gradient(135deg,#c06060,#801818);}
+.pairing-dot-espumante{background:linear-gradient(135deg,#e8d48a,#c9a030);}
+.pairing-row-name{
+  font-family:var(--fh);font-size:.84rem;font-weight:600;
+  color:#cdb880;white-space:nowrap;
+}
+.pairing-row-sep{
+  color:rgba(201,169,110,.25);font-size:.7rem;flex-shrink:0;
+}
+.pairing-row-note{
+  font-size:.7rem;color:rgba(185,170,145,.55);
+  font-style:italic;line-height:1.4;
+}
+
+/* Dry-aged items */
+.dryaged-items-title{
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(201,169,110,.5);font-family:var(--fb);font-weight:600;
+  margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem;
+}
+.dryaged-items-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(201,169,110,.2),transparent);
+}
+.dryaged-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
+  padding:.85rem .9rem;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(201,169,110,.12);
+  border-radius:10px;
+  margin-bottom:.5rem;
+  transition:background .2s,border-color .2s;
+}
+.dryaged-item:last-child{margin-bottom:0;}
+.dryaged-item:hover{
+  background:rgba(201,169,110,.06);
+  border-color:rgba(201,169,110,.28);
+}
+.dryaged-item-left{flex:1;min-width:0;}
+.dryaged-item-name{
+  font-family:var(--fh);font-size:.92rem;font-weight:600;
+  color:#dcc98a;line-height:1.2;margin-bottom:.2rem;
+}
+.dryaged-item-desc{
+  font-size:.72rem;color:rgba(200,185,160,.65);line-height:1.5;font-style:italic;
+}
+.dryaged-item-price{
+  font-family:var(--fh);font-size:1.15rem;font-weight:700;
+  color:#c9a96e;white-space:nowrap;flex-shrink:0;align-self:center;
+}
+.dryaged-item-price span{
+  font-size:.55rem;font-family:var(--fb);font-weight:400;
+  color:rgba(201,169,110,.45);margin-left:.2rem;letter-spacing:.04em;
+}
+
+body.light .dryaged-badge{color:#7a4a18;border-color:rgba(139,105,20,.5);background:rgba(201,169,110,.12);}
+body.light .dryaged-title{color:#3a2010;text-shadow:none;}
+body.light .dryaged-subtitle{color:rgba(100,60,20,.55);}
+body.light .breed-card{background:rgba(255,255,255,.55);border-color:rgba(160,100,50,.18);}
+body.light .breed-card:hover{background:rgba(255,255,255,.8);border-color:rgba(160,100,50,.32);}
+body.light .breed-card-name{color:#3a2010;}
+body.light .breed-card-name-sub{color:rgba(100,60,20,.5);}
+body.light .breed-divider{background:rgba(139,105,20,.3);}
+body.light .breed-card-desc{color:rgba(60,35,10,.65);}
+body.light .breed-tag{background:rgba(201,169,110,.12);border-color:rgba(139,105,20,.25);color:rgba(100,65,15,.8);}
+body.light .dryaged-items-title{color:rgba(139,105,20,.55);}
+body.light .dryaged-items-title::after{background:linear-gradient(90deg,rgba(139,105,20,.2),transparent);}
+body.light .dryaged-item{background:rgba(255,255,255,.55);border-color:rgba(160,100,50,.18);}
+body.light .dryaged-item:hover{background:rgba(255,255,255,.8);border-color:rgba(160,100,50,.32);}
+body.light .dryaged-item-name{color:#3a2010;}
+body.light .dryaged-item-desc{color:rgba(80,50,20,.55);}
+body.light .dryaged-item-price{color:#7a4a18;}
+body.light .dryaged-item-price span{color:rgba(120,70,20,.5);}
+body.light .dryaged-pairing{border-top-color:rgba(139,105,20,.2);}
+body.light .dryaged-pairing-label{color:rgba(139,105,20,.55);}
+body.light .dryaged-pairing-label::after{background:linear-gradient(90deg,rgba(139,105,20,.2),transparent);}
+body.light .pairing-row{border-bottom-color:rgba(139,105,20,.1);}
+body.light .pairing-row-name{color:#5a3810;}
+body.light .pairing-row-sep{color:rgba(139,105,20,.3);}
+body.light .pairing-row-note{color:rgba(80,50,20,.5);}
+
+/* ══ CHAMPAGNE PREMIUM CARD ══ */
+.champ-premium-section{
+  margin:1.4rem 0 1.2rem;
+  border-radius:14px;
+  overflow:hidden;
+  background:#261a0e;
+  border:1px solid rgba(185,130,80,.3);
+  box-shadow:0 4px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(200,150,90,.12);
+  position:relative;
+}
+body.light .champ-premium-section{
+  background:#f5ece0;
+  border-color:rgba(160,100,50,.35);
+  box-shadow:0 4px 20px rgba(120,70,20,.12),inset 0 1px 0 rgba(180,120,60,.2);
+}
+.champ-premium-header{
+  background:linear-gradient(135deg,#1e1208 0%,#2e1c0e 50%,#221508 100%);
+  padding:1.3rem 1.5rem .95rem;
+  position:relative;
+  border-bottom:1px solid rgba(185,130,80,.18);
+}
+body.light .champ-premium-header{
+  background:linear-gradient(135deg,#eddcca 0%,#e8d4bc 50%,#ead8c4 100%);
+  border-bottom-color:rgba(160,100,50,.2);
+}
+.champ-premium-header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(185,130,60,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.champ-premium-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,rgba(185,130,60,.2),rgba(140,85,30,.14));
+  border:1px solid rgba(185,130,60,.38);
+  color:#d4a870;
+  font-family:var(--fb);font-size:.58rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:.28rem .8rem;border-radius:20px;
+  margin-bottom:.65rem;
+}
+.champ-premium-title{
+  font-family:var(--fh);font-size:1.3rem;font-weight:700;
+  color:#e2c8a0;letter-spacing:.04em;line-height:1.15;
+  text-shadow:0 2px 16px rgba(180,120,50,.2);
+}
+.champ-premium-subtitle{
+  font-size:.7rem;color:rgba(185,150,100,.5);
+  margin-top:.28rem;letter-spacing:.06em;font-style:italic;
+}
+.champ-premium-body{padding:1rem 1.5rem 1.3rem;}
+.champ-premium-items-title{
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(185,130,60,.4);font-family:var(--fb);font-weight:600;
+  margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem;
+}
+.champ-premium-items-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(185,130,60,.15),transparent);
+}
+.champ-premium-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
+  padding:.8rem .85rem;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(185,130,60,.1);
+  border-radius:10px;
+  margin-bottom:.45rem;
+  transition:background .2s,border-color .2s;
+}
+.champ-premium-item:last-child{margin-bottom:0;}
+.champ-premium-item:hover{
+  background:rgba(185,130,60,.05);
+  border-color:rgba(185,130,60,.22);
+}
+.champ-premium-item-left{flex:1;min-width:0;}
+.champ-premium-item-name{
+  font-family:var(--fh);font-size:.9rem;font-weight:600;
+  color:#ccaa78;line-height:1.2;margin-bottom:.18rem;
+}
+.champ-premium-item-sub{
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(185,130,60,.4);font-family:var(--fb);margin-bottom:.18rem;
+}
+.champ-premium-item-desc{
+  font-size:.71rem;color:rgba(190,165,130,.5);line-height:1.5;font-style:italic;
+}
+.champ-premium-item-price{
+  font-family:var(--fh);font-size:1.1rem;font-weight:700;
+  color:#b8945a;white-space:nowrap;flex-shrink:0;align-self:center;
+}
+.champ-premium-item-price span{
+  font-size:.54rem;font-family:var(--fb);font-weight:400;
+  color:rgba(180,130,70,.45);margin-left:.18rem;letter-spacing:.04em;
+}
+body.light .champ-premium-badge{color:#7a4a18;border-color:rgba(140,85,30,.5);background:rgba(185,130,60,.12);}
+body.light .champ-premium-title{color:#3a2010;text-shadow:none;}
+body.light .champ-premium-subtitle{color:rgba(100,60,20,.55);}
+body.light .champ-premium-items-title{color:rgba(140,85,30,.55);}
+body.light .champ-premium-items-title::after{background:linear-gradient(90deg,rgba(140,85,30,.2),transparent);}
+body.light .champ-premium-item{background:rgba(255,255,255,.55);border-color:rgba(160,100,50,.18);}
+body.light .champ-premium-item:hover{background:rgba(255,255,255,.8);border-color:rgba(160,100,50,.32);}
+body.light .champ-premium-item-name{color:#3a2010;}
+body.light .champ-premium-item-sub{color:rgba(120,70,20,.5);}
+body.light .champ-premium-item-desc{color:rgba(80,50,20,.55);}
+body.light .champ-premium-item-price{color:#7a4a18;}
+body.light .champ-premium-item-price span{color:rgba(120,70,20,.5);}
+
 /* ══ PRE-ORDER ══ */
 .item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
 .item-preorder-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;flex-wrap:wrap;}
@@ -334,6 +643,13 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 .dot-tinto{background:linear-gradient(135deg,#d06060,#801818);}
 .wine-item-hidden{display:none;}
 .dig-item-hidden{display:none;}
+
+.wf-active-champanhe-bruto{border-color:#e8d48a;color:#f5e9b0;background:rgba(232,212,138,.13);font-weight:600;}
+.wf-active-champanhe-doce{border-color:#e8b4c8;color:#f5d0e0;background:rgba(232,180,200,.12);font-weight:600;}
+.wf-active-champanhe-meioseco{border-color:#b8d4a8;color:#d0ecc0;background:rgba(184,212,168,.12);font-weight:600;}
+.wf-active-champanhe-rose{border-color:#e89898;color:#f5b8b8;background:rgba(232,152,152,.12);font-weight:600;}
+.wf-active-champanhe-bdnoirs{border-color:#9898d8;color:#c0c0f0;background:rgba(152,152,216,.12);font-weight:600;}
+.champanhe-item-hidden{display:none;}
 
 /* ══ NOTE ══ */
 .note{border-left:2px solid var(--ember);padding:.68rem .9rem;margin:1.2rem 0 0;font-style:italic;color:var(--muted);font-size:.78rem;line-height:1.5;}
@@ -629,9 +945,13 @@ const SECTIONS = [
   {id:'cocktails', lPt:'Cocktails & Sangrias',lEn:'Cocktails & Sangrias',lFr:'Cocktails & Sangrias',
    img:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1200&q=80&auto=format&fit=crop',
    sPt:'Bebidas da casa',sEn:'House drinks',sFr:'Boissons maison',legend:false,doneness:false},
+  {id:'champanhe', lPt:'Champanhe & Espumante', lEn:'Champagne & Sparkling', lFr:'Champagne & Pétillant',
+   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Celebre com classe',sEn:'Celebrate with style',sFr:'Célébrez avec élégance',legend:false,doneness:false},   
   {id:'digestivos',lPt:'Digestivos',        lEn:'Digestifs',        lFr:'Digestifs',
    img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=1200&q=80&auto=format&fit=crop',
    sPt:'Para fechar em grande',sEn:'The perfect finale',sFr:'La parfaite conclusion',legend:false,doneness:false},
+
 ];
 
 const AL = {
@@ -644,9 +964,10 @@ const AL = {
   '🦪':{pt:'Moluscos',en:'Molluscs',fr:'Mollusques'},'🐑':{pt:'Tremoço',en:'Lupin',fr:'Lupin'},
 };
 
+//MENU ordering
 const VALID_SECTIONS = new Set([
   'entradas','sopas','carnes','peixes','sobremesas',
-  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','digestivos'
+  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champanhe','digestivos'
 ]);
 
 const COL_MAP = {
@@ -836,7 +1157,8 @@ function buildItem(row, secId){
   }
   const wineAttr = secId==='vinhos' && row.wine_type ? ` data-wine-type="${row.wine_type}"` : '';
   const digAttr  = secId==='digestivos' && row.wine_type ? ` data-dig-type="${row.wine_type}"` : '';
-  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
+  const champAttr= secId==='champanhe' && row.wine_type ? ` data-champ-type="${row.wine_type}"` : '';
+  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}${champAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
 }
 
 function buildHero(sec){
@@ -845,6 +1167,172 @@ function buildHero(sec){
     <div class="sec-title">
       <h2><span class="t-pt">${sec.lPt}</span><span class="t-en">${sec.lEn}</span><span class="t-fr">${sec.lFr}</span></h2>
       <p><span class="t-pt">${sec.sPt}</span><span class="t-en">${sec.sEn}</span><span class="t-fr">${sec.sFr}</span></p>
+    </div>
+  </div>`;
+}
+
+function buildChampanhePremium(rows){
+  const premium = rows.filter(r => r.section === 'champanhe' && (r.wine_type || '').toLowerCase() === 'premium');
+  if(!premium.length) return '';
+
+  let itemsHtml = '';
+  premium.forEach(r => {
+    const namePt = r.name_pt || '';
+    const nameEn = r.name_en || namePt;
+    const nameFr = r.name_fr || namePt;
+    const descPt = r.desc_pt || '';
+    const descEn = r.desc_en || descPt;
+    const descFr = r.desc_fr || descPt;
+    const sub    = r.subsection || '';
+    const price  = r.price_full || '';
+    const label  = r.price_label_full || '70cl';
+    itemsHtml += `<div class="champ-premium-item">
+      <div class="champ-premium-item-left">
+        ${sub ? `<div class="champ-premium-item-sub">${sub}</div>` : ''}
+        <div class="champ-premium-item-name">
+          <span class="t-pt">${namePt}</span><span class="t-en">${nameEn}</span><span class="t-fr">${nameFr}</span>
+        </div>
+        ${descPt ? `<div class="champ-premium-item-desc"><span class="t-pt">${descPt}</span><span class="t-en">${descEn}</span><span class="t-fr">${descFr}</span></div>` : ''}
+      </div>
+      ${price ? `<div class="champ-premium-item-price">${price}<span>${label}</span></div>` : ''}
+    </div>`;
+  });
+
+  return `<div class="champ-premium-section">
+    <div class="champ-premium-header">
+      <div class="champ-premium-badge">🥂 Seleção Premium</div>
+      <div class="champ-premium-title">
+        <span class="t-pt">Grande Cuvée & Prestige</span>
+        <span class="t-en">Grand Cuvée & Prestige</span>
+        <span class="t-fr">Grande Cuvée & Prestige</span>
+      </div>
+      <div class="champ-premium-subtitle">
+        <span class="t-pt">A nossa seleção de referências de excepção — para momentos que merecem o melhor.</span>
+        <span class="t-en">Our selection of exceptional references — for moments that deserve the very best.</span>
+        <span class="t-fr">Notre sélection de références d'exception — pour les moments qui méritent le meilleur.</span>
+      </div>
+    </div>
+    <div class="champ-premium-body">
+      <div class="champ-premium-items-title">
+        <span class="t-pt">Disponível agora</span>
+        <span class="t-en">Available now</span>
+        <span class="t-fr">Disponible maintenant</span>
+      </div>
+      ${itemsHtml}
+    </div>
+  </div>`;
+}
+
+function buildDryAged(rows){
+  const maturadas = rows.filter(r => r.section === 'carnes' && (r.wine_type || '').toLowerCase().includes('maturad'));
+  if(!maturadas.length) return '';
+
+  const lang = getLang();
+
+  const titles = {
+    pt:'Cortes Nobres | Premium',
+    en:'Noble Cuts | Premium',
+    fr:'Coupes Nobles | Premium'
+  };
+  const subtitles = {
+    pt:'A nossa seleção de cortes premium, maturados pacientemente para atingir a perfeição sensorial.',
+    en:'Our selection of premium cuts, patiently aged to reach sensory perfection.',
+    fr:'Notre sélection de coupes premium, patiemment maturées pour atteindre la perfection sensorielle.'
+  };
+  const breedTitle = {
+    pt:'Conheça os cortes',
+    en:'Meet the cuts',
+    fr:'Découvrez les coupes'
+  };
+  const angusDesc = {
+    pt:'Mais suave, mais marmoreio interno (gordura entremeada), sabor mais adocicado.',
+    en:'Milder, with more internal marbling (interspersed fat), a sweeter flavour.',
+    fr:'Plus doux, plus de persillage interne (graisse entremêlée), saveur plus sucrée.'
+  };
+  const simDesc = {
+    pt:'Sabor mais potente, gordura exterior mais rica e amarela, estrutura de carne com mais personalidade.',
+    en:'More intense flavour, richer and yellower exterior fat, a more characterful meat structure.',
+    fr:'Saveur plus puissante, graisse extérieure plus riche et jaune, structure de viande avec plus de personnalité.'
+  };
+  const angusTags = {pt:['Marmoreio', 'Suave', 'Adocicado'], en:['Marbling','Mild','Sweet'],fr:['Persillage','Doux','Sucré']};
+  const simTags   = {pt:['Personalidade','Potente','Gordura Rica'],en:['Character','Bold','Rich Fat'],fr:['Caractère','Puissant','Gras Riche']};
+  const itemsLabel = {pt:'Disponível agora',en:'Available now',fr:'Disponible maintenant'};
+
+  let itemsHtml = '';
+  maturadas.forEach(r => {
+    const namePt = r.name_pt || '';
+    const nameEn = r.name_en || namePt;
+    const nameFr = r.name_fr || namePt;
+    const descPt = r.desc_pt || '';
+    const descEn = r.desc_en || descPt;
+    const descFr = r.desc_fr || descPt;
+    const price = r.price_full ? r.price_full : '';
+    const label = r.price_label_full || 'Dose';
+    itemsHtml += `<div class="dryaged-item">
+      <div class="dryaged-item-left">
+        <div class="dryaged-item-name">
+          <span class="t-pt">${namePt}</span><span class="t-en">${nameEn}</span><span class="t-fr">${nameFr}</span>
+        </div>
+        ${descPt ? `<div class="dryaged-item-desc"><span class="t-pt">${descPt}</span><span class="t-en">${descEn}</span><span class="t-fr">${descFr}</span></div>` : ''}
+      </div>
+      ${price ? `<div class="dryaged-item-price">${price}<span>${label}</span></div>` : ''}
+    </div>`;
+  });
+
+  return `<div class="dryaged-section">
+    <div class="dryaged-header">
+      <div class="dryaged-badge"><span class="dryaged-badge-icon">🔥</span> Dry-Aged · Premium</div>
+      <div class="dryaged-title"><span class="t-pt">${titles.pt}</span><span class="t-en">${titles.en}</span><span class="t-fr">${titles.fr}</span></div>
+      <div class="dryaged-subtitle"><span class="t-pt">${subtitles.pt}</span><span class="t-en">${subtitles.en}</span><span class="t-fr">${subtitles.fr}</span></div>
+    </div>
+    <div class="dryaged-body">
+      <div class="dryaged-breeds">
+        <div class="breed-card">
+          <div class="breed-card-name">🐄 Angus <span class="breed-card-name-sub">Black Angus (Irlanda/Espanha)</span></div>
+          <div class="breed-divider"></div>
+          <div class="breed-card-desc"><span class="t-pt">${angusDesc.pt}</span><span class="t-en">${angusDesc.en}</span><span class="t-fr">${angusDesc.fr}</span></div>
+          <div class="breed-card-tags">${angusTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${angusTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${angusTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
+        </div>
+        <div class="breed-card">
+          <div class="breed-card-name">🐄 Simmental <span class="breed-card-name-sub">Chuletero Simmental (Alemanha)</span></div>
+          <div class="breed-divider"></div>
+          <div class="breed-card-desc"><span class="t-pt">${simDesc.pt}</span><span class="t-en">${simDesc.en}</span><span class="t-fr">${simDesc.fr}</span></div>
+          <div class="breed-card-tags">${simTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${simTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${simTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="dryaged-items-title"><span class="t-pt">${itemsLabel.pt}</span><span class="t-en">${itemsLabel.en}</span><span class="t-fr">${itemsLabel.fr}</span></div>
+      ${itemsHtml}
+      <div class="dryaged-pairing">
+        <div class="dryaged-pairing-label">
+          <span class="t-pt">🍷 Harmonização da nossa lista</span>
+          <span class="t-en">🍷 Pairings from our list</span>
+          <span class="t-fr">🍷 Accords de notre carte</span>
+        </div>
+        <div class="pairing-row">
+          <span class="pairing-dot pairing-dot-tinto"></span>
+          <span class="pairing-row-name">Quinta da Leda</span>
+          <span class="pairing-row-sep">—</span>
+          <span class="pairing-row-note"><span class="t-pt">Douro Tinto · fundo profundo, ideal para Angus</span><span class="t-en">Douro Red · deep and refined, ideal for Angus</span><span class="t-fr">Douro Rouge · profond et raffiné, idéal pour Angus</span></span>
+        </div>
+        <div class="pairing-row">
+          <span class="pairing-dot pairing-dot-tinto"></span>
+          <span class="pairing-row-name">Callabriga</span>
+          <span class="pairing-row-sep">—</span>
+          <span class="pairing-row-note"><span class="t-pt">Douro Tinto · encorpado e balsâmico, ideal para Simmental</span><span class="t-en">Douro Red · full-bodied and balsamic, ideal for Simmental</span><span class="t-fr">Douro Rouge · corsé et balsamique, idéal pour Simmental</span></span>
+        </div>
+        <div class="pairing-row">
+          <span class="pairing-dot pairing-dot-tinto"></span>
+          <span class="pairing-row-name">Quinta de Castelares G. Reserva</span>
+          <span class="pairing-row-sep">—</span>
+          <span class="pairing-row-note"><span class="t-pt">Douro Tinto · tosta e taninos sedosos para o Tomahawk</span><span class="t-en">Douro Red · toasty notes and silky tannins for Tomahawk</span><span class="t-fr">Douro Rouge · notes grillées, tanins soyeux pour le Tomahawk</span></span>
+        </div>
+        <div class="pairing-row">
+          <span class="pairing-dot pairing-dot-espumante"></span>
+          <span class="pairing-row-name">Murganheira Unito Bruto</span>
+          <span class="pairing-row-sep">—</span>
+          <span class="pairing-row-note"><span class="t-pt">Espumante · acidez a contrastar com a gordura maturada</span><span class="t-en">Sparkling · acidity to contrast the aged fat</span><span class="t-fr">Pétillant · acidité en contraste avec le gras maturé</span></span>
+        </div>
+      </div>
     </div>
   </div>`;
 }
@@ -869,19 +1357,43 @@ function buildMenu(rows){
     let html=buildHero(sec)+'<div class="items"><span class="ornament">✦ ✦ ✦</span>';
     const alSecs=['entradas','sopas','carnes','peixes','sobremesas','vinhos','vinhoscasa'];
     if(alSecs.includes(sec.id)) html+=alNotice();
-if(sec.id==='digestivos'){
+if(sec.id==='champanhe'){
+      html+=`<div class="wine-filter champ-filter" id="champ-filter">
+        <button class="wine-filter-btn champ-filter-btn wf-active-all" onclick="setChampanheFilter('all',this)">
+          <span class="wine-dot dot-all"></span>
+          <span class="t-pt">Todos</span><span class="t-en">All</span><span class="t-fr">Tous</span>
+        </button>
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Bruto',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#f5e9b0,#c9a030)"></span>
+          <span class="t-pt">Bruto</span><span class="t-en">Brut</span><span class="t-fr">Brut</span>
+        </button>
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Doce',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#f5d0e0,#d06090)"></span>
+          <span class="t-pt">Doce</span><span class="t-en">Sweet</span><span class="t-fr">Doux</span>
+        </button>
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Meio Seco',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#d0ecc0,#60a840)"></span>
+          <span class="t-pt">Meio Seco</span><span class="t-en">Semi-Dry</span><span class="t-fr">Demi-Sec</span>
+        </button>
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Rosé',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#f5b8b8,#d04060)"></span>
+          <span class="t-pt">Rosé</span><span class="t-en">Rosé</span><span class="t-fr">Rosé</span>
+        </button>
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Blanc de Noirs',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#c0c0f0,#5050a8)"></span>
+          <span class="t-pt">Blanc de Noirs</span><span class="t-en">Blanc de Noirs</span><span class="t-fr">Blanc de Noirs</span>
+        </button>
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Premium',this)">
+          <span class="wine-dot dot-premium"></span>
+          <span class="t-pt">⭐ Premium</span><span class="t-en">⭐ Premium</span><span class="t-fr">⭐ Premium</span>
+        </button>
+      </div>`;
+    }
+    if(sec.id==='digestivos'){
       html+=`<div class="wine-filter" id="dig-filter">
         <button class="wine-filter-btn wf-active-all" onclick="setDigFilter('all',this)">
           <span class="wine-dot dot-all"></span>
           <span class="t-pt">Todos</span><span class="t-en">All</span><span class="t-fr">Tous</span>
-        </button>
-        <button class="wine-filter-btn" onclick="setDigFilter('Champanhe',this)">
-          <span class="wine-dot" style="background:linear-gradient(135deg,#f0e68c,#daa520)"></span>
-          <span class="t-pt">Champanhe</span><span class="t-en">Champagne</span><span class="t-fr">Champagne</span>
-        </button>
-        <button class="wine-filter-btn" onclick="setDigFilter('Espumante',this)">
-          <span class="wine-dot" style="background:linear-gradient(135deg,#e8f5e9,#a5d6a7)"></span>
-          <span class="t-pt">Espumante</span><span class="t-en">Sparkling</span><span class="t-fr">Pétillant</span>
         </button>
         <button class="wine-filter-btn" onclick="setDigFilter('Whisky',this)">
           <span class="wine-dot" style="background:linear-gradient(135deg,#d4a04a,#8b5e1a)"></span>
@@ -901,7 +1413,9 @@ if(sec.id==='digestivos'){
         </button>
       </div>`;
     }
-        if(sec.doneness) html+=buildDoneness();
+        if(sec.id==='carnes') html+=buildDryAged(rows);
+    if(sec.id==='champanhe') html+=buildChampanhePremium(rows);
+    if(sec.doneness) html+=buildDoneness();
     if(sec.id==='vinhos'){
       html+=`<div class="wine-filter" id="wine-filter">
         <button class="wine-filter-btn wf-active-all" onclick="setWineFilter('all',this)">
@@ -967,6 +1481,28 @@ function setDigFilter(tipo, btn){
     let el=sh.nextElementSibling; let allHidden=true;
     while(el && !el.classList.contains('sub-heading') && !el.classList.contains('al-legend') && !el.classList.contains('note')){
       if(el.classList.contains('item') && !el.classList.contains('dig-item-hidden')) allHidden=false;
+      el=el.nextElementSibling;
+    }
+    sh.classList.toggle('sub-heading-hidden', allHidden);
+  });
+}
+function setChampanheFilter(tipo, btn){
+  document.querySelectorAll('#champanhe .champ-filter-btn').forEach(b=>{
+    b.className=b.className.replace(/wf-active-champanhe-\S+/g,'').trim();
+  });
+  const classMap={
+    all:'wf-active-all',Bruto:'wf-active-champanhe-bruto',Doce:'wf-active-champanhe-doce',
+    'Meio Seco':'wf-active-champanhe-meioseco',Rosé:'wf-active-champanhe-rose',
+    'Blanc de Noirs':'wf-active-champanhe-bdnoirs',Premium:'wf-active-premium'
+  };
+  btn.classList.add(classMap[tipo]||'wf-active-all');
+  document.querySelectorAll('#champanhe .item[data-champ-type]').forEach(el=>{
+    el.classList.toggle('champanhe-item-hidden', tipo!=='all' && el.dataset.champType!==tipo);
+  });
+  document.querySelectorAll('#champanhe .sub-heading').forEach(sh=>{
+    let el=sh.nextElementSibling; let allHidden=true;
+    while(el && !el.classList.contains('sub-heading') && !el.classList.contains('al-legend') && !el.classList.contains('note')){
+      if(el.classList.contains('item') && !el.classList.contains('champanhe-item-hidden')) allHidden=false;
       el=el.nextElementSibling;
     }
     sh.classList.toggle('sub-heading-hidden', allHidden);
@@ -1154,7 +1690,9 @@ carnes,Carnes | Meats | Viandes,Picanha Laminada (2p),Sliced Rump (for 2),Rumste
 carnes,Carnes | Meats | Viandes,Posta Laminada (2p),Sliced Veal Steak (for 2),Côte de Veau Lamée (pour 2),Posta de vitela laminada grelhada de sabor delicado,Sliced grilled veal steak with a delicate flavour,Côte de veau lamée grillée au goût délicat,30,,,Dose,,,🧪,,ativo
 carnes,Carnes | Meats | Viandes,Posta à Tasquinha,Tasquinha-Style Veal,Côte de Veau Tasquinha,Posta de vitela grelhada com molho especial da tasquinha,Grilled veal steak with the tasquinha special sauce,Côte de veau grillée avec sauce spéciale tasquinha,22,,,Dose,,,🧪,,ativo
 carnes,Carnes | Meats | Viandes,Tomahawk Premium (3p),Tomahawk Premium (for 3),Tomahawk Premium (pour 3),"Corte suculento, marmorização superior e osso longo. Ideal para partilhar entre 3 pessoas.","Juicy cut, superior marbling, long bone. Perfect for sharing between 3 people.","Coupe juteuse, persillage supérieur et os long. Idéal à partager à 3.",50,,,Dose,,,,,
-carnes,Carnes | Meats | Viandes,Tomahawk Premium Maturado (3p),Dry-Aged Premium Tomahawk (for 3),Tomahawk Premium Maturé (pour 3),Maturação Dry Aged para sabor intenso e ternura máxima. Experiência gourmet para 3.,Dry Aged for intense flavor and maximum tenderness. Gourmet experience for 3.,"Maturation Dry Aged, saveur intense et tendreté maximale. Expérience gourmet à 3.",65,,,Dose,,,🧪,,ativo
+carnes,Carnes | Meats | Viandes,Tomahawk Premium Maturado (3p),Dry-Aged Premium Tomahawk (for 3),Tomahawk Premium Maturé (pour 3),Maturação Dry Aged para sabor intenso e ternura máxima. Experiência gourmet para 3.,Dry Aged for intense flavor and maximum tenderness. Gourmet experience for 3.,"Maturation Dry Aged, saveur intense et tendreté maximale. Expérience gourmet à 3.",65,,,Dose,,,🧪,Maturadas,ativo
+carnes,Carnes | Meats | Viandes,Entrecôte Angus Maturado (1p),Dry-Aged Angus Entrecôte (for 1),Entrecôte Angus Maturé (pour 1),"Angus Black maturado 28 dias. Marmoreio intenso, sabor adocicado e textura derretida.","28-day aged Black Angus. Intense marbling, sweet flavour and melt-in-mouth texture.","Angus Black maturé 28 jours. Persillage intense, saveur sucrée, texture fondante.",48,,,Dose,,,🧪,Maturadas,ativo
+carnes,Carnes | Meats | Viandes,Bife Simmental Maturado (1p),Dry-Aged Simmental Steak (for 1),Steak Simmental Maturé (pour 1),"Simmental maturado 21 dias. Gordura exterior rica e amarela, sabor potente e estrutura com personalidade.","21-day aged Simmental. Rich yellow exterior fat, bold flavour and characterful meat structure.","Simmental maturé 21 jours. Graisse extérieure riche et jaune, saveur puissante, structure caractérielle.",42,,,Dose,,,🧪,Maturadas,ativo
 carnes,Por Encomenda · Sob reserva prévia,Pica no Chão,Pica no Chão,Pica no Chão,Prato típico português — Arroz de Cabidela com Frango Caseiro Estufado e Arroz Fresco. Sob encomenda prévia.,Traditional Portuguese dish — chicken cabidela rice with home-stewed chicken,Plat typique portugais — riz cabidela avec poulet mijoté maison,100,,,Dose,,,🌾🥚🧪,,rascunho
 carnes,Carnes | Meats | Viandes,Cabrito Assado no Forno,Oven-Roasted Kid Goat,Chevreau Rôti au Four,Cabrito assado lentamente no forno — apenas aos Domingos. Textura macia e sabor inconfundível. Sob encomenda prévia.,Slowly oven-roasted kid goat — Sundays only. Must be ordered in advance.,Chevreau rôti lentement au four — Dimanches seulement. Sur commande préalable.,46,24,,Dose,Meia,,,,so domingo
 carnes,Carnes | Meats | Viandes,Vitela Assada no Forno,Oven-Roasted Veal,Veau Rôti au Four,Vitela assada lentamente no forno com ervas aromáticas — apenas aos Domingos. Sob encomenda prévia.,Slowly oven-roasted veal — Sundays only. Must be ordered in advance.,Veau rôti lentement au four — Dimanches seulement. Sur commande préalable.,28,15,,Dose,Meia,,,,so domingo
@@ -1299,6 +1837,22 @@ vinhos,Premium,Quinta Vale Meão 2021 (75cl),,,"Vibrante e refinado, combina fre
 cocktails,Sangrias,Sangria de Maracujá,Passion Fruit Sangria,Sangria aux Fruits de la Passion,Vinho branco maracujá fresco e hortelã,"White wine, fresh passion fruit and mint","Vin blanc, fruit de la passion frais et menthe",22,15,,Grande,Média,,🧪,,ativo
 cocktails,Sangrias,Sangria de Espumante (Grande),Sparkling Wine Sangria,Sangria au Vin Mousseux,"Uma variante sofisticada e festiva da sangria tradicional, elaborada com espumante, frutas frescas e um toque de hortelã, caracterizada pela sua efervescência e leveza.","A sophisticated and festive twist on traditional sangria, made with sparkling wine, fresh fruit, and a hint of mint, characterized by its effervescence and lightness.","Une variante sophistiquée et festive de la sangria traditionnelle, élaborée avec du vin mousseux, des fruits frais et une touche de menthe, caractérisée par son effervescence et sa légèreté.",27,,,Grande,,,🧪,,ativo
 cocktails,Sangrias,Sangria de Frutos Vermelhos,Red Berry Sangria,Sangria aux Fruits Rouges,"Uma bebida refrescante e vibrante à base de vinho, combinada com uma seleção de frutos vermelhos frescos, como morangos, framboesas e mirtilos, resultando num perfil doce e frutado.","A refreshing and vibrant wine-based drink, combined with a selection of fresh red berries such as strawberries, raspberries, and blueberries, resulting in a sweet and fruity profile.","Une boisson rafraîchissante et vibrante à base de vin, associée à une sélection de fruits rouges frais tels que fraises, framboises et myrtilles, offrant un profil doux et fruité.",22,15,,Grande,Média,,🧪,,ativo
+🥂  CHAMPANHE & ESPUMANTE,,,,,,,,,,,,,,,,
+champanhe,Champanhe,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.","Elegant and balanced Champagne with notes of fresh fruit and maturity.","Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Premium,ativo
+champanhe,Champanhe,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Premium,ativo
+champanhe,Champanhe,Moet & Chandon Champanhe Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Bruto,ativo
+champanhe,Champanhe,Moet & Chandon Champanhe Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Rosé,ativo
+champanhe,Champanhe,Dom Perignon Champanhe Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Premium,ativo
+champanhe,Espumante,Terras do Demo Espumante Távora-Varosa Bruto Branco (70cl),Terras do Demo Sparkling Wine Távora-Varosa Brut White (70cl),Vin Mousseux Terras do Demo Távora-Varosa Brut Blanc (70cl),"Espumante Távora-Varosa fresco, com bolha fina e excelente acidez.","Fresh Távora-Varosa sparkling wine, with fine bubbles and excellent acidity.","Vin mousseux Távora-Varosa frais, avec des bulles fines et une excellente acidité.",20,,,70cl,,,🧪,Bruto,ativo
+champanhe,Espumante,Murganheira Reserva Bruto (70cl),Murganheira Reserve Brut (70cl),Murganheira Réserve Brut (70cl),"Um clássico equilibrado, com aromas frutados e uma elegância intemporal.","A balanced classic, with fruity aromas and timeless elegance.","Un classique équilibré, aux arômes fruités et d'une élégance intemporelle.",27,,,70cl,,,🧪,Bruto,ativo
+champanhe,Espumante,Murganheira Reserva Meio Seco (70cl),Murganheira Reserve Semi-Dry (70cl),Murganheira Réserve Demi-Sec (70cl),"Ligeiramente doce e suave, ideal para quem prefere menos acidez.","Slightly sweet and smooth, ideal for those who prefer less acidity.","Légèrement doux et onctueux, idéal pour ceux qui préfèrent moins d'acidité.",25,,,70cl,,,🧪,Meio Seco,ativo
+champanhe,Espumante,Murganheira Reserva Rosé Bruto (70cl),Murganheira Reserve Rosé Brut (70cl),Murganheira Réserve Rosé Brut (70cl),"Fresco e frutado, com notas delicadas de morango e framboesa.","Fresh and fruity, with delicate notes of strawberry and raspberry.","Frais et fruité, avec des notes délicates de fraise et de framboise.",25,,,70cl,,,🧪,Rosé,ativo
+champanhe,Espumante,Murganheira Golden (70cl),Murganheira Golden (70cl),Murganheira Golden (70cl),"Edição premium, complexa e sofisticada, com maturação prolongada.","Premium edition, complex and sophisticated, with prolonged maturation.","Édition premium, complexe et sophistiquée, avec une maturation prolongée.",28,,,70cl,,,🧪,Bruto,ativo
+champanhe,Espumante,Murganheira Chardonnay Bruto (70cl),Murganheira Chardonnay Brut (70cl),Murganheira Chardonnay Brut (70cl),Varietal elegante com notas amanteigadas e excelente estrutura.,Elegant varietal with buttery notes and excellent structure.,Cépage élégant avec des notes beurrées et une excellente structure.,45,,,70cl,,,🧪,Bruto,ativo
+champanhe,Espumante,Murganheira Bruto Tinto (70cl),Murganheira Brut Red (70cl),Murganheira Brut Rouge (70cl),"Espumante tinto raro, intenso e gastronómico, com notas de frutos silvestres.","Rare red sparkling wine, intense and gastronomic, with notes of wild berries.","Vin mousseux rouge rare, intense et gastronomique, avec des notes de baies sauvages.",25,,,70cl,,,🧪,Blanc de Noirs,ativo
+champanhe,Espumante,Murganheira Unito Bruto (70cl),Murganheira Unito Brut (70cl),Murganheira Unito Brut (70cl),"A expressão máxima da casa Murganheira, raro e de enorme complexidade.","The ultimate expression of Murganheira, rare and of enormous complexity.","L'expression ultime de la maison Murganheira, rare et d'une énorme complexité.",50,,,70cl,,,🧪,Bruto,ativo
+champanhe,Espumante,Raposeira Velha Reserva (70cl),Raposeira Old Reserve (70cl),Raposeira Vieille Réserve (70cl),"Espumante clássico de Lamego, com envelhecimento em cave e perfil maduro.","Classic sparkling wine from Lamego, cave-aged with a mature profile.","Vin mousseux classique de Lamego, vieilli en cave avec um perfil mûr.",27,,,70cl,,,🧪,Bruto,ativo
+champanhe,Espumante,Raposeira Rosé (70cl),Raposeira Rosé (70cl),Raposeira Rosé (70cl),"Leve e refrescante, ideal para momentos de celebração e aperitivos.","Light and refreshing, ideal for celebratory moments and appetizers.","Léger et rafraîchissant, idéal pour les moments de célébration et les apéritifs.",20,,,70cl,,,🧪,Rosé,ativo
 🥃  DIGESTIVOS,,,,,,,,,,,,,,,,
 digestivos,Champanhe,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.",Elegant and balanced Champagne with notes of fresh fruit and maturity.,"Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Champanhe,
 digestivos,Champanhe,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Champanhe,
