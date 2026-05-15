@@ -644,12 +644,12 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 .wine-item-hidden{display:none;}
 .dig-item-hidden{display:none;}
 
-.wf-active-champanhe-bruto{border-color:#e8d48a;color:#f5e9b0;background:rgba(232,212,138,.13);font-weight:600;}
-.wf-active-champanhe-doce{border-color:#e8b4c8;color:#f5d0e0;background:rgba(232,180,200,.12);font-weight:600;}
-.wf-active-champanhe-meioseco{border-color:#b8d4a8;color:#d0ecc0;background:rgba(184,212,168,.12);font-weight:600;}
-.wf-active-champanhe-rose{border-color:#e89898;color:#f5b8b8;background:rgba(232,152,152,.12);font-weight:600;}
-.wf-active-champanhe-bdnoirs{border-color:#9898d8;color:#c0c0f0;background:rgba(152,152,216,.12);font-weight:600;}
-.champanhe-item-hidden{display:none;}
+.wf-active-champagne-bruto{border-color:#e8d48a;color:#f5e9b0;background:rgba(232,212,138,.13);font-weight:600;}
+.wf-active-champagne-doce{border-color:#e8b4c8;color:#f5d0e0;background:rgba(232,180,200,.12);font-weight:600;}
+.wf-active-champagne-meioseco{border-color:#b8d4a8;color:#d0ecc0;background:rgba(184,212,168,.12);font-weight:600;}
+.wf-active-champagne-rose{border-color:#e89898;color:#f5b8b8;background:rgba(232,152,152,.12);font-weight:600;}
+.wf-active-champagne-bdnoirs{border-color:#9898d8;color:#c0c0f0;background:rgba(152,152,216,.12);font-weight:600;}
+.champagne-item-hidden{display:none;}
 
 /* ══ NOTE ══ */
 .note{border-left:2px solid var(--ember);padding:.68rem .9rem;margin:1.2rem 0 0;font-style:italic;color:var(--muted);font-size:.78rem;line-height:1.5;}
@@ -945,9 +945,9 @@ const SECTIONS = [
   {id:'cocktails', lPt:'Cocktails & Sangrias',lEn:'Cocktails & Sangrias',lFr:'Cocktails & Sangrias',
    img:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1200&q=80&auto=format&fit=crop',
    sPt:'Bebidas da casa',sEn:'House drinks',sFr:'Boissons maison',legend:false,doneness:false},
-  {id:'champanhe', lPt:'Champanhe & Espumante', lEn:'Champagne & Sparkling', lFr:'Champagne & Pétillant',
-   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80&auto=format&fit=crop',
-   sPt:'Celebre com classe',sEn:'Celebrate with style',sFr:'Célébrez avec élégance',legend:false,doneness:false},   
+  {id:'champagne', lPt:'Champagne & Espumante', lEn:'Champagne & Sparkling', lFr:'Champagne & Pétillant',
+   img:'https://images.unsplash.com/photo-1580657264608-44775e61c0a1?w=1200&q=80&auto=format&fit=crop',
+   sPt:'Celébre com classe',sEn:'Celebrate with style',sFr:'Célébrez avec élégance',legend:false,doneness:false},   
   {id:'digestivos',lPt:'Digestivos',        lEn:'Digestifs',        lFr:'Digestifs',
    img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=1200&q=80&auto=format&fit=crop',
    sPt:'Para fechar em grande',sEn:'The perfect finale',sFr:'La parfaite conclusion',legend:false,doneness:false},
@@ -965,7 +965,7 @@ const AL = {
 
 const VALID_SECTIONS = new Set([
   'entradas','sopas','carnes','peixes','sobremesas',
-  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champanhe','digestivos'
+  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','digestivos'
 ]);
 
 const COL_MAP = {
@@ -1155,7 +1155,7 @@ function buildItem(row, secId){
   }
   const wineAttr = secId==='vinhos' && row.wine_type ? ` data-wine-type="${row.wine_type}"` : '';
   const digAttr  = secId==='digestivos' && row.wine_type ? ` data-dig-type="${row.wine_type}"` : '';
-  const champAttr= secId==='champanhe' && row.wine_type ? ` data-champ-type="${row.wine_type}"` : '';
+  const champAttr= secId==='champagne' && row.wine_type ? ` data-champ-type="${row.wine_type}"` : '';
   return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}${champAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
 }
 
@@ -1169,8 +1169,8 @@ function buildHero(sec){
   </div>`;
 }
 
-function buildChampanhePremium(rows){
-  const premium = rows.filter(r => r.section === 'champanhe' && (r.wine_type || '').toLowerCase() === 'premium');
+function buildChampagnePremium(rows){
+  const premium = rows.filter(r => r.section === 'champagne' && (r.wine_type || '').toLowerCase() === 'premium');
   if(!premium.length) return '';
 
   let itemsHtml = '';
@@ -1198,24 +1198,28 @@ function buildChampanhePremium(rows){
 
   return `<div class="champ-premium-section">
     <div class="champ-premium-header">
-      <div class="champ-premium-badge">🥂 Seleção Premium</div>
+      <div class="champ-premium-badge">
+        <span class="t-pt">✨ EXCLUSIVO</span>
+        <span class="t-en">✨ EXCLUSIVE</span>
+        <span class="t-fr">✨ EXCLUSIF</span>
+      </div>
       <div class="champ-premium-title">
-        <span class="t-pt">Grande Cuvée & Prestige</span>
-        <span class="t-en">Grand Cuvée & Prestige</span>
-        <span class="t-fr">Grande Cuvée & Prestige</span>
+        <span class="t-pt">Grandes Escolhas & Prestígio</span>
+        <span class="t-en">Prestige & Rare Selections</span>
+        <span class="t-fr">Prestige & Cuvées Rares</span>
       </div>
       <div class="champ-premium-subtitle">
-        <span class="t-pt">A nossa seleção de referências de excepção — para momentos que merecem o melhor.</span>
-        <span class="t-en">Our selection of exceptional references — for moments that deserve the very best.</span>
-        <span class="t-fr">Notre sélection de références d'exception — pour les moments qui méritent le meilleur.</span>
+        <span class="t-pt">Rótulos memoráveis e colheitas de exceção para elevar o seu brinde.</span>
+        <span class="t-en">Memorable labels and exceptional vintages to elevate your toast.</span>
+        <span class="t-fr">Des étiquettes mémorables et des millésimes d'exception para sublimer votre toast.</span>
       </div>
     </div>
     <div class="champ-premium-body">
-      <div class="champ-premium-items-title">
-        <span class="t-pt">Disponível agora</span>
-        <span class="t-en">Available now</span>
-        <span class="t-fr">Disponible maintenant</span>
-      </div>
+    <div class="champ-premium-items-title">
+      <span class="t-pt">A Nossa Cave</span>
+      <span class="t-en">Our Cellar Selection</span>
+      <span class="t-fr">La Sélection de Notre Cave</span>
+    </div>
       ${itemsHtml}
     </div>
   </div>`;
@@ -1355,29 +1359,29 @@ function buildMenu(rows){
     let html=buildHero(sec)+'<div class="items"><span class="ornament">✦ ✦ ✦</span>';
     const alSecs=['entradas','sopas','carnes','peixes','sobremesas','vinhos','vinhoscasa'];
     if(alSecs.includes(sec.id)) html+=alNotice();
-if(sec.id==='champanhe'){
+if(sec.id==='champagne'){
       html+=`<div class="wine-filter champ-filter" id="champ-filter">
-        <button class="wine-filter-btn champ-filter-btn wf-active-all" onclick="setChampanheFilter('all',this)">
+        <button class="wine-filter-btn champ-filter-btn wf-active-all" onclick="setChampagneFilter('all',this)">
           <span class="wine-dot dot-all"></span>
           <span class="t-pt">Todos</span><span class="t-en">All</span><span class="t-fr">Tous</span>
         </button>
-        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Bruto',this)">
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampagneFilter('Bruto',this)">
           <span class="wine-dot" style="background:linear-gradient(135deg,#f5e9b0,#c9a030)"></span>
           <span class="t-pt">Bruto</span><span class="t-en">Brut</span><span class="t-fr">Brut</span>
         </button>
-        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Doce',this)">
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampagneFilter('Doce',this)">
           <span class="wine-dot" style="background:linear-gradient(135deg,#f5d0e0,#d06090)"></span>
           <span class="t-pt">Doce</span><span class="t-en">Sweet</span><span class="t-fr">Doux</span>
         </button>
-        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Meio Seco',this)">
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampagneFilter('Meio Seco',this)">
           <span class="wine-dot" style="background:linear-gradient(135deg,#d0ecc0,#60a840)"></span>
           <span class="t-pt">Meio Seco</span><span class="t-en">Semi-Dry</span><span class="t-fr">Demi-Sec</span>
         </button>
-        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Rosé',this)">
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampagneFilter('Rosé',this)">
           <span class="wine-dot" style="background:linear-gradient(135deg,#f5b8b8,#d04060)"></span>
           <span class="t-pt">Rosé</span><span class="t-en">Rosé</span><span class="t-fr">Rosé</span>
         </button>
-        <button class="wine-filter-btn champ-filter-btn" onclick="setChampanheFilter('Blanc de Noirs',this)">
+        <button class="wine-filter-btn champ-filter-btn" onclick="setChampagneFilter('Blanc de Noirs',this)">
           <span class="wine-dot" style="background:linear-gradient(135deg,#c0c0f0,#5050a8)"></span>
           <span class="t-pt">Blanc de Noirs</span><span class="t-en">Blanc de Noirs</span><span class="t-fr">Blanc de Noirs</span>
         </button>
@@ -1408,7 +1412,7 @@ if(sec.id==='champanhe'){
       </div>`;
     }
         if(sec.id==='carnes') html+=buildDryAged(rows);
-    if(sec.id==='champanhe') html+=buildChampanhePremium(rows);
+    if(sec.id==='champagne') html+=buildChampagnePremium(rows);
     if(sec.doneness) html+=buildDoneness();
     if(sec.id==='vinhos'){
       html+=`<div class="wine-filter" id="wine-filter">
@@ -1440,7 +1444,7 @@ if(sec.id==='champanhe'){
       const visibleRows=subRows.filter(r=>{
         const t=(r.wine_type||'').toLowerCase();
         if(sec.id==='carnes' && t==='cortesnobres') return false;
-        if(sec.id==='champanhe' && t==='premium') return false;
+        if(sec.id==='champagne' && t==='premium') return false;
         return true;
       });
       if(visibleRows.length===0) return;
@@ -1487,23 +1491,23 @@ function setDigFilter(tipo, btn){
     sh.classList.toggle('sub-heading-hidden', allHidden);
   });
 }
-function setChampanheFilter(tipo, btn){
-  document.querySelectorAll('#champanhe .champ-filter-btn').forEach(b=>{
-    b.className=b.className.replace(/wf-active-champanhe-\S+/g,'').trim();
+function setChampagneFilter(tipo, btn){
+  document.querySelectorAll('#champagne .champ-filter-btn').forEach(b=>{
+    b.className=b.className.replace(/wf-active-champagne-\S+/g,'').trim();
   });
   const classMap={
-    all:'wf-active-all',Bruto:'wf-active-champanhe-bruto',Doce:'wf-active-champanhe-doce',
-    'Meio Seco':'wf-active-champanhe-meioseco',Rosé:'wf-active-champanhe-rose',
-    'Blanc de Noirs':'wf-active-champanhe-bdnoirs',Premium:'wf-active-premium'
+    all:'wf-active-all',Bruto:'wf-active-champagne-bruto',Doce:'wf-active-champagne-doce',
+    'Meio Seco':'wf-active-champagne-meioseco',Rosé:'wf-active-champagne-rose',
+    'Blanc de Noirs':'wf-active-champagne-bdnoirs',Premium:'wf-active-premium'
   };
   btn.classList.add(classMap[tipo]||'wf-active-all');
-  document.querySelectorAll('#champanhe .item[data-champ-type]').forEach(el=>{
-    el.classList.toggle('champanhe-item-hidden', tipo!=='all' && el.dataset.champType!==tipo);
+  document.querySelectorAll('#champagne .item[data-champ-type]').forEach(el=>{
+    el.classList.toggle('champagne-item-hidden', tipo!=='all' && el.dataset.champType!==tipo);
   });
-  document.querySelectorAll('#champanhe .sub-heading').forEach(sh=>{
+  document.querySelectorAll('#champagne .sub-heading').forEach(sh=>{
     let el=sh.nextElementSibling; let allHidden=true;
     while(el && !el.classList.contains('sub-heading') && !el.classList.contains('al-legend') && !el.classList.contains('note')){
-      if(el.classList.contains('item') && !el.classList.contains('champanhe-item-hidden')) allHidden=false;
+      if(el.classList.contains('item') && !el.classList.contains('champagne-item-hidden')) allHidden=false;
       el=el.nextElementSibling;
     }
     sh.classList.toggle('sub-heading-hidden', allHidden);
@@ -1851,28 +1855,25 @@ vinhos,Premium,Quinta Vale Meão 2021 (75cl),,,"Vibrante e refinado, combina fre
 cocktails,Sangrias,Sangria de Maracujá,Passion Fruit Sangria,Sangria aux Fruits de la Passion,Vinho branco maracujá fresco e hortelã,"White wine, fresh passion fruit and mint","Vin blanc, fruit de la passion frais et menthe",22,15,,Grande,Média,,🧪,,ativo
 cocktails,Sangrias,Sangria de Espumante (Grande),Sparkling Wine Sangria,Sangria au Vin Mousseux,"Uma variante sofisticada e festiva da sangria tradicional, elaborada com espumante, frutas frescas e um toque de hortelã, caracterizada pela sua efervescência e leveza.","A sophisticated and festive twist on traditional sangria, made with sparkling wine, fresh fruit, and a hint of mint, characterized by its effervescence and lightness.","Une variante sophistiquée et festive de la sangria traditionnelle, élaborée avec du vin mousseux, des fruits frais et une touche de menthe, caractérisée par son effervescence et sa légèreté.",27,,,Grande,,,🧪,,ativo
 cocktails,Sangrias,Sangria de Frutos Vermelhos,Red Berry Sangria,Sangria aux Fruits Rouges,"Uma bebida refrescante e vibrante à base de vinho, combinada com uma seleção de frutos vermelhos frescos, como morangos, framboesas e mirtilos, resultando num perfil doce e frutado.","A refreshing and vibrant wine-based drink, combined with a selection of fresh red berries such as strawberries, raspberries, and blueberries, resulting in a sweet and fruity profile.","Une boisson rafraîchissante et vibrante à base de vin, associée à une sélection de fruits rouges frais tels que fraises, framboises et myrtilles, offrant un profil doux et fruité.",22,15,,Grande,Média,,🧪,,ativo
-🥂  CHAMPANHE & ESPUMANTE,,,,,,,,,,,,,,,,
-champanhe,Champanhe,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.","Elegant and balanced Champagne with notes of fresh fruit and maturity.","Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Premium,ativo
-champanhe,Champanhe,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Premium,ativo
-champanhe,Champanhe,Moet & Chandon Champanhe Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Bruto,ativo
-champanhe,Champanhe,Moet & Chandon Champanhe Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Rosé,ativo
-champanhe,Champanhe,Dom Perignon Champanhe Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Premium,ativo
-champanhe,Espumante,Terras do Demo Espumante Távora-Varosa Bruto Branco (70cl),Terras do Demo Sparkling Wine Távora-Varosa Brut White (70cl),Vin Mousseux Terras do Demo Távora-Varosa Brut Blanc (70cl),"Espumante Távora-Varosa fresco, com bolha fina e excelente acidez.","Fresh Távora-Varosa sparkling wine, with fine bubbles and excellent acidity.","Vin mousseux Távora-Varosa frais, avec des bulles fines et une excellente acidité.",20,,,70cl,,,🧪,Bruto,ativo
-champanhe,Espumante,Murganheira Reserva Bruto (70cl),Murganheira Reserve Brut (70cl),Murganheira Réserve Brut (70cl),"Um clássico equilibrado, com aromas frutados e uma elegância intemporal.","A balanced classic, with fruity aromas and timeless elegance.","Un classique équilibré, aux arômes fruités et d'une élégance intemporelle.",27,,,70cl,,,🧪,Bruto,ativo
-champanhe,Espumante,Murganheira Reserva Meio Seco (70cl),Murganheira Reserve Semi-Dry (70cl),Murganheira Réserve Demi-Sec (70cl),"Ligeiramente doce e suave, ideal para quem prefere menos acidez.","Slightly sweet and smooth, ideal for those who prefer less acidity.","Légèrement doux et onctueux, idéal pour ceux qui préfèrent moins d'acidité.",25,,,70cl,,,🧪,Meio Seco,ativo
-champanhe,Espumante,Murganheira Reserva Rosé Bruto (70cl),Murganheira Reserve Rosé Brut (70cl),Murganheira Réserve Rosé Brut (70cl),"Fresco e frutado, com notas delicadas de morango e framboesa.","Fresh and fruity, with delicate notes of strawberry and raspberry.","Frais et fruité, avec des notes délicates de fraise et de framboise.",25,,,70cl,,,🧪,Rosé,ativo
-champanhe,Espumante,Murganheira Golden (70cl),Murganheira Golden (70cl),Murganheira Golden (70cl),"Edição premium, complexa e sofisticada, com maturação prolongada.","Premium edition, complex and sophisticated, with prolonged maturation.","Édition premium, complexe et sophistiquée, avec une maturation prolongée.",28,,,70cl,,,🧪,Bruto,ativo
-champanhe,Espumante,Murganheira Chardonnay Bruto (70cl),Murganheira Chardonnay Brut (70cl),Murganheira Chardonnay Brut (70cl),Varietal elegante com notas amanteigadas e excelente estrutura.,Elegant varietal with buttery notes and excellent structure.,Cépage élégant avec des notes beurrées et une excellente structure.,45,,,70cl,,,🧪,Bruto,ativo
-champanhe,Espumante,Murganheira Bruto Tinto (70cl),Murganheira Brut Red (70cl),Murganheira Brut Rouge (70cl),"Espumante tinto raro, intenso e gastronómico, com notas de frutos silvestres.","Rare red sparkling wine, intense and gastronomic, with notes of wild berries.","Vin mousseux rouge rare, intense et gastronomique, avec des notes de baies sauvages.",25,,,70cl,,,🧪,Blanc de Noirs,ativo
-champanhe,Espumante,Murganheira Unito Bruto (70cl),Murganheira Unito Brut (70cl),Murganheira Unito Brut (70cl),"A expressão máxima da casa Murganheira, raro e de enorme complexidade.","The ultimate expression of Murganheira, rare and of enormous complexity.","L'expression ultime de la maison Murganheira, rare et d'une énorme complexité.",50,,,70cl,,,🧪,Bruto,ativo
-champanhe,Espumante,Raposeira Velha Reserva (70cl),Raposeira Old Reserve (70cl),Raposeira Vieille Réserve (70cl),"Espumante clássico de Lamego, com envelhecimento em cave e perfil maduro.","Classic sparkling wine from Lamego, cave-aged with a mature profile.","Vin mousseux classique de Lamego, vieilli en cave avec um perfil mûr.",27,,,70cl,,,🧪,Bruto,ativo
-champanhe,Espumante,Raposeira Rosé (70cl),Raposeira Rosé (70cl),Raposeira Rosé (70cl),"Leve e refrescante, ideal para momentos de celebração e aperitivos.","Light and refreshing, ideal for celebratory moments and appetizers.","Léger et rafraîchissant, idéal pour les moments de célébration et les apéritifs.",20,,,70cl,,,🧪,Rosé,ativo
+🥂  CHAMPAGNE & ESPUMANTE,,,,,,,,,,,,,,,,
+champagne,Champagne,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.","Elegant and balanced Champagne with notes of fresh fruit and maturity.","Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Premium,ativo
+champagne,Champagne,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Premium,ativo
+champagne,Espumante,Terras do Demo Espumante Távora-Varosa Bruto Branco (70cl),Terras do Demo Sparkling Wine Távora-Varosa Brut White (70cl),Vin Mousseux Terras do Demo Távora-Varosa Brut Blanc (70cl),"Espumante Távora-Varosa fresco, com bolha fina e excelente acidez.","Fresh Távora-Varosa sparkling wine, with fine bubbles and excellent acidity.","Vin mousseux Távora-Varosa frais, avec des bulles fines et une excellente acidité.",20,,,70cl,,,🧪,Bruto,ativo
+champagne,Espumante,Murganheira Reserva Bruto (70cl),Murganheira Reserve Brut (70cl),Murganheira Réserve Brut (70cl),"Um clássico equilibrado, com aromas frutados e uma elegância intemporal.","A balanced classic, with fruity aromas and timeless elegance.","Un classique équilibré, aux arômes fruités et d'une élégance intemporelle.",27,,,70cl,,,🧪,Bruto,ativo
+champagne,Espumante,Murganheira Reserva Meio Seco (70cl),Murganheira Reserve Semi-Dry (70cl),Murganheira Réserve Demi-Sec (70cl),"Ligeiramente doce e suave, ideal para quem prefere menos acidez.","Slightly sweet and smooth, ideal for those who prefer less acidity.","Légèrement doux et onctueux, idéal pour ceux qui préfèrent moins d'acidité.",25,,,70cl,,,🧪,Meio Seco,ativo
+champagne,Espumante,Murganheira Reserva Rosé Bruto (70cl),Murganheira Reserve Rosé Brut (70cl),Murganheira Réserve Rosé Brut (70cl),"Fresco e frutado, com notas delicadas de morango e framboesa.","Fresh and fruity, with delicate notes of strawberry and raspberry.","Frais et fruité, avec des notes délicates de fraise et de framboise.",25,,,70cl,,,🧪,Rosé,ativo
+champagne,Espumante,Murganheira Golden (70cl),Murganheira Golden (70cl),Murganheira Golden (70cl),"Edição premium, complexa e sofisticada, com maturação prolongada.","Premium edition, complex and sophisticated, with prolonged maturation.","Édition premium, complexe et sophistiquée, avec une maturation prolongée.",28,,,70cl,,,🧪,Bruto,ativo
+champagne,Espumante,Murganheira Chardonnay Bruto (70cl),Murganheira Chardonnay Brut (70cl),Murganheira Chardonnay Brut (70cl),Varietal elegante com notas amanteigadas e excelente estrutura.,Elegant varietal with buttery notes and excellent structure.,Cépage élégant avec des notes beurrées et une excellente structure.,45,,,70cl,,,🧪,Bruto,ativo
+champagne,Espumante,Murganheira Bruto Tinto (70cl),Murganheira Brut Red (70cl),Murganheira Brut Rouge (70cl),"Espumante tinto raro, intenso e gastronómico, com notas de frutos silvestres.","Rare red sparkling wine, intense and gastronomic, with notes of wild berries.","Vin mousseux rouge rare, intense et gastronomique, avec des notes de baies sauvages.",25,,,70cl,,,🧪,Blanc de Noirs,ativo
+champagne,Espumante,Murganheira Unito Bruto (70cl),Murganheira Unito Brut (70cl),Murganheira Unito Brut (70cl),"A expressão máxima da casa Murganheira, raro e de enorme complexidade.","The ultimate expression of Murganheira, rare and of enormous complexity.","L'expression ultime de la maison Murganheira, rare et d'une énorme complexité.",50,,,70cl,,,🧪,Bruto,ativo
+champagne,Espumante,Raposeira Velha Reserva (70cl),Raposeira Old Reserve (70cl),Raposeira Vieille Réserve (70cl),"Espumante clássico de Lamego, com envelhecimento em cave e perfil maduro.","Classic sparkling wine from Lamego, cave-aged with a mature profile.","Vin mousseux classique de Lamego, vieilli en cave avec um perfil mûr.",27,,,70cl,,,🧪,Bruto,ativo
+champagne,Espumante,Raposeira Rosé (70cl),Raposeira Rosé (70cl),Raposeira Rosé (70cl),"Leve e refrescante, ideal para momentos de celebração e aperitivos.","Light and refreshing, ideal for celebratory moments and appetizers.","Léger et rafraîchissant, idéal pour les moments de célébration et les apéritifs.",20,,,70cl,,,🧪,Rosé,ativo
 🥃  DIGESTIVOS,,,,,,,,,,,,,,,,
-digestivos,Champanhe,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.",Elegant and balanced Champagne with notes of fresh fruit and maturity.,"Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Champanhe,
-digestivos,Champanhe,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Champanhe,
-digestivos,Champanhe,Moet & Chandon Champanhe Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Champanhe,rascunho
-digestivos,Champanhe,Moet & Chandon Champanhe Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Champanhe,rascunho
-digestivos,Champanhe,Dom Perignon Champanhe Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Champanhe,rascunho
+digestivos,Champagne,Ruinart Bruto (70cl),Ruinart Brut (70cl),Ruinart Brut (70cl),"Champagne elegante e equilibrado, com notas de fruta fresca e maturidade.",Elegant and balanced Champagne with notes of fresh fruit and maturity.,"Champagne élégant et équilibré, avec des notes de fruits frais et de maturité.",90,,,70cl,,,,Champanhe,
+digestivos,Champagne,Blanc de Blancs Bruto (70cl),Blanc de Blancs Brut (70cl),Blanc de Blancs Brut (70cl),"Elaborado exclusivamente com Chardonnay, oferece pureza, frescura e notas cítricas.","Made exclusively from Chardonnay, offering purity, freshness, and citrus notes.","Élaboré exclusivement à partir de Chardonnay, offrant pureté, fraîcheur et notes agrumes.",140,,,70cl,,,,Champanhe,
+digestivos,Champagne,Moet & Chandon Champanhe Brut Branco (70cl),Moet & Chandon Champagne Brut White (70cl),Moet & Chandon Champagne Brut Blanc (70cl),"O champagne mais icónico do mundo; vibrante, generoso e elegante.","The world's most iconic champagne; vibrant, generous, and elegant.","Le champagne le plus emblématique au monde ; vibrant, généreux et élégant.",59.9,,,70cl,,,🧪,Champanhe,rascunho
+digestivos,Champagne,Moet & Chandon Champanhe Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),Moet & Chandon Champagne Brut Rosé (70cl),"Expressão espontânea e romântica, com intensidade de frutos vermelhos.","A spontaneous and romantic expression, with intensity of red fruits.","Une expression spontanée et romantique, avec une intensité de fruits rouges.",79.9,,,70cl,,,🧪,Champanhe,rascunho
+digestivos,Champagne,Dom Perignon Champanhe Brut Branco (70cl),Dom Perignon Champagne Brut White (70cl),Dom Perignon Champagne Brut Blanc (70cl),"Champagne de prestígio vintage, complexo, estruturado e com final mineral.","Prestige vintage champagne, complex, structured with a mineral finish.","Champagne de prestige millésimé, complexe, structuré avec une finale minérale.",350,,,70cl,,,🧪,Champanhe,rascunho
 digestivos,Digestivos,Aguardente Macieira  (5 cl),Macieira Brandy  (5 cl),Eau-de-vie Macieira  (5 cl),"Aguardente portuguesa icónica, com aromas suaves de fruta e envelhecimento em carvalho.","Iconic Portuguese brandy, with smooth fruit aromas and oak aging.","Eau-de-vie portugaise emblématique, aux arômes de fruits doux et vieillie en fût de chêne.",4,,,5 cl,,,,Digestivo,ativo
 digestivos,Digestivos,"Aguardente CR&F (Carvalho, Ribeiro & Ferreira) (5cl)","CR&F Brandy (Carvalho, Ribeiro & Ferreira) (5cl)","Eau-de-vie CR&F (Carvalho, Ribeiro & Ferreira) (5cl)","Aguardente velha reserva, complexa, com notas amadeiradas e final persistente.","Old reserve brandy, complex with woody notes and a persistent finish.","Eau-de-vie vieille réserve, complexe avec des notes boisées et une finale persistante.",5,,,5 cl,,,,Digestivo,ativo
 digestivos,Digestivos,Aguardente Vinica Velha (5cl),Old Wine Brandy (5cl),Eau-de-vie de Vin Vieille (5cl),"Destilado de vinho de alta qualidade, envelhecido com notas de frutos secos e baunilha.","High-quality wine spirit, aged with notes of dried fruits and vanilla.","Eau-de-vie de vin de haute qualité, vieillie avec des notes de fruits secs et de vanille.",10,,,5 cl,,,,Digestivo,ativo
