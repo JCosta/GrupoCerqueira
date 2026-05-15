@@ -1222,8 +1222,8 @@ function buildChampanhePremium(rows){
 }
 
 function buildDryAged(rows){
-  const maturadas = rows.filter(r => r.section === 'carnes' && (r.wine_type || '').toLowerCase().includes('maturad'));
-  if(!maturadas.length) return '';
+  const cortesnobres = rows.filter(r => r.section === 'carnes' && (r.wine_type || '').toLowerCase().includes('cortesnobres'));
+  if(!cortesnobres.length) return '';
 
   const lang = getLang();
 
@@ -1257,7 +1257,7 @@ function buildDryAged(rows){
   const itemsLabel = {pt:'Disponível agora',en:'Available now',fr:'Disponible maintenant'};
 
   let itemsHtml = '';
-  maturadas.forEach(r => {
+  cortesnobres.forEach(r => {
     const namePt = r.name_pt || '';
     const nameEn = r.name_en || namePt;
     const nameFr = r.name_fr || namePt;
@@ -1440,7 +1440,7 @@ if(sec.id==='champanhe'){
       if(sub!=='__') html+=`<div class="sub-heading">${sub}</div>`;
       subRows.forEach(r=>{
         const t = (r.wine_type||'').toLowerCase();
-        if(sec.id==='carnes' && t==='maturadas') return;
+        if(sec.id==='carnes' && t==='cortesnobres') return;
         if(sec.id==='champanhe' && t==='premium') return;
         html+=buildItem(r,sec.id);
       });
