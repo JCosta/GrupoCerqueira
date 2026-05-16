@@ -660,6 +660,8 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 .wf-active-champagne-rose{border-color:#e89898;color:#f5b8b8;background:rgba(232,152,152,.12);font-weight:600;}
 .wf-active-champagne-bdnoirs{border-color:#9898d8;color:#c0c0f0;background:rgba(152,152,216,.12);font-weight:600;}
 .champagne-item-hidden{display:none;}
+.wf-active-sobremesas-gelado{border-color:#f8b4d0;color:#f48cb0;background:rgba(248,180,208,.12);font-weight:600;}
+.sobremesas-item-hidden{display:none;}
 
 /* ══ NOTE ══ */
 .note{border-left:2px solid var(--ember);padding:.68rem .9rem;margin:1.2rem 0 0;font-style:italic;color:var(--muted);font-size:.78rem;line-height:1.5;}
@@ -1175,7 +1177,8 @@ function buildItem(row, secId){
   const wineAttr = secId==='vinhos' && row.wine_type ? ` data-wine-type="${row.wine_type}"` : '';
   const digAttr  = secId==='digestivos' && row.wine_type ? ` data-dig-type="${row.wine_type}"` : '';
   const champAttr= secId==='champagne' && row.wine_type ? ` data-champ-type="${row.wine_type}"` : '';
-  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}${champAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
+  const sobAttr  = secId==='sobremesas' && row.wine_type ? ` data-sob-type="${row.wine_type}"` : '';
+  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}${champAttr}${sobAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
 }
 
 function buildHero(sec){
@@ -1445,6 +1448,18 @@ if(sec.id==='champagne'){
         </button>
       </div>`;
     }
+    if(sec.id==='sobremesas'){
+      html+=`<div class="wine-filter" id="sob-filter">
+        <button class="wine-filter-btn sob-filter-btn wf-active-all" onclick="setSobremesasFilter('all',this)">
+          <span class="wine-dot dot-all"></span>
+          <span class="t-pt">Todos</span><span class="t-en">All</span><span class="t-fr">Tous</span>
+        </button>
+        <button class="wine-filter-btn sob-filter-btn" onclick="setSobremesasFilter('Gelado',this)">
+          <span class="wine-dot" style="background:linear-gradient(135deg,#f8b4d0,#e06090)"></span>
+          <span class="t-pt">🍦 Gelados</span><span class="t-en">🍦 Ice Creams</span><span class="t-fr">🍦 Glaces</span>
+        </button>
+      </div>`;
+    }
     if(HIGHLIGHT_SECTIONS.has(sec.id) && !['carnes','champagne'].includes(sec.id)) html+=buildHighlightCard(rows,sec.id);    if(sec.doneness) html+=buildDoneness();
     subOrder.forEach(sub=>{
       const subRows=bySub[sub];
@@ -1478,6 +1493,27 @@ function fillUnavailBadges(){
   document.querySelectorAll('.novidade-badge[data-novidade]').forEach(el=>{el.innerHTML=ntxt[l];});
   const dtxt={pt:'🟡 Apenas Domingos',en:'🟡 Sundays Only',fr:'🟡 Dimanches Seulement'};
   document.querySelectorAll('.domingo-badge[data-domingo]').forEach(el=>{el.innerHTML=dtxt[l];});
+}
+
+function setSobremesasFilter(tipo, btn){
+  document.querySelectorAll('#sobremesas .sob-filter-btn').forEach(b=>{
+    b.className=b.className.replace(/wf-active-sobremesas-\S+/g,'').trim();
+    if(tipo==='all') b.classList.remove('wf-active-all');
+  });
+  btn.classList.add(tipo==='all' ? 'wf-active-all' : 'wf-active-sobremesas-gelado');
+  document.querySelectorAll('#sobremesas .item[data-sob-type]').forEach(el=>{
+    el.classList.toggle('sobremesas-item-hidden', tipo!=='all' && el.dataset.sobType!==tipo);
+  });
+  document.querySelectorAll('#sobremesas .sub-heading').forEach(sh=>{
+    let el=sh.nextElementSibling; let allHidden=true;
+    while(el && !el.classList.contains('sub-heading') && !el.classList.contains('al-legend') && !el.classList.contains('note')){
+      if(el.classList.contains('item') && !el.classList.contains('sobremesas-item-hidden')) allHidden=false;
+      el=el.nextElementSibling;
+    }
+    sh.classList.toggle('sub-heading-hidden', allHidden);
+  });
+  const card = document.getElementById('highlight-card-sobremesas');
+  if(card) card.classList.toggle('highlight-card-hidden', tipo !== 'all');
 }
 
 function setDigFilter(tipo, btn){
