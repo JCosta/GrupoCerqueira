@@ -1501,9 +1501,15 @@ function setSobremesasFilter(tipo, btn){
     if(tipo==='all') b.classList.remove('wf-active-all');
   });
   btn.classList.add(tipo==='all' ? 'wf-active-all' : 'wf-active-sobremesas-gelado');
-  document.querySelectorAll('#sobremesas .item[data-sob-type]').forEach(el=>{
-    el.classList.toggle('sobremesas-item-hidden', tipo!=='all' && el.dataset.sobType!==tipo);
-  });
+  document.querySelectorAll('#sobremesas .item').forEach(el=>{
+  if(tipo==='all'){
+    el.classList.remove('sobremesas-item-hidden');
+  } else {
+    el.classList.toggle('sobremesas-item-hidden', el.dataset.sobType !== tipo);
+  }
+});
+
+
   document.querySelectorAll('#sobremesas .sub-heading').forEach(sh=>{
     let el=sh.nextElementSibling; let allHidden=true;
     while(el && !el.classList.contains('sub-heading') && !el.classList.contains('al-legend') && !el.classList.contains('note')){
