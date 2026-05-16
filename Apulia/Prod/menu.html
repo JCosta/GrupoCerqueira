@@ -760,6 +760,14 @@ body.lang-pt .t-pt{display:inline;}
 body.lang-en .t-en{display:inline;}
 body.lang-fr .t-fr{display:inline;}
 
+/* ══ PRICE BLOCK LINE IN EACH PRODUCT ══ */
+.pb{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  height:100%;
+}
+
 /* ══ MOBILE ══ */
 @media(max-width:680px){
   :root{--sidebar-w:0px;}
@@ -1078,7 +1086,7 @@ function priceBlock(row){
   if(pm && lm) prices.push({v:pm,l:lm});
   if(pt && lt) prices.push({v:pt,l:lt});
   if(prices.length===0 && pf) return `<div class="item-price">${pf}</div>`;
-  if(prices.length===1) return `<div class="pb"><div class="pr"><span class="pl">${prices[0].l}</span><span class="pv">${prices[0].v}</span></div></div>`;
+  if(prices.length===1) return `<div class="pb" style="justify-content:center;display:flex;flex-direction:column;"><div class="pr"><span class="pl">${prices[0].l}</span><span class="pv">${prices[0].v}</span></div></div>`;
   return`<div class="pb">${prices.map((p,i)=>
     `${i>0?'<div class="pd"></div>':''}<div class="pr"><span class="pl">${p.l}</span><span class="pv${i>0?' dim':''}">${p.v}</span></div>`
   ).join('')}</div>`;
