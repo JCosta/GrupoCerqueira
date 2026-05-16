@@ -1257,7 +1257,7 @@ function buildHighlightCard(rows, secId){
       </div>
       ${price ? `<div class="dryaged-item-price-block">
   <div class="dryaged-item-price">${price}<span>${r.price_label_full||'Dose'}</span></div>
-  ${r.price_half ? `<div class="dryaged-item-price dryaged-item-price-half">${r.price_half}<span>${r.price_label_half||'Meia Dose (1/2)'}</span></div>` : ''}
+  ${r.price_half ? `<div class="dryaged-item-price dryaged-item-price-half">${r.price_half}<span>${r.price_label_half||'(1/2) Dose'}</span></div>` : ''}
 </div>` : ''}
     </div>`;
   });
