@@ -1264,7 +1264,7 @@ function buildHighlightCard(rows, secId){
 
   return `<div class="${wrapClass}" id="${cardId}">
     <div class="${headClass}">
-      <div class="${badgeClass}">${c.badge}</div>
+      <div class="${badgeClass}"><span class="t-pt">${c.badge.pt}</span><span class="t-en">${c.badge.en}</span><span class="t-fr">${c.badge.fr}</span></div>
       <div class="${titleClass}"><span class="t-pt">${c.title.pt}</span><span class="t-en">${c.title.en}</span><span class="t-fr">${c.title.fr}</span></div>
       <div class="${subClass}"><span class="t-pt">${c.sub.pt}</span><span class="t-en">${c.sub.en}</span><span class="t-fr">${c.sub.fr}</span></div>
     </div>
@@ -1402,7 +1402,6 @@ if(sec.id==='champagne'){
     }
         if(sec.id==='carnes') html+=buildDryAged(rows);
     if(sec.id==='champagne') html+=buildChampagnePremium(rows);
-    if(HIGHLIGHT_SECTIONS.has(sec.id) && !['carnes','champagne'].includes(sec.id)) html+=buildHighlightCard(rows,sec.id);    if(sec.doneness) html+=buildDoneness();
     if(sec.id==='vinhos'){
       html+=`<div class="wine-filter" id="wine-filter">
         <button class="wine-filter-btn wf-active-all" onclick="setWineFilter('all',this)">
@@ -1427,6 +1426,7 @@ if(sec.id==='champagne'){
         </button>
       </div>`;
     }
+    if(HIGHLIGHT_SECTIONS.has(sec.id) && !['carnes','champagne'].includes(sec.id)) html+=buildHighlightCard(rows,sec.id);    if(sec.doneness) html+=buildDoneness();
     subOrder.forEach(sub=>{
       const subRows=bySub[sub];
       if(sub==='Vinho Verde Regional'){html+=buildVerdeTinto(subRows);return;}
