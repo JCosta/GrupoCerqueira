@@ -37,8 +37,8 @@ body.light{
   --tag-bg:rgba(139,105,20,.10);--tag-bd:rgba(139,105,20,.25);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
-body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;transition:background .3s,color .3s;min-height:100vh;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;transition:background .3s,color .3s;min-height:100vh;overflow-x:hidden;max-width:100vw;}
 
 /* ══ TOP BAR ══ */
 /* Back bar — thin strip above the main topbar */
@@ -782,6 +782,7 @@ body.lang-fr .t-fr{display:inline;}
     background:var(--bg2);
     z-index:99;
     box-shadow:0 3px 8px rgba(0,0,0,.25);
+    max-width:100vw;
   }
   .main{margin-left:0;width:100%;}
   /* Back button em mobile: texto oculto em ecrãs muito pequenos */
