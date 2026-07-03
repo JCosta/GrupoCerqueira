@@ -610,7 +610,160 @@ body.light .champ-premium-item-price span{color:rgba(120,70,20,.5);}
 
 .highlight-card-hidden{display:none !important;}
 
-/* ══ PRE-ORDER ══ */
+/* ══ ESGOTADO HOJE ══ */
+.item.is-esgotado{opacity:.5;pointer-events:none;position:relative;}
+.esgotado-badge{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:rgba(180,40,40,.12);border:1px solid rgba(180,40,40,.3);
+  color:#c04040;font-size:.56rem;font-family:var(--fb);font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.18rem .55rem;border-radius:10px;margin-top:.3rem;
+}
+body.light .esgotado-badge{background:rgba(180,40,40,.08);color:#a03030;}
+
+/* ══ SEARCH MODAL ══ */
+#search-btn{
+  position:fixed;top:50%;right:0;transform:translateY(-50%);
+  z-index:998;
+  background:var(--card);border:1px solid var(--border);
+  border-right:none;
+  border-radius:12px 0 0 12px;
+  padding:.6rem .55rem;
+  cursor:pointer;
+  box-shadow:-3px 0 12px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;
+  transition:background .2s,box-shadow .2s;
+}
+#search-btn:hover{background:var(--bg2);box-shadow:-4px 0 16px rgba(0,0,0,.22);}
+#search-btn svg{width:18px;height:18px;stroke:var(--accent);stroke-width:2;fill:none;}
+#search-btn span{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;}
+
+#search-overlay{
+  display:none;position:fixed;inset:0;z-index:1100;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  align-items:flex-start;justify-content:center;padding-top:clamp(60px,12vw,100px);
+}
+#search-overlay.open{display:flex;}
+#search-box{
+  background:var(--card);border-radius:16px;
+  width:min(560px,92vw);
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  overflow:hidden;
+  animation:fu .2s ease;
+}
+#search-input-wrap{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.9rem 1.1rem;
+  border-bottom:1px solid var(--border);
+}
+#search-input-wrap svg{width:18px;height:18px;stroke:var(--muted);stroke-width:2;fill:none;flex-shrink:0;}
+#search-input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:var(--fb);font-size:1rem;color:var(--text);
+}
+#search-input::placeholder{color:var(--muted);}
+#search-close{
+  background:none;border:none;cursor:pointer;padding:.25rem;
+  color:var(--muted);font-size:1.2rem;line-height:1;flex-shrink:0;
+}
+#search-results{
+  max-height:min(420px,55vh);overflow-y:auto;
+  padding:.5rem 0;
+}
+.search-result{
+  padding:.7rem 1.1rem;cursor:pointer;
+  transition:background .15s;
+  border-bottom:1px solid var(--border);
+}
+.search-result:last-child{border-bottom:none;}
+.search-result:hover{background:var(--bg2);}
+.sr-section{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;margin-bottom:.2rem;}
+.sr-name{font-family:var(--fh);font-size:.92rem;font-weight:600;color:var(--text);}
+.sr-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.sr-al{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+.sr-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.15rem;}
+.search-empty{padding:1.5rem 1.1rem;text-align:center;color:var(--muted);font-size:.85rem;}
+mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1px;}
+
+/* ══ SURPRESA ══ */
+#surpresa-btn{
+  position:fixed;bottom:14px;left:14px;z-index:997;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:50px;
+  padding:.55rem 1rem;
+  font-family:var(--fb);font-size:.68rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+  display:flex;align-items:center;gap:.4rem;
+  transition:transform .2s,box-shadow .2s;
+}
+#surpresa-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+#surpresa-btn svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.5;}
+
+#surpresa-overlay{
+  display:none;position:fixed;inset:0;z-index:1100;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:1rem;
+}
+#surpresa-overlay.open{display:flex;}
+#surpresa-card{
+  background:var(--card);border-radius:18px;
+  width:min(480px,94vw);
+  box-shadow:0 24px 64px rgba(0,0,0,.45);
+  overflow:hidden;animation:fu .25s ease;
+}
+.surpresa-header{
+  background:linear-gradient(135deg,#1e1208,#2e1c0e);
+  padding:1.2rem 1.4rem .9rem;
+  border-bottom:1px solid rgba(201,169,110,.2);
+}
+.surpresa-badge{
+  display:inline-flex;align-items:center;gap:.35rem;
+  background:rgba(201,169,110,.15);border:1px solid rgba(201,169,110,.35);
+  color:#d4a870;font-size:.57rem;font-family:var(--fb);font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.22rem .7rem;border-radius:20px;margin-bottom:.55rem;
+}
+.surpresa-title{font-family:var(--fh);font-size:1.2rem;color:#e2c8a0;font-weight:700;}
+.surpresa-sub{font-size:.7rem;color:rgba(201,169,110,.5);margin-top:.2rem;font-style:italic;}
+.surpresa-body{padding:1rem 1.4rem 1.3rem;}
+.surpresa-course{
+  padding:.7rem .85rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(201,169,110,.1);
+  border-radius:10px;margin-bottom:.5rem;
+  transition:background .2s;
+}
+body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(139,105,20,.15);}
+.surpresa-course:last-child{margin-bottom:0;}
+.surpresa-course-label{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,169,110,.5);font-family:var(--fb);font-weight:700;margin-bottom:.25rem;}
+.surpresa-course-name{font-family:var(--fh);font-size:.95rem;font-weight:600;color:var(--text);}
+.surpresa-course-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4;}
+.surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.2rem;}
+.surpresa-footer{
+  display:flex;gap:.6rem;padding:.9rem 1.4rem;
+  border-top:1px solid var(--border);
+}
+.surpresa-novo-btn{
+  flex:1;background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:.6rem;font-family:var(--fb);font-size:.75rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
+  transition:opacity .2s;
+}
+.surpresa-novo-btn:hover{opacity:.85;}
+.surpresa-close-btn{
+  background:var(--bg2);color:var(--muted);border:1px solid var(--border);
+  border-radius:8px;padding:.6rem .9rem;
+  font-family:var(--fb);font-size:.75rem;cursor:pointer;
+  transition:background .2s;
+}
+.surpresa-close-btn:hover{background:var(--border);}
+
+/* ══ KNOWN LIMITATIONS NOTE ══ */
 .item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
 .item-preorder-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;flex-wrap:wrap;}
 .item-preorder-left{flex:1;min-width:0;}
@@ -996,14 +1149,15 @@ const COL_MAP = {
   'descricao_pt':'desc_pt','descricao_en':'desc_en','descricao_fr':'desc_fr',
   'preco_dose':'price_full','preco_meia':'price_half','preco_terceiro':'price_third',
   'etiqueta_dose':'price_label_full','etiqueta_meia':'price_label_half','etiqueta_terceiro':'price_label_third',
-  'alergenios':'allergens','tipo':'wine_type','estado':'estado','destaque':'destaque',
+  'alergenios':'allergens','tipo':'wine_type','estado':'estado','destaque':'destaque','esgotado':'esgotado',
+  'ESGOTADO HOJE':'esgotado','esgotado hoje':'esgotado',
   // Legacy
   'section':'section','subsection':'subsection',
   'name_pt':'name_pt','name_en':'name_en','name_fr':'name_fr',
   'desc_pt':'desc_pt','desc_en':'desc_en','desc_fr':'desc_fr',
   'price_full':'price_full','price_half':'price_half','price_third':'price_third',
   'price_label_full':'price_label_full','price_label_half':'price_label_half','price_label_third':'price_label_third',
-  'allergens':'allergens','wine_type':'wine_type','estado':'estado','destaque':'destaque',
+  'allergens':'allergens','wine_type':'wine_type','estado':'estado','destaque':'destaque','esgotado':'esgotado',
 };
 
 // Normaliza preço — aceita: 3 / 3.0 / 3.00 / 3,00 / 3.00€ / 3,00€
@@ -1157,6 +1311,7 @@ function buildItem(row, secId){
   const isNovidade  = estado === 'novidade';
   const isEncomenda = estado === 'por encomenda' || (row.subsection && row.subsection.startsWith('Por Encomenda'));
   const isDomingo   = estado === 'so domingo';
+  const isEsgotado  = (row.esgotado || '').trim().toUpperCase() === 'SIM';
 
   const name=`<div class="item-name"><span class="t-pt">${row.name_pt}</span><span class="t-en">${row.name_en||row.name_pt}</span><span class="t-fr">${row.name_fr||row.name_pt}</span></div>`;
   const hasDesc=row.desc_pt||row.desc_en||row.desc_fr;
@@ -1165,6 +1320,7 @@ function buildItem(row, secId){
   const unavailBadge  = isUnavail  ? `<div class="unavail-badge"  data-unavail="1"></div>`  : '';
   const novidadeBadge = isNovidade ? `<div class="novidade-badge" data-novidade="1"></div>` : '';
   const domingoBadge  = isDomingo  ? `<div class="domingo-badge"  data-domingo="1"></div>`  : '';
+  const esgotadoBadge = isEsgotado ? `<div class="esgotado-badge"><span class="t-pt">⛔ Esgotado hoje</span><span class="t-en">⛔ Sold out today</span><span class="t-fr">⛔ Épuisé aujourd'hui</span></div>` : '';
 
   if(isEncomenda){
     const isSun=row.desc_pt&&(row.desc_pt.includes('Domingo')||row.desc_pt.includes('Sunday')||row.desc_pt.includes('Dimanche'));
@@ -1179,7 +1335,7 @@ function buildItem(row, secId){
   const digAttr  = secId==='digestivos' && row.wine_type ? ` data-dig-type="${row.wine_type}"` : '';
   const champAttr= secId==='champagne' && row.wine_type ? ` data-champ-type="${row.wine_type}"` : '';
   const sobAttr  = secId==='sobremesas' && row.wine_type ? ` data-sob-type="${row.wine_type}"` : '';
-  return`<div class="item${isUnavail?' is-unavail':''}"${wineAttr}${digAttr}${champAttr}${sobAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}</div>${priceBlock(row)}</div>`;
+  return`<div class="item${isUnavail?' is-unavail':''}${isEsgotado?' is-esgotado':''}"${wineAttr}${digAttr}${champAttr}${sobAttr}><div class="item-left">${name}${desc}${al}${novidadeBadge}${domingoBadge}${unavailBadge}${esgotadoBadge}</div>${priceBlock(row)}</div>`;
 }
 
 function buildHero(sec){
@@ -1352,6 +1508,7 @@ function buildChampagnePairing(){ return ''; }
 function buildDryAged(rows){ return buildHighlightCard(rows,'carnes'); }
 function buildChampagnePremium(rows){ return buildHighlightCard(rows,'champagne'); }
 function buildMenu(rows){
+  _storeRows(rows);
   const navEl=document.getElementById('nav-inner');
   const pageEl=document.getElementById('page-content');
   navEl.innerHTML=''; pageEl.innerHTML='';
@@ -1363,6 +1520,7 @@ function buildMenu(rows){
     if(!sRows.length) return;
     const btn=document.createElement('button');
     btn.className='nav-btn'+(first?' active':'');
+    btn.setAttribute('data-sec', sec.id);
     btn.onclick=function(){showSec(sec.id,this);};
     btn.innerHTML=`<span class="t-pt">${sec.lPt}</span><span class="t-en">${sec.lEn}</span><span class="t-fr">${sec.lFr}</span>`;
     navEl.appendChild(btn);
@@ -2003,5 +2161,170 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   });
 </script>
 
+<!-- SEARCH BUTTON -->
+<button id="search-btn" onclick="openSearch()" aria-label="Pesquisar">
+  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <span><span class="t-pt">Pesquisar</span><span class="t-en">Search</span><span class="t-fr">Chercher</span></span>
+</button>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" onclick="if(event.target===this)closeSearch()">
+  <div id="search-box">
+    <div id="search-input-wrap">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search-input" type="search" autocomplete="off" oninput="doSearch(this.value)"
+        placeholder="Pesquisar prato, ingrediente, alergénio..."/>
+      <button id="search-close" onclick="closeSearch()">✕</button>
+    </div>
+    <div id="search-results"></div>
+  </div>
+</div>
+
+<!-- SURPRESA BUTTON -->
+<button id="surpresa-btn" onclick="openSurpresa()">
+  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+  <span class="t-pt">Surpreende-me</span><span class="t-en">Surprise me</span><span class="t-fr">Surprends-moi</span>
+</button>
+
+<!-- SURPRESA OVERLAY -->
+<div id="surpresa-overlay" onclick="if(event.target===this)closeSurpresa()">
+  <div id="surpresa-card">
+    <div class="surpresa-header">
+      <div class="surpresa-badge">🎲 <span class="t-pt">Sugestão do dia</span><span class="t-en">Today's suggestion</span><span class="t-fr">Suggestion du jour</span></div>
+      <div class="surpresa-title"><span class="t-pt">A nossa sugestão para si</span><span class="t-en">Our suggestion for you</span><span class="t-fr">Notre suggestion pour vous</span></div>
+      <div class="surpresa-sub"><span class="t-pt">Uma refeição completa escolhida ao acaso</span><span class="t-en">A complete meal chosen at random</span><span class="t-fr">Un repas complet choisi au hasard</span></div>
+    </div>
+    <div class="surpresa-body" id="surpresa-body"></div>
+    <div class="surpresa-footer">
+      <button class="surpresa-novo-btn" onclick="openSurpresa()">
+        <span class="t-pt">🎲 Outra sugestão</span><span class="t-en">🎲 Another one</span><span class="t-fr">🎲 Une autre</span>
+      </button>
+      <button class="surpresa-close-btn" onclick="closeSurpresa()">
+        <span class="t-pt">Fechar</span><span class="t-en">Close</span><span class="t-fr">Fermer</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 </body>
+<script>
+// ══ SEARCH ══
+let _allRows = [];
+function _storeRows(rows){ _allRows = rows; }
+
+function openSearch(){
+  document.getElementById('search-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('search-input').focus(),80);
+  document.getElementById('search-input').value='';
+  document.getElementById('search-results').innerHTML='';
+}
+function closeSearch(){
+  document.getElementById('search-overlay').classList.remove('open');
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeSearch();closeSurpresa();}
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openSearch();}
+});
+
+const SECTION_LABELS = {
+  entradas:{pt:'Entradas',en:'Starters',fr:'Entrées'},
+  sopas:{pt:'Sopas & Saladas',en:'Soups & Salads',fr:'Soupes & Salades'},
+  carnes:{pt:'Carnes',en:'Meats',fr:'Viandes'},
+  peixes:{pt:'Peixes',en:'Fish',fr:'Poissons'},
+  sobremesas:{pt:'Sobremesas',en:'Desserts',fr:'Desserts'},
+  bebidas:{pt:'Bebidas',en:'Drinks',fr:'Boissons'},
+  cervejas:{pt:'Cervejas',en:'Beers',fr:'Bières'},
+  vinhoscasa:{pt:'Vinhos da Casa',en:'House Wines',fr:'Vins Maison'},
+  vinhos:{pt:'Carta de Vinhos',en:'Wine List',fr:'Carte des Vins'},
+  cocktails:{pt:'Cocktails',en:'Cocktails',fr:'Cocktails'},
+  champagne:{pt:'Champagne & Espumante',en:'Champagne & Sparkling',fr:'Champagne & Pétillant'},
+  digestivos:{pt:'Digestivos',en:'Digestifs',fr:'Digestifs'},
+};
+
+function highlight(text, q){
+  if(!q||!text) return text||'';
+  return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>');
+}
+
+function doSearch(q){
+  const res = document.getElementById('search-results');
+  q = q.trim();
+  if(q.length < 2){ res.innerHTML=''; return; }
+  const lang = document.body.className.match(/lang-(\w+)/)?.[1] || 'pt';
+  const nameKey = `name_${lang}`, descKey = `desc_${lang}`;
+  const ql = q.toLowerCase();
+  const matches = _allRows.filter(r=>{
+    if(!r.name_pt) return false;
+    const n=(r[nameKey]||r.name_pt||'').toLowerCase();
+    const d=(r[descKey]||r.desc_pt||'').toLowerCase();
+    const al=(r.allergens||'').toLowerCase();
+    return n.includes(ql)||d.includes(ql)||al.includes(ql);
+  }).slice(0,12);
+
+  if(!matches.length){
+    res.innerHTML=`<div class="search-empty"><span class="t-pt">Sem resultados para "${q}"</span><span class="t-en">No results for "${q}"</span><span class="t-fr">Aucun résultat pour "${q}"</span></div>`;
+    return;
+  }
+  res.innerHTML = matches.map(r=>{
+    const name = highlight(r[nameKey]||r.name_pt, q);
+    const desc = highlight(r[descKey]||r.desc_pt, q);
+    const sec  = SECTION_LABELS[r.section]||{pt:r.section,en:r.section,fr:r.section};
+    const price= r.price_full ? `${r.price_full}` : '';
+    return`<div class="search-result" onclick="goToSection('${r.section}');closeSearch();">
+      <div class="sr-section"><span class="t-pt">${sec.pt}</span><span class="t-en">${sec.en}</span><span class="t-fr">${sec.fr}</span></div>
+      <div class="sr-name">${name}</div>
+      ${desc?`<div class="sr-desc">${desc}</div>`:''}
+      ${r.allergens?`<div class="sr-al">${r.allergens}</div>`:''}
+      ${price?`<div class="sr-price">${price}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function goToSection(secId){
+  const btn = document.querySelector(`.nav-btn[data-sec="${secId}"]`);
+  if(btn) showSec(secId, btn);
+}
+
+// ══ SURPRESA ══
+const SURPRESA_COURSES = [
+  {key:'entrada', secs:['entradas'], label:{pt:'Entrada',en:'Starter',fr:'Entrée'}},
+  {key:'prato',   secs:['carnes','peixes'], label:{pt:'Prato Principal',en:'Main Course',fr:'Plat Principal'}},
+  {key:'sobremesa',secs:['sobremesas'], label:{pt:'Sobremesa',en:'Dessert',fr:'Dessert'}},
+  {key:'vinho',   secs:['vinhos','vinhoscasa'], label:{pt:'Vinho',en:'Wine',fr:'Vin'}},
+];
+
+function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function openSurpresa(){
+  const available = _allRows.filter(r=>
+    r.name_pt &&
+    (r.estado||'').toLowerCase()==='ativo' &&
+    (r.esgotado||'').toUpperCase()!=='SIM' &&
+    !isDestaque(r)
+  );
+  const lang = document.body.className.match(/lang-(\w+)/)?.[1] || 'pt';
+  const nameKey=`name_${lang}`, descKey=`desc_${lang}`;
+
+  const body = document.getElementById('surpresa-body');
+  body.innerHTML = SURPRESA_COURSES.map(course=>{
+    const pool = available.filter(r=>course.secs.includes(r.section));
+    if(!pool.length) return '';
+    const r = pickRandom(pool);
+    const price = r.price_full||'';
+    return`<div class="surpresa-course">
+      <div class="surpresa-course-label"><span class="t-pt">${course.label.pt}</span><span class="t-en">${course.label.en}</span><span class="t-fr">${course.label.fr}</span></div>
+      <div class="surpresa-course-name">${r[nameKey]||r.name_pt}</div>
+      ${(r[descKey]||r.desc_pt)?`<div class="surpresa-course-desc">${r[descKey]||r.desc_pt}</div>`:''}
+      ${price?`<div class="surpresa-course-price">${price}</div>`:''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('surpresa-overlay').classList.add('open');
+
+  if(typeof gtag==='function') gtag('event','surpresa_me',{language:lang});
+}
+function closeSurpresa(){
+  document.getElementById('surpresa-overlay').classList.remove('open');
+}
+</script>
 </html>
