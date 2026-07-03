@@ -1661,6 +1661,15 @@ function showSec(id,btn){
       window.scrollTo({top:0,behavior:'smooth'});
     }
   }
+  // GA4 — tracking de navegação por secção
+  if(typeof gtag === 'function'){
+    gtag('event','menu_section_view',{
+      section_id: id,
+      section_label: btn?.textContent?.trim() || id,
+      page_title: document.title,
+      language: document.body.className.match(/lang-(\w+)/)?.[1] || 'pt'
+    });
+  }
 }
 
 function setLang(l){
