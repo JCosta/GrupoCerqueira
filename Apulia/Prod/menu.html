@@ -2343,7 +2343,8 @@ function openSurpresa(){
     r.name_pt &&
     (r.estado||'').toLowerCase()==='ativo' &&
     (r.esgotado||'').toUpperCase()!=='SIM' &&
-    !isDestaque(r)
+    !isDestaque(r) &&
+    (r.wine_type||'').toLowerCase()!=='premium'
   );
   const lang = document.body.className.match(/lang-(\w+)/)?.[1] || 'pt';
   const nameKey=`name_${lang}`, descKey=`desc_${lang}`;
