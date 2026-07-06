@@ -2507,7 +2507,7 @@ function goToSection(secId){
 const SURPRESA_COURSES = [
   {key:'entrada',   secs:['entradas'],           label:{pt:'Entradas',        en:'Starters',     fr:'Entrées'},      count:2},
   {key:'prato',     secs:['carnes','peixes'],     label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'},count:1},
-  {key:'harmoniz',  secs:['vinhos','vinhoscasa'], label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'},   count:1},
+  {key:'harmoniz',  secs:['vinhos','vinhoscasa','champagne'], label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'},   count:1},
   {key:'sobremesa', secs:['sobremesas'],          label:{pt:'Sobremesa',       en:'Dessert',      fr:'Dessert'},      count:1},
 ];
 
@@ -2591,7 +2591,6 @@ function buildSurpresa(pref){
     return r.name_pt &&
     (r.estado||'').toLowerCase()==='ativo' &&
     (r.esgotado||'').toUpperCase()!=='SIM' &&
-    !isDestaque(r) &&
     (r.wine_type||'').toLowerCase()!=='premium';
   });
 
