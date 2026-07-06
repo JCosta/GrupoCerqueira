@@ -689,7 +689,12 @@ body.light #search-btn span{color:#8b6914;}
 .sr-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;line-height:1.4;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .sr-al{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
-.sr-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.15rem;}
+.sr-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.15rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:baseline;}
+.sr-price-item{display:inline-flex;align-items:baseline;gap:.2rem;}
+.sr-price-half{opacity:.7;font-size:.75rem;}
+.sr-price-label{font-size:.6rem;font-family:var(--fb);font-weight:400;opacity:.7;text-transform:uppercase;letter-spacing:.05em;}
+.surpresa-price-label{font-size:.58rem;font-family:var(--fb);font-weight:400;opacity:.65;text-transform:uppercase;letter-spacing:.05em;}
+.surpresa-price-half{font-size:.8rem;opacity:.7;}
 .search-empty{padding:1.5rem 1.1rem;text-align:center;color:var(--muted);font-size:.85rem;}
 mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1px;}
 
@@ -2486,13 +2491,20 @@ function doSearch(q){
     var name = highlight(r[nameKey]||r.name_pt, q);
     var desc = highlight(r[descKey]||r.desc_pt, q);
     var sec  = SECTION_LABELS[r.section]||{pt:r.section,en:r.section,fr:r.section};
-    var price= r.price_full || '';
+    var pf = r.price_full||'', lf = r.price_label_full||'';
+    var pm = r.price_half||'',  lm = r.price_label_half||'';
+    if(!pf && !pm) { pf = r.price_third||''; lf = r.price_label_third||''; }
     var h = '<div class="search-result" onclick="goToSection(\''+r.section+'\');closeSearch();">';
     h += '<div class="sr-section"><span class="t-pt">'+sec.pt+'</span><span class="t-en">'+sec.en+'</span><span class="t-fr">'+sec.fr+'</span></div>';
     h += '<div class="sr-name">'+name+'</div>';
     if(desc) h += '<div class="sr-desc">'+desc+'</div>';
     if(r.allergens) h += '<div class="sr-al">'+r.allergens+'</div>';
-    if(price) h += '<div class="sr-price">'+price+'</div>';
+    if(pf||pm){
+      h += '<div class="sr-price">';
+      if(pf) h += '<span class="sr-price-item">'+(lf?'<span class="sr-price-label">'+lf+'</span> ':'')+pf+'</span>';
+      if(pm) h += '<span class="sr-price-item sr-price-half">'+(lm?'<span class="sr-price-label">'+lm+'</span> ':'')+pm+'</span>';
+      h += '</div>';
+    }
     h += '</div>';
     return h;
   }).join('');
@@ -2588,6 +2600,9 @@ function buildSurpresa(pref){
   var recentNames = getRecentNames();
 
   var today = new Date().getDay(); // 0=Domingo
+  // DEV: ?simday=0 força domingo, ?simday=6 força sábado, etc.
+  var simDay = new URLSearchParams(window.location.search).get('simday');
+  if(simDay !== null) today = parseInt(simDay);
   var isSunday = today === 0;
   var available = _allRows.filter(function(r){
     var estado = (r.estado||'').toLowerCase();
@@ -2615,7 +2630,9 @@ function buildSurpresa(pref){
     var labelCount = picks.length;
 
     var itemsHtml = picks.map(function(r){
-      var price = r.price_full||'';
+      var pf = r.price_full||'', lf = r.price_label_full||'';
+      var pm = r.price_half||'',  lm = r.price_label_half||'';
+      if(!pf && !pm) { pf = r.price_third||''; lf = r.price_label_third||''; }
       var name = r[nameKey]||r.name_pt;
       var desc = r[descKey]||r.desc_pt;
       var al = r.allergens ? alBar(r.allergens) : '';
@@ -2626,7 +2643,12 @@ function buildSurpresa(pref){
       if(al) h += al;
       h += '</div>';
       if(desc) h += '<div class="surpresa-course-desc">'+desc+'</div>';
-      if(price) h += '<div class="surpresa-course-price">'+price+'</div>';
+      if(pf||pm){
+        h += '<div class="surpresa-course-price">';
+        if(pf) h += (lf?'<span class="surpresa-price-label">'+lf+'</span> ':'')+pf;
+        if(pm) h += '<span class="surpresa-price-half"> &nbsp;·&nbsp; '+(lm?'<span class="surpresa-price-label">'+lm+'</span> ':'')+pm+'</span>';
+        h += '</div>';
+      }
       h += '</div>';
       return h;
     }).join('');
