@@ -766,6 +766,11 @@ body.light #surpresa-btn{
 }
 body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(139,105,20,.15);}
 .surpresa-course:last-child{margin-bottom:0;}
+.surpresa-course-item{margin-top:.4rem;}
+.surpresa-course-item-multi+.surpresa-course-item-multi{
+  border-top:1px solid rgba(201,169,110,.1);
+  padding-top:.6rem;margin-top:.6rem;
+}
 .surpresa-course-label{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,169,110,.5);font-family:var(--fb);font-weight:700;margin-bottom:.25rem;}
 .surpresa-course-name{font-family:var(--fh);font-size:.95rem;font-weight:600;color:var(--text);}
 .surpresa-course-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4;}
@@ -2348,18 +2353,23 @@ function openSurpresa(){
     const pool = available.filter(r=>course.secs.includes(r.section));
     if(!pool.length) return '';
     const count = course.count || 1;
-    // pick `count` distinct items
     const shuffled = [...pool].sort(()=>Math.random()-.5);
     const picks = shuffled.slice(0, Math.min(count, shuffled.length));
-    return picks.map(r => {
+    const labelPt = count > 1 ? course.label.pt+'s' : course.label.pt;
+    const labelEn = count > 1 ? course.label.en+'s' : course.label.en;
+    const labelFr = count > 1 ? course.label.fr+'s' : course.label.fr;
+    const itemsHtml = picks.map(r => {
       const price = r.price_full||'';
-      return`<div class="surpresa-course">
-        <div class="surpresa-course-label"><span class="t-pt">${course.label.pt}</span><span class="t-en">${course.label.en}</span><span class="t-fr">${course.label.fr}</span></div>
+      return `<div class="surpresa-course-item${picks.length>1?' surpresa-course-item-multi':''}">
         <div class="surpresa-course-name">${r[nameKey]||r.name_pt}</div>
         ${(r[descKey]||r.desc_pt)?`<div class="surpresa-course-desc">${r[descKey]||r.desc_pt}</div>`:''}
         ${price?`<div class="surpresa-course-price">${price}</div>`:''}
       </div>`;
     }).join('');
+    return`<div class="surpresa-course">
+      <div class="surpresa-course-label"><span class="t-pt">${labelPt}</span><span class="t-en">${labelEn}</span><span class="t-fr">${labelFr}</span></div>
+      ${itemsHtml}
+    </div>`;
   }).join('');
 
   document.getElementById('surpresa-overlay').classList.add('open');
