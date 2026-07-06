@@ -688,6 +688,31 @@ body.lang-fr #search-btn .t-fr{display:inline;}
 .search-empty{padding:1.5rem 1.1rem;text-align:center;color:var(--muted);font-size:.85rem;}
 mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1px;}
 
+.surpresa-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.5rem 1.4rem;
+  border-bottom:1px solid rgba(201,169,110,.1);
+  min-height:2.2rem;
+}
+.surpresa-nav-btn{
+  background:none;border:none;
+  color:rgba(201,169,110,.55);
+  font-family:var(--fb);font-size:.65rem;font-weight:600;
+  letter-spacing:.04em;cursor:pointer;
+  padding:.2rem .4rem;border-radius:6px;
+  transition:color .2s,background .2s;
+  display:flex;align-items:center;gap:.3rem;
+}
+.surpresa-nav-btn:hover{color:#e2c8a0;background:rgba(201,169,110,.08);}
+.surpresa-nav-btn:disabled{opacity:.25;cursor:default;pointer-events:none;}
+body.light .surpresa-nav-btn{color:rgba(139,105,20,.5);}
+body.light .surpresa-nav-btn:hover{color:#3a2010;background:rgba(139,105,20,.08);}
+.surpresa-nav-counter{
+  font-size:.6rem;font-family:var(--fb);
+  color:rgba(201,169,110,.4);letter-spacing:.06em;
+}
+body.light .surpresa-nav-counter{color:rgba(139,105,20,.45);}
+
 /* == SURPRESA PRE-SELECTION == */
 .surpresa-presel{
   padding:1.6rem 1.4rem 1.4rem;
@@ -820,7 +845,8 @@ body.light #surpresa-btn{
 }
 body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(139,105,20,.15);}
 .surpresa-course:last-child{margin-bottom:0;}
-.surpresa-course-item{margin-top:.4rem;}
+.surpresa-course-name-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.15rem;}
+.surpresa-course-name-row .al-bar{margin-top:0;}
 .surpresa-course-item-multi+.surpresa-course-item-multi{
   border-top:1px solid rgba(201,169,110,.1);
   padding-top:.6rem;margin-top:.6rem;
@@ -2357,6 +2383,15 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
       </button>
     </div>
     <!-- SUGGESTION SCREEN -->
+    <div class="surpresa-nav" id="surpresa-nav" style="display:none;">
+      <button class="surpresa-nav-btn" id="surpresa-prev" onclick="navSurpresa(-1)" disabled>
+        &#8592; <span class="t-pt">Anterior</span><span class="t-en">Previous</span><span class="t-fr">Précédent</span>
+      </button>
+      <span class="surpresa-nav-counter" id="surpresa-nav-counter"></span>
+      <button class="surpresa-nav-btn" id="surpresa-next" onclick="navSurpresa(1)" disabled>
+        <span class="t-pt">Seguinte</span><span class="t-en">Next</span><span class="t-fr">Suivant</span> &#8594;
+      </button>
+    </div>
     <div class="surpresa-body" id="surpresa-body" style="display:none;"></div>
     <div class="surpresa-footer" id="surpresa-footer" style="display:none;">
       <button class="surpresa-novo-btn" onclick="repeatSurpresa()">
@@ -2459,67 +2494,115 @@ const SURPRESA_COURSES = [
 function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 // Session cache — últimas 3 sugestões para evitar repetição
-function getSurpresaCache(){ try{ return JSON.parse(sessionStorage.getItem('surpresa_cache')||'[]'); }catch(e){ return []; } }
-function addToSurpresaCache(key){ try{ const c=getSurpresaCache(); c.unshift(key); sessionStorage.setItem('surpresa_cache',JSON.stringify(c.slice(0,3))); }catch(e){} }
+// Session history stack — stores up to 3 full suggestion HTML snapshots
+var _historyStack = [];   // [{html, pref}, ...]
+var _historyIndex = -1;   // current position in stack
+var _lastPref = null;
 
-let _lastPref = null; // guarda preferência para "Outra sugestão"
+function pushToHistory(html, pref){
+  // If navigated back and now generating new, truncate forward history
+  if(_historyIndex < _historyStack.length - 1){
+    _historyStack = _historyStack.slice(0, _historyIndex + 1);
+  }
+  _historyStack.push({html: html, pref: pref});
+  if(_historyStack.length > 3) _historyStack.shift();
+  _historyIndex = _historyStack.length - 1;
+}
+
+function updateNavBar(){
+  var nav = document.getElementById('surpresa-nav');
+  var prev = document.getElementById('surpresa-prev');
+  var next = document.getElementById('surpresa-next');
+  var counter = document.getElementById('surpresa-nav-counter');
+  if(!nav) return;
+  var total = _historyStack.length;
+  if(total <= 1){ nav.style.display='none'; return; }
+  nav.style.display='';
+  prev.disabled = (_historyIndex <= 0);
+  next.disabled = (_historyIndex >= total - 1);
+  counter.textContent = (_historyIndex + 1) + ' / ' + total;
+}
+
+function navSurpresa(dir){
+  var newIdx = _historyIndex + dir;
+  if(newIdx < 0 || newIdx >= _historyStack.length) return;
+  _historyIndex = newIdx;
+  var entry = _historyStack[_historyIndex];
+  document.getElementById('surpresa-body').innerHTML = entry.html;
+  _lastPref = entry.pref;
+  updateNavBar();
+}
+
+// Keep a set of recently used item names to avoid repetition
+function getRecentNames(){
+  try{ return new Set(JSON.parse(sessionStorage.getItem('surpresa_recent')||'[]')); }catch(e){ return new Set(); }
+}
+function addRecentNames(names){
+  try{
+    var existing = JSON.parse(sessionStorage.getItem('surpresa_recent')||'[]');
+    names.forEach(function(n){ existing.unshift(n); });
+    sessionStorage.setItem('surpresa_recent', JSON.stringify(existing.slice(0,9)));
+  }catch(e){}
+}
 
 function openSurpresa(){
-  // Mostrar pré-selecção
+  // Reset history for new session
+  _historyStack = [];
+  _historyIndex = -1;
+  // Show pre-selection screen
   document.getElementById('surpresa-presel').style.display='';
+  document.getElementById('surpresa-nav').style.display='none';
   document.getElementById('surpresa-body').style.display='none';
   document.getElementById('surpresa-footer').style.display='none';
   document.getElementById('surpresa-overlay').classList.add('open');
   document.getElementById('surpresa-btn').style.display='none';
-  const sb=document.getElementById('source-badge');
+  var sb=document.getElementById('source-badge');
   if(sb) sb.style.display='none';
   if(typeof gtag==='function') gtag('event','surpresa_me',{language:document.body.className.match(/lang-(\w+)/)?.[1]||'pt'});
 }
 
 function buildSurpresa(pref){
   _lastPref = pref;
-  const lang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
-  const nameKey='name_'+lang, descKey='desc_'+lang;
-  const recentKeys = getSurpresaCache();
+  var lang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
+  var nameKey='name_'+lang, descKey='desc_'+lang;
+  var recentNames = getRecentNames();
 
-  const available = _allRows.filter(r=>
-    r.name_pt &&
+  var available = _allRows.filter(function(r){
+    return r.name_pt &&
     (r.estado||'').toLowerCase()==='ativo' &&
     (r.esgotado||'').toUpperCase()!=='SIM' &&
     !isDestaque(r) &&
-    (r.wine_type||'').toLowerCase()!=='premium'
-  );
+    (r.wine_type||'').toLowerCase()!=='premium';
+  });
 
-  const body = document.getElementById('surpresa-body');
-  body.innerHTML = SURPRESA_COURSES.map(course=>{
-    // Filtrar por preferência de prato principal
-    let pool = available.filter(r=>course.secs.includes(r.section));
-    if(pref && course.key==='prato') pool = available.filter(r=>r.section===pref);
+  var bodyHtml = SURPRESA_COURSES.map(function(course){
+    var pool = available.filter(function(r){ return course.secs.includes(r.section); });
+    if(pref && course.key==='prato') pool = available.filter(function(r){ return r.section===pref; });
     if(!pool.length) return '';
+    var count = course.count||1;
+    var eligible = pool.filter(function(r){ return !recentNames.has(r.name_pt); });
+    if(eligible.length < count) eligible = pool;
+    var shuffled = eligible.slice().sort(function(){ return Math.random()-.5; });
+    var picks = shuffled.slice(0, Math.min(count, shuffled.length));
+    addRecentNames(picks.map(function(r){ return r.name_pt; }));
 
-    const count = course.count||1;
-    // Evitar repetições recentes
-    let eligible = pool.filter(r=>!recentKeys.includes(r.name_pt));
-    if(eligible.length < count) eligible = pool; // fallback se pool pequeno
-    const shuffled = [...eligible].sort(()=>Math.random()-.5);
-    const picks = shuffled.slice(0, Math.min(count, shuffled.length));
-    picks.forEach(r=>addToSurpresaCache(r.name_pt));
+    var labelPt = course.label.pt;
+    var labelEn = course.label.en;
+    var labelFr = course.label.fr;
+    var labelCount = picks.length;
 
-    const labelCount = picks.length;
-    const labelPt = course.label.pt;
-    const labelEn = course.label.en;
-    const labelFr = course.label.fr;
-
-    const itemsHtml = picks.map(r=>{
-      const price = r.price_full||'';
-      const name = r[nameKey]||r.name_pt;
-      const desc = r[descKey]||r.desc_pt;
-      const al = r.allergens ? alBar(r.allergens) : '';
-      const multiCls = labelCount>1?' surpresa-course-item-multi':'';
-      let h = '<div class="surpresa-course-item'+multiCls+'">';
-      h += '<div class="surpresa-course-name">'+name+'</div>';
-      if(desc) h += '<div class="surpresa-course-desc">'+desc+'</div>';
+    var itemsHtml = picks.map(function(r){
+      var price = r.price_full||'';
+      var name = r[nameKey]||r.name_pt;
+      var desc = r[descKey]||r.desc_pt;
+      var al = r.allergens ? alBar(r.allergens) : '';
+      var multiCls = labelCount>1?' surpresa-course-item-multi':'';
+      var h = '<div class="surpresa-course-item'+multiCls+'">';
+      h += '<div class="surpresa-course-name-row">';
+      h += '<span class="surpresa-course-name">'+name+'</span>';
       if(al) h += al;
+      h += '</div>';
+      if(desc) h += '<div class="surpresa-course-desc">'+desc+'</div>';
       if(price) h += '<div class="surpresa-course-price">'+price+'</div>';
       h += '</div>';
       return h;
@@ -2533,10 +2616,12 @@ function buildSurpresa(pref){
       +'</div>'+itemsHtml+'</div>';
   }).join('');
 
-  // Transição: ocultar pré-selecção, mostrar sugestão
+  pushToHistory(bodyHtml, pref);
+  document.getElementById('surpresa-body').innerHTML = bodyHtml;
   document.getElementById('surpresa-presel').style.display='none';
   document.getElementById('surpresa-body').style.display='';
   document.getElementById('surpresa-footer').style.display='';
+  updateNavBar();
 }
 
 function repeatSurpresa(){ buildSurpresa(_lastPref); }
