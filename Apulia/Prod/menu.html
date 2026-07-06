@@ -2514,10 +2514,12 @@ function buildSurpresa(pref){
       const price = r.price_full||'';
       const name = r[nameKey]||r.name_pt;
       const desc = r[descKey]||r.desc_pt;
+      const al = r.allergens ? alBar(r.allergens) : '';
       const multiCls = labelCount>1?' surpresa-course-item-multi':'';
       let h = '<div class="surpresa-course-item'+multiCls+'">';
       h += '<div class="surpresa-course-name">'+name+'</div>';
       if(desc) h += '<div class="surpresa-course-desc">'+desc+'</div>';
+      if(al) h += al;
       if(price) h += '<div class="surpresa-course-price">'+price+'</div>';
       h += '</div>';
       return h;
