@@ -638,6 +638,10 @@ body.light .esgotado-badge{background:rgba(180,40,40,.08);color:#a03030;}
 #search-btn:hover{background:var(--bg2);box-shadow:-4px 0 16px rgba(0,0,0,.22);}
 #search-btn svg{width:18px;height:18px;stroke:var(--accent);stroke-width:2;fill:none;}
 #search-btn span{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;}
+#search-btn .t-pt,#search-btn .t-en,#search-btn .t-fr{display:none;}
+body.lang-pt #search-btn .t-pt{display:inline;}
+body.lang-en #search-btn .t-en{display:inline;}
+body.lang-fr #search-btn .t-fr{display:inline;}
 
 #search-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
@@ -691,18 +695,25 @@ mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1
 /* ══ SURPRESA ══ */
 #surpresa-btn{
   position:fixed;bottom:14px;left:14px;z-index:997;
-  background:var(--accent);color:#fff;
-  border:none;border-radius:50px;
-  padding:.55rem 1rem;
-  font-family:var(--fb);font-size:.68rem;font-weight:700;
+  background:linear-gradient(135deg,#b8860b,#d4a017);
+  color:#fff;
+  border:2px solid rgba(255,220,100,.4);
+  border-radius:50px;
+  padding:.6rem 1.1rem;
+  font-family:var(--fb);font-size:.7rem;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;
   cursor:pointer;
-  box-shadow:0 4px 16px rgba(0,0,0,.3);
+  box-shadow:0 4px 18px rgba(180,130,0,.45);
   display:flex;align-items:center;gap:.4rem;
   transition:transform .2s,box-shadow .2s;
 }
-#surpresa-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
-#surpresa-btn svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.5;}
+body.light #surpresa-btn{
+  background:linear-gradient(135deg,#9a6e00,#b8860b);
+  border-color:rgba(180,120,0,.35);
+  box-shadow:0 4px 18px rgba(140,90,0,.35);
+}
+#surpresa-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(180,130,0,.55);}
+#surpresa-btn svg{width:15px;height:15px;fill:#fff;stroke:none;}
 
 #surpresa-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
@@ -714,6 +725,8 @@ mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1
 #surpresa-card{
   background:var(--card);border-radius:18px;
   width:min(480px,94vw);
+  max-height:90vh;
+  display:flex;flex-direction:column;
   box-shadow:0 24px 64px rgba(0,0,0,.45);
   overflow:hidden;animation:fu .25s ease;
 }
@@ -734,7 +747,7 @@ mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1
 }
 .surpresa-title{font-family:var(--fh);font-size:1.2rem;color:#e2c8a0;font-weight:700;}
 .surpresa-sub{font-size:.7rem;color:rgba(201,169,110,.5);margin-top:.2rem;font-style:italic;}
-.surpresa-body{padding:1rem 1.4rem 1.3rem;overflow-y:auto;max-height:55vh;}
+.surpresa-body{padding:1rem 1.4rem 1.3rem;overflow-y:auto;flex:1;}
 .surpresa-course{
   padding:.7rem .85rem;
   background:rgba(255,255,255,.03);
@@ -748,31 +761,34 @@ body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(13
 .surpresa-course-name{font-family:var(--fh);font-size:.95rem;font-weight:600;color:var(--text);}
 .surpresa-course-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4;}
 .surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.2rem;}
-.surpresa-footer{display:none;}
+.surpresa-footer{
+  display:flex;gap:.6rem;padding:.9rem 1.4rem;
+  border-top:1px solid rgba(201,169,110,.15);
+  flex-shrink:0;background:var(--card);
+}
 .surpresa-novo-btn{
-  background:rgba(201,169,110,.18);
-  color:#d4a870;
-  border:1px solid rgba(201,169,110,.45);
-  border-radius:8px;
-  padding:.38rem .7rem;
-  font-family:var(--fb);font-size:.62rem;font-weight:700;
+  flex:1;
+  background:linear-gradient(135deg,#b8860b,#d4a017);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:.7rem;font-family:var(--fb);font-size:.75rem;font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
-  transition:background .2s;white-space:nowrap;
+  transition:opacity .2s;
 }
-.surpresa-novo-btn:hover{background:rgba(201,169,110,.3);}
+.surpresa-novo-btn:hover{opacity:.85;}
 .surpresa-close-btn{
-  background:rgba(255,255,255,.08);
-  color:rgba(201,169,110,.7);
-  border:1px solid rgba(201,169,110,.2);
-  border-radius:8px;padding:.38rem .7rem;
-  font-family:var(--fb);font-size:.62rem;cursor:pointer;
-  transition:background .2s;white-space:nowrap;
+  background:var(--bg2);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:10px;padding:.7rem 1.1rem;
+  font-family:var(--fb);font-size:.75rem;font-weight:600;cursor:pointer;
+  transition:background .2s;
 }
-.surpresa-close-btn:hover{background:rgba(255,255,255,.15);}
-body.light .surpresa-novo-btn{background:rgba(139,105,20,.12);color:#7a5010;border-color:rgba(139,105,20,.4);}
-body.light .surpresa-novo-btn:hover{background:rgba(139,105,20,.22);}
-body.light .surpresa-close-btn{background:rgba(0,0,0,.06);color:#7a5010;border-color:rgba(139,105,20,.25);}
-body.light .surpresa-close-btn:hover{background:rgba(0,0,0,.12);}
+.surpresa-close-btn:hover{background:var(--border);}
+body.light .surpresa-novo-btn{background:linear-gradient(135deg,#9a6e00,#b8860b);}
+body.light .surpresa-close-btn{background:#f0ece6;color:#3a2010;border-color:rgba(139,105,20,.2);}
+body.light .surpresa-close-btn:hover{background:#e5dfd7;}
 
 /* ══ KNOWN LIMITATIONS NOTE ══ */
 .item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
@@ -2211,16 +2227,16 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
         <div class="surpresa-title"><span class="t-pt">A nossa sugestão para si</span><span class="t-en">Our suggestion for you</span><span class="t-fr">Notre suggestion pour vous</span></div>
         <div class="surpresa-sub"><span class="t-pt">Uma refeição completa escolhida ao acaso</span><span class="t-en">A complete meal chosen at random</span><span class="t-fr">Un repas complet choisi au hasard</span></div>
       </div>
-      <div class="surpresa-header-actions">
-        <button class="surpresa-close-btn" onclick="closeSurpresa()">
-          <span class="t-pt">Fechar</span><span class="t-en">Close</span><span class="t-fr">Fermer</span>
-        </button>
-        <button class="surpresa-novo-btn" onclick="openSurpresa()">
-          <span class="t-pt">🎲 Outra</span><span class="t-en">🎲 Another</span><span class="t-fr">🎲 Autre</span>
-        </button>
-      </div>
     </div>
     <div class="surpresa-body" id="surpresa-body"></div>
+    <div class="surpresa-footer">
+      <button class="surpresa-novo-btn" onclick="openSurpresa()">
+        <span class="t-pt">🎲 Outra sugestão</span><span class="t-en">🎲 Another one</span><span class="t-fr">🎲 Une autre</span>
+      </button>
+      <button class="surpresa-close-btn" onclick="closeSurpresa()">
+        <span class="t-pt">Fechar</span><span class="t-en">Close</span><span class="t-fr">Fermer</span>
+      </button>
+    </div>
   </div>
 </div>
 
