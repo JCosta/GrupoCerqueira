@@ -1278,7 +1278,7 @@ const COL_MAP = {
   'allergens':'allergens','wine_type':'wine_type','estado':'estado','destaque':'destaque','esgotado':'esgotado',
 };
 
-// Normaliza preço — aceita: 3 / 3.0 / 3.00 / 3,00 / 3.00€ / 3,00€
+// Normaliza preço - aceita: 3 / 3.0 / 3.00 / 3,00 / 3.00€ / 3,00€
 function normalizePrice(v){
   if(!v || !v.toString().trim()) return '';
   const s = v.toString().trim().replace('€','').replace(',','.');
@@ -1912,17 +1912,17 @@ function showSourceBadge(source){
 async function loadMenu(){
   const isValid=t=>t.trim().length>100&&t.includes('\n')&&(t.includes('secção')||t.includes('section'));
 
-  // 1) Google Apps Script — lê directamente da Sheet
+  // 1) Google Apps Script - lê directamente da Sheet
   try{
     const res=await fetch(APPS_SCRIPT_URL,{signal:AbortSignal.timeout(15000)});
     if(res.ok){const t=await res.text();if(isValid(t)){buildMenu(parseCSV(t));showSourceBadge('sheet');return;}}
   }catch(e){console.warn('Apps Script unavailable:',e.message);}
 
-  // 2) Embedded FALLBACK_CSV — mostra menu imediatamente
+  // 2) Embedded FALLBACK_CSV - mostra menu imediatamente
   buildMenu(parseCSV(FALLBACK_CSV));
   showSourceBadge('embedded');
 
-  // 3) menu_data.csv no GitHub — actualiza em background se disponível
+  // 3) menu_data.csv no GitHub - actualiza em background se disponível
   try{
     const res=await fetch(CSV_FILENAME+'?v='+Date.now(),{signal:AbortSignal.timeout(5000)});
     if(res.ok){const t=await res.text();if(isValid(t)){buildMenu(parseCSV(t));showSourceBadge('csv');return;}}
@@ -1947,7 +1947,7 @@ function showSec(id,btn){
       window.scrollTo({top:0,behavior:'smooth'});
     }
   }
-  // GA4 — tracking de navegação por secção
+  // GA4 - tracking de navegação por secção
   if(typeof gtag === 'function'){
     gtag('event','menu_section_view',{
       section_id: id,
@@ -2463,18 +2463,19 @@ function doSearch(q){
     res.innerHTML=`<div class="search-empty"><span class="t-pt">Sem resultados para "${q}"</span><span class="t-en">No results for "${q}"</span><span class="t-fr">Aucun résultat pour "${q}"</span></div>`;
     return;
   }
-  res.innerHTML = matches.map(r=>{
-    const name = highlight(r[nameKey]||r.name_pt, q);
-    const desc = highlight(r[descKey]||r.desc_pt, q);
-    const sec  = SECTION_LABELS[r.section]||{pt:r.section,en:r.section,fr:r.section};
-    const price= r.price_full ? `${r.price_full}` : '';
-    return`<div class="search-result" onclick="goToSection('${r.section}');closeSearch();">
-      <div class="sr-section"><span class="t-pt">${sec.pt}</span><span class="t-en">${sec.en}</span><span class="t-fr">${sec.fr}</span></div>
-      <div class="sr-name">${name}</div>
-      ${desc?`<div class="sr-desc">${desc}</div>`:''}
-      ${r.allergens?`<div class="sr-al">${r.allergens}</div>`:''}
-      ${price?`<div class="sr-price">${price}</div>`:''}
-    </div>`;
+  res.innerHTML = matches.map(function(r){
+    var name = highlight(r[nameKey]||r.name_pt, q);
+    var desc = highlight(r[descKey]||r.desc_pt, q);
+    var sec  = SECTION_LABELS[r.section]||{pt:r.section,en:r.section,fr:r.section};
+    var price= r.price_full || '';
+    var h = '<div class="search-result" onclick="goToSection(\''+r.section+'\');closeSearch();">';
+    h += '<div class="sr-section"><span class="t-pt">'+sec.pt+'</span><span class="t-en">'+sec.en+'</span><span class="t-fr">'+sec.fr+'</span></div>';
+    h += '<div class="sr-name">'+name+'</div>';
+    if(desc) h += '<div class="sr-desc">'+desc+'</div>';
+    if(r.allergens) h += '<div class="sr-al">'+r.allergens+'</div>';
+    if(price) h += '<div class="sr-price">'+price+'</div>';
+    h += '</div>';
+    return h;
   }).join('');
 }
 
@@ -2493,8 +2494,8 @@ const SURPRESA_COURSES = [
 
 function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-// Session cache — últimas 3 sugestões para evitar repetição
-// Session history stack — stores up to 3 full suggestion HTML snapshots
+// Session cache - últimas 3 sugestões para evitar repetição
+// Session history stack - stores up to 3 full suggestion HTML snapshots
 var _historyStack = [];   // [{html, pref}, ...]
 var _historyIndex = -1;   // current position in stack
 var _lastPref = null;
