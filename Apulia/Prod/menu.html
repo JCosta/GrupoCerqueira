@@ -2360,16 +2360,24 @@ function openSurpresa(){
     const labelFr = count > 1 ? course.label.fr+'s' : course.label.fr;
     const itemsHtml = picks.map(r => {
       const price = r.price_full||'';
-      return `<div class="surpresa-course-item${picks.length>1?' surpresa-course-item-multi':''}">
-        <div class="surpresa-course-name">${r[nameKey]||r.name_pt}</div>
-        ${(r[descKey]||r.desc_pt)?`<div class="surpresa-course-desc">${r[descKey]||r.desc_pt}</div>`:''}
-        ${price?`<div class="surpresa-course-price">${price}</div>`:''}
-      </div>`;
+      const name = r[nameKey]||r.name_pt;
+      const desc = r[descKey]||r.desc_pt;
+      const multiCls = picks.length>1 ? ' surpresa-course-item-multi' : '';
+      let html = '<div class="surpresa-course-item'+multiCls+'">';
+      html += '<div class="surpresa-course-name">'+name+'</div>';
+      if(desc) html += '<div class="surpresa-course-desc">'+desc+'</div>';
+      if(price) html += '<div class="surpresa-course-price">'+price+'</div>';
+      html += '</div>';
+      return html;
     }).join('');
-    return`<div class="surpresa-course">
-      <div class="surpresa-course-label"><span class="t-pt">${labelPt}</span><span class="t-en">${labelEn}</span><span class="t-fr">${labelFr}</span></div>
-      ${itemsHtml}
-    </div>`;
+    return '<div class="surpresa-course">'
+      + '<div class="surpresa-course-label">'
+      + '<span class="t-pt">'+labelPt+'</span>'
+      + '<span class="t-en">'+labelEn+'</span>'
+      + '<span class="t-fr">'+labelFr+'</span>'
+      + '</div>'
+      + itemsHtml
+      + '</div>';
   }).join('');
 
   document.getElementById('surpresa-overlay').classList.add('open');
