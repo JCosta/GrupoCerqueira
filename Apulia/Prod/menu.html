@@ -622,22 +622,27 @@ body.light .esgotado-badge{background:rgba(180,40,40,.08);color:#a03030;}
 #search-btn{
   position:fixed;top:50%;right:0;transform:translateY(-50%);
   z-index:998;
-  background:var(--card);border:1px solid var(--border);
+  background:#2a1e0e;
+  border:1px solid rgba(201,169,110,.4);
   border-right:none;
   border-radius:12px 0 0 12px;
   padding:.6rem .55rem;
   cursor:pointer;
-  box-shadow:-3px 0 12px rgba(0,0,0,.15);
+  box-shadow:-3px 0 14px rgba(0,0,0,.35);
   display:flex;flex-direction:column;align-items:center;gap:.25rem;
   transition:background .2s,box-shadow .2s;
 }
-#search-btn:hover{background:var(--bg2);box-shadow:-4px 0 16px rgba(0,0,0,.22);}
-#search-btn svg{width:18px;height:18px;stroke:var(--accent);stroke-width:2;fill:none;}
-#search-btn span{font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);}
+#search-btn:hover{background:#3a2a10;box-shadow:-4px 0 18px rgba(0,0,0,.45);}
+#search-btn svg{width:18px;height:18px;stroke:#e2c98a;stroke-width:2;fill:none;}
+#search-btn span{font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:#e2c98a;font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);}
 #search-btn .t-pt,#search-btn .t-en,#search-btn .t-fr{display:none;}
 body.lang-pt #search-btn .t-pt{display:inline;}
 body.lang-en #search-btn .t-en{display:inline;}
 body.lang-fr #search-btn .t-fr{display:inline;}
+body.light #search-btn{background:#f5ece0;border-color:rgba(139,105,20,.4);box-shadow:-3px 0 14px rgba(120,70,20,.15);}
+body.light #search-btn:hover{background:#eddcca;}
+body.light #search-btn svg{stroke:#8b6914;}
+body.light #search-btn span{color:#8b6914;}
 
 #search-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
@@ -770,6 +775,7 @@ body.light .surpresa-presel-random:hover{color:#1a1208;border-color:rgba(139,105
 /* == SURPRESA == */
 #surpresa-btn{
   position:fixed;bottom:20px;left:20px;z-index:997;
+  display:none;
   background:linear-gradient(135deg,#b8860b,#d4a017);
   color:#fff;
   border:2px solid rgba(255,220,100,.4);
@@ -2018,22 +2024,33 @@ function setDon(btn,type){
   //  SURPRESA_WEEKEND_ONLY = true   ->  só aparece Sábado e Domingo
   //  SURPRESA_WEEKEND_ONLY = false  ->  aparece todos os dias
   //
-  //  Exemplos:
-  //    Validação (escondido):     ENABLED=false, WEEKEND_ONLY=true  (qualquer)
-  //    Só fim de semana:          ENABLED=true,  WEEKEND_ONLY=true
-  //    Sempre visível:            ENABLED=true,  WEEKEND_ONLY=false
-  //
   const SURPRESA_ENABLED      = false; // <- mudar para true quando pronto
   const SURPRESA_WEEKEND_ONLY = true;  // <- só Sábado e Domingo
   window.SURPRESA_ENABLED      = SURPRESA_ENABLED;
   window.SURPRESA_WEEKEND_ONLY = SURPRESA_WEEKEND_ONLY;
-  const day = new Date().getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
-  const isWeekend = day === 0 || day === 6;
-  const surpresaBtn = document.getElementById('surpresa-btn');
-  if(surpresaBtn){
-    const show = SURPRESA_ENABLED && (!SURPRESA_WEEKEND_ONLY || isWeekend);
-    surpresaBtn.style.display = show ? '' : 'none';
-  }
+  // Apply after DOM is ready
+  window.addEventListener('DOMContentLoaded', function(){
+    var day = new Date().getDay();
+    var isWeekend = day===0||day===6;
+    var btn = document.getElementById('surpresa-btn');
+    if(btn){
+      var show = SURPRESA_ENABLED && (!SURPRESA_WEEKEND_ONLY||isWeekend);
+      btn.style.display = show ? '' : 'none';
+    }
+  });
+  // Also apply immediately in case DOM already loaded
+  (function applyNow(){
+    var day = new Date().getDay();
+    var isWeekend = day===0||day===6;
+    var btn = document.getElementById('surpresa-btn');
+    if(btn){
+      var show = SURPRESA_ENABLED && (!SURPRESA_WEEKEND_ONLY||isWeekend);
+      btn.style.display = show ? '' : 'none';
+    } else {
+      // Retry until button exists (injected by buildMenu)
+      setTimeout(applyNow, 50);
+    }
+  })();
 })();
 
 const FALLBACK_CSV = `secção,subsecção,nome_pt,nome_en,nome_fr,descricao_pt,descricao_en,descricao_fr,preco_dose,preco_meia,preco_terceiro,etiqueta_dose,etiqueta_meia,etiqueta_terceiro,alergenios,tipo,estado,destaque
