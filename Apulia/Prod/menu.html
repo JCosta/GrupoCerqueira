@@ -633,7 +633,7 @@ body.light .esgotado-badge{background:rgba(180,40,40,.08);color:#a03030;}
 }
 #search-btn:hover{background:var(--bg2);box-shadow:-4px 0 16px rgba(0,0,0,.22);}
 #search-btn svg{width:18px;height:18px;stroke:var(--accent);stroke-width:2;fill:none;}
-#search-btn span{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;}
+#search-btn span{font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);}
 #search-btn .t-pt,#search-btn .t-en,#search-btn .t-fr{display:none;}
 body.lang-pt #search-btn .t-pt{display:inline;}
 body.lang-en #search-btn .t-en{display:inline;}
@@ -2325,10 +2325,10 @@ function goToSection(secId){
 
 // ══ SURPRESA ══
 const SURPRESA_COURSES = [
-  {key:'entrada',   secs:['entradas'],           label:{pt:'Entrada',         en:'Starter',      fr:'Entrée'}},
-  {key:'prato',     secs:['carnes','peixes'],     label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'}},
-  {key:'harmoniz',  secs:['vinhos','vinhoscasa'], label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'}},
-  {key:'sobremesa', secs:['sobremesas'],          label:{pt:'Sobremesa',       en:'Dessert',      fr:'Dessert'}},
+  {key:'entrada',   secs:['entradas'],           label:{pt:'Entrada',         en:'Starter',      fr:'Entrée'},       count:2},
+  {key:'prato',     secs:['carnes','peixes'],     label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'},count:1},
+  {key:'harmoniz',  secs:['vinhos','vinhoscasa'], label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'},   count:1},
+  {key:'sobremesa', secs:['sobremesas'],          label:{pt:'Sobremesa',       en:'Dessert',      fr:'Dessert'},      count:1},
 ];
 
 function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
@@ -2347,14 +2347,19 @@ function openSurpresa(){
   body.innerHTML = SURPRESA_COURSES.map(course=>{
     const pool = available.filter(r=>course.secs.includes(r.section));
     if(!pool.length) return '';
-    const r = pickRandom(pool);
-    const price = r.price_full||'';
-    return`<div class="surpresa-course">
-      <div class="surpresa-course-label"><span class="t-pt">${course.label.pt}</span><span class="t-en">${course.label.en}</span><span class="t-fr">${course.label.fr}</span></div>
-      <div class="surpresa-course-name">${r[nameKey]||r.name_pt}</div>
-      ${(r[descKey]||r.desc_pt)?`<div class="surpresa-course-desc">${r[descKey]||r.desc_pt}</div>`:''}
-      ${price?`<div class="surpresa-course-price">${price}</div>`:''}
-    </div>`;
+    const count = course.count || 1;
+    // pick `count` distinct items
+    const shuffled = [...pool].sort(()=>Math.random()-.5);
+    const picks = shuffled.slice(0, Math.min(count, shuffled.length));
+    return picks.map(r => {
+      const price = r.price_full||'';
+      return`<div class="surpresa-course">
+        <div class="surpresa-course-label"><span class="t-pt">${course.label.pt}</span><span class="t-en">${course.label.en}</span><span class="t-fr">${course.label.fr}</span></div>
+        <div class="surpresa-course-name">${r[nameKey]||r.name_pt}</div>
+        ${(r[descKey]||r.desc_pt)?`<div class="surpresa-course-desc">${r[descKey]||r.desc_pt}</div>`:''}
+        ${price?`<div class="surpresa-course-price">${price}</div>`:''}
+      </div>`;
+    }).join('');
   }).join('');
 
   document.getElementById('surpresa-overlay').classList.add('open');
