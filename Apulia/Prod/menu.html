@@ -637,7 +637,7 @@ body.light .esgotado-badge{background:rgba(180,40,40,.08);color:#a03030;}
 }
 #search-btn:hover{background:var(--bg2);box-shadow:-4px 0 16px rgba(0,0,0,.22);}
 #search-btn svg{width:18px;height:18px;stroke:var(--accent);stroke-width:2;fill:none;}
-#search-btn span{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;}
+#search-btn span{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;}
 
 #search-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
@@ -721,7 +721,10 @@ mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1
   background:linear-gradient(135deg,#1e1208,#2e1c0e);
   padding:1.2rem 1.4rem .9rem;
   border-bottom:1px solid rgba(201,169,110,.2);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
 }
+.surpresa-header-left{flex:1;min-width:0;}
+.surpresa-header-actions{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0;align-items:flex-end;}
 .surpresa-badge{
   display:inline-flex;align-items:center;gap:.35rem;
   background:rgba(201,169,110,.15);border:1px solid rgba(201,169,110,.35);
@@ -731,7 +734,7 @@ mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1
 }
 .surpresa-title{font-family:var(--fh);font-size:1.2rem;color:#e2c8a0;font-weight:700;}
 .surpresa-sub{font-size:.7rem;color:rgba(201,169,110,.5);margin-top:.2rem;font-style:italic;}
-.surpresa-body{padding:1rem 1.4rem 1.3rem;}
+.surpresa-body{padding:1rem 1.4rem 1.3rem;overflow-y:auto;max-height:55vh;}
 .surpresa-course{
   padding:.7rem .85rem;
   background:rgba(255,255,255,.03);
@@ -745,24 +748,31 @@ body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(13
 .surpresa-course-name{font-family:var(--fh);font-size:.95rem;font-weight:600;color:var(--text);}
 .surpresa-course-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4;}
 .surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.2rem;}
-.surpresa-footer{
-  display:flex;gap:.6rem;padding:.9rem 1.4rem;
-  border-top:1px solid var(--border);
-}
+.surpresa-footer{display:none;}
 .surpresa-novo-btn{
-  flex:1;background:var(--accent);color:#fff;border:none;border-radius:8px;
-  padding:.6rem;font-family:var(--fb);font-size:.75rem;font-weight:700;
+  background:rgba(201,169,110,.18);
+  color:#d4a870;
+  border:1px solid rgba(201,169,110,.45);
+  border-radius:8px;
+  padding:.38rem .7rem;
+  font-family:var(--fb);font-size:.62rem;font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
-  transition:opacity .2s;
+  transition:background .2s;white-space:nowrap;
 }
-.surpresa-novo-btn:hover{opacity:.85;}
+.surpresa-novo-btn:hover{background:rgba(201,169,110,.3);}
 .surpresa-close-btn{
-  background:var(--bg2);color:var(--muted);border:1px solid var(--border);
-  border-radius:8px;padding:.6rem .9rem;
-  font-family:var(--fb);font-size:.75rem;cursor:pointer;
-  transition:background .2s;
+  background:rgba(255,255,255,.08);
+  color:rgba(201,169,110,.7);
+  border:1px solid rgba(201,169,110,.2);
+  border-radius:8px;padding:.38rem .7rem;
+  font-family:var(--fb);font-size:.62rem;cursor:pointer;
+  transition:background .2s;white-space:nowrap;
 }
-.surpresa-close-btn:hover{background:var(--border);}
+.surpresa-close-btn:hover{background:rgba(255,255,255,.15);}
+body.light .surpresa-novo-btn{background:rgba(139,105,20,.12);color:#7a5010;border-color:rgba(139,105,20,.4);}
+body.light .surpresa-novo-btn:hover{background:rgba(139,105,20,.22);}
+body.light .surpresa-close-btn{background:rgba(0,0,0,.06);color:#7a5010;border-color:rgba(139,105,20,.25);}
+body.light .surpresa-close-btn:hover{background:rgba(0,0,0,.12);}
 
 /* ══ KNOWN LIMITATIONS NOTE ══ */
 .item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
@@ -1838,6 +1848,8 @@ function setLang(l){
   updateThemeLbl();refreshTips();fillUnavailBadges();
   const badge=document.getElementById('source-badge');
   if(badge&&badge.dataset.source) showSourceBadge(badge.dataset.source);
+  const inp=document.getElementById('search-input');
+  if(inp) inp.placeholder=inp.dataset['placeholder'+l.charAt(0).toUpperCase()+l.slice(1)]||inp.placeholder;
   try{localStorage.setItem('mLang',l);}catch(e){}
 }
 
@@ -2174,6 +2186,9 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     <div id="search-input-wrap">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="search-input" type="search" autocomplete="off" oninput="doSearch(this.value)"
+        data-placeholder-pt="Pesquisar prato, ingrediente, alergénio..."
+        data-placeholder-en="Search dish, ingredient, allergen..."
+        data-placeholder-fr="Rechercher plat, ingrédient, allergène..."
         placeholder="Pesquisar prato, ingrediente, alergénio..."/>
       <button id="search-close" onclick="closeSearch()">✕</button>
     </div>
@@ -2191,19 +2206,21 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 <div id="surpresa-overlay" onclick="if(event.target===this)closeSurpresa()">
   <div id="surpresa-card">
     <div class="surpresa-header">
-      <div class="surpresa-badge">🎲 <span class="t-pt">Sugestão do dia</span><span class="t-en">Today's suggestion</span><span class="t-fr">Suggestion du jour</span></div>
-      <div class="surpresa-title"><span class="t-pt">A nossa sugestão para si</span><span class="t-en">Our suggestion for you</span><span class="t-fr">Notre suggestion pour vous</span></div>
-      <div class="surpresa-sub"><span class="t-pt">Uma refeição completa escolhida ao acaso</span><span class="t-en">A complete meal chosen at random</span><span class="t-fr">Un repas complet choisi au hasard</span></div>
+      <div class="surpresa-header-left">
+        <div class="surpresa-badge">🎲 <span class="t-pt">Sugestão do dia</span><span class="t-en">Today's suggestion</span><span class="t-fr">Suggestion du jour</span></div>
+        <div class="surpresa-title"><span class="t-pt">A nossa sugestão para si</span><span class="t-en">Our suggestion for you</span><span class="t-fr">Notre suggestion pour vous</span></div>
+        <div class="surpresa-sub"><span class="t-pt">Uma refeição completa escolhida ao acaso</span><span class="t-en">A complete meal chosen at random</span><span class="t-fr">Un repas complet choisi au hasard</span></div>
+      </div>
+      <div class="surpresa-header-actions">
+        <button class="surpresa-close-btn" onclick="closeSurpresa()">
+          <span class="t-pt">Fechar</span><span class="t-en">Close</span><span class="t-fr">Fermer</span>
+        </button>
+        <button class="surpresa-novo-btn" onclick="openSurpresa()">
+          <span class="t-pt">🎲 Outra</span><span class="t-en">🎲 Another</span><span class="t-fr">🎲 Autre</span>
+        </button>
+      </div>
     </div>
     <div class="surpresa-body" id="surpresa-body"></div>
-    <div class="surpresa-footer">
-      <button class="surpresa-novo-btn" onclick="openSurpresa()">
-        <span class="t-pt">🎲 Outra sugestão</span><span class="t-en">🎲 Another one</span><span class="t-fr">🎲 Une autre</span>
-      </button>
-      <button class="surpresa-close-btn" onclick="closeSurpresa()">
-        <span class="t-pt">Fechar</span><span class="t-en">Close</span><span class="t-fr">Fermer</span>
-      </button>
-    </div>
   </div>
 </div>
 
