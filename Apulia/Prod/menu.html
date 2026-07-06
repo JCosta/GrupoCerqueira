@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Menu Digital v1.3 — Grupo Cerqueira © 2026 -->
 <html lang="pt">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -24,8 +23,7 @@
 /* ══ TOKENS ══ */
 :root{
   --bg:#0b0907;--bg2:#131009;--card:#1a1510;--border:#2e2418;
-  --gold:#c9a96e;--gold-l:#e2c99a;--gold2:#d4b87a;--ember:#d4500a;
-  --accent:#c9a96e;
+  --gold:#c9a96e;--gold-l:#e2c99a;--ember:#d4500a;
   --text:#ede3d5;--text2:#b5a898;--muted:#7a6a58;
   --fh:'Playfair Display',Georgia,serif;
   --fb:'Inter',system-ui,sans-serif;
@@ -34,8 +32,7 @@
 }
 body.light{
   --bg:#f5f0e8;--bg2:#ede6d8;--card:#fff;--border:#d8cfc2;
-  --gold:#8b6914;--gold-l:#6a4e10;--gold2:#a07a20;--ember:#b83d00;
-  --accent:#8b6914;
+  --gold:#8b6914;--gold-l:#6a4e10;--ember:#b83d00;
   --text:#1a1208;--text2:#4a3c2a;--muted:#7a6a50;
   --tag-bg:rgba(139,105,20,.10);--tag-bd:rgba(139,105,20,.25);
 }
@@ -162,6 +159,9 @@ body.light .logo-light{display:block;}
   .lang-btn{font-size:.52rem;padding:.2rem .3rem;}
   #theme-lbl{display:none;}
   .theme-btn{padding:.22rem .38rem;font-size:.56rem;}
+}ang-btn{font-size:.56rem;padding:.24rem .38rem;}
+  #theme-lbl{display:none;}
+  .theme-btn{padding:.24rem .38rem;}
 }
 @media(max-width:380px){
   .topbar-brand-text p{display:none;}
@@ -170,7 +170,7 @@ body.light .logo-light{display:block;}
 }
 
 /* ══ LAYOUT ══ */
-.layout{display:flex;align-items:flex-start;max-width:1280px;margin:0 auto;}
+.layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
 
 /* ══ SIDEBAR ══ */
 .sidebar{
@@ -205,6 +205,7 @@ body.light .logo-light{display:block;}
 }
 
 /* ══ MAIN ══ */
+.main{flex:1;min-width:0;}
 .section{display:none;animation:fu .28s ease;}
 .section.visible{display:block;}
 @keyframes fu{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
@@ -622,26 +623,20 @@ body.light .esgotado-badge{background:rgba(180,40,40,.08);color:#a03030;}
 
 /* ══ SEARCH MODAL ══ */
 #search-btn{
-  position:fixed;top:50%;right:0;
-  transform:translateY(-50%);
+  position:fixed;top:50%;right:0;transform:translateY(-50%);
   z-index:998;
-  background:var(--card);
-  border:1px solid var(--border);
+  background:var(--card);border:1px solid var(--border);
   border-right:none;
-  border-radius:10px 0 0 10px;
-  padding:.7rem .5rem;
+  border-radius:12px 0 0 12px;
+  padding:.6rem .55rem;
   cursor:pointer;
   box-shadow:-3px 0 12px rgba(0,0,0,.15);
-  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;
   transition:background .2s,box-shadow .2s;
 }
 #search-btn:hover{background:var(--bg2);box-shadow:-4px 0 16px rgba(0,0,0,.22);}
 #search-btn svg{width:18px;height:18px;stroke:var(--accent);stroke-width:2;fill:none;}
-#search-btn span{font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;}
-#search-btn .t-pt,#search-btn .t-en,#search-btn .t-fr{display:none;}
-body.lang-pt #search-btn .t-pt{display:inline;}
-body.lang-en #search-btn .t-en{display:inline;}
-body.lang-fr #search-btn .t-fr{display:inline;}
+#search-btn span{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;writing-mode:vertical-rl;text-orientation:mixed;}
 
 #search-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
@@ -694,66 +689,38 @@ mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1
 
 /* ══ SURPRESA ══ */
 #surpresa-btn{
-  position:fixed;bottom:20px;left:20px;
-  z-index:997;
-  background:linear-gradient(135deg,#b8860b,#d4a017);
-  color:#fff;
-  border:2px solid rgba(255,220,100,.4);
-  border-radius:50px;
-  padding:.62rem 1.3rem;
-  font-family:var(--fb);font-size:.7rem;font-weight:700;
+  position:fixed;bottom:14px;left:14px;z-index:997;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:50px;
+  padding:.55rem 1rem;
+  font-family:var(--fb);font-size:.68rem;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;
   cursor:pointer;
-  box-shadow:0 4px 18px rgba(180,130,0,.45);
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
   display:flex;align-items:center;gap:.4rem;
   transition:transform .2s,box-shadow .2s;
 }
-body.light #surpresa-btn{
-  background:linear-gradient(135deg,#9a6e00,#b8860b);
-  border-color:rgba(180,120,0,.35);
-  box-shadow:0 4px 18px rgba(140,90,0,.35);
-}
-#surpresa-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(180,130,0,.55);}
-#surpresa-btn svg{width:15px;height:15px;fill:#fff;stroke:none;}
+#surpresa-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+#surpresa-btn svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.5;}
 
 #surpresa-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
-  background:rgba(0,0,0,.65);backdrop-filter:blur(4px);
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
   -webkit-backdrop-filter:blur(4px);
-  align-items:flex-end;justify-content:center;
-  padding:0;
-}
-@media(min-width:481px){
-  #surpresa-overlay{align-items:center;padding:1rem;}
+  align-items:center;justify-content:center;padding:1rem;
 }
 #surpresa-overlay.open{display:flex;}
 #surpresa-card{
-  background:var(--card);
-  border-radius:18px 18px 0 0;
-  width:100%;
-  max-height:88vh;
-  display:flex;flex-direction:column;
-  box-shadow:0 -8px 40px rgba(0,0,0,.5);
-  overflow:hidden;
-  animation:slideUp .3s ease;
+  background:var(--card);border-radius:18px;
+  width:min(480px,94vw);
+  box-shadow:0 24px 64px rgba(0,0,0,.45);
+  overflow:hidden;animation:fu .25s ease;
 }
-@media(min-width:481px){
-  #surpresa-card{
-    border-radius:18px;
-    width:min(480px,94vw);
-    max-height:85vh;
-    box-shadow:0 24px 64px rgba(0,0,0,.45);
-    animation:fu .25s ease;
-  }
-}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .surpresa-header{
   background:linear-gradient(135deg,#1e1208,#2e1c0e);
   padding:1.2rem 1.4rem .9rem;
   border-bottom:1px solid rgba(201,169,110,.2);
-  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
 }
-.surpresa-header-left{flex:1;min-width:0;}
 .surpresa-badge{
   display:inline-flex;align-items:center;gap:.35rem;
   background:rgba(201,169,110,.15);border:1px solid rgba(201,169,110,.35);
@@ -763,7 +730,7 @@ body.light #surpresa-btn{
 }
 .surpresa-title{font-family:var(--fh);font-size:1.2rem;color:#e2c8a0;font-weight:700;}
 .surpresa-sub{font-size:.7rem;color:rgba(201,169,110,.5);margin-top:.2rem;font-style:italic;}
-.surpresa-body{padding:1rem 1.4rem 1.3rem;overflow-y:auto;flex:1;}
+.surpresa-body{padding:1rem 1.4rem 1.3rem;}
 .surpresa-course{
   padding:.7rem .85rem;
   background:rgba(255,255,255,.03);
@@ -779,32 +746,22 @@ body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(13
 .surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.2rem;}
 .surpresa-footer{
   display:flex;gap:.6rem;padding:.9rem 1.4rem;
-  border-top:1px solid rgba(201,169,110,.15);
-  flex-shrink:0;background:var(--card);
+  border-top:1px solid var(--border);
 }
 .surpresa-novo-btn{
-  flex:1;
-  background:linear-gradient(135deg,#b8860b,#d4a017);
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  padding:.7rem;font-family:var(--fb);font-size:.75rem;font-weight:700;
+  flex:1;background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:.6rem;font-family:var(--fb);font-size:.75rem;font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
   transition:opacity .2s;
 }
 .surpresa-novo-btn:hover{opacity:.85;}
 .surpresa-close-btn{
-  background:var(--bg2);
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:10px;padding:.7rem 1.1rem;
-  font-family:var(--fb);font-size:.75rem;font-weight:600;cursor:pointer;
+  background:var(--bg2);color:var(--muted);border:1px solid var(--border);
+  border-radius:8px;padding:.6rem .9rem;
+  font-family:var(--fb);font-size:.75rem;cursor:pointer;
   transition:background .2s;
 }
 .surpresa-close-btn:hover{background:var(--border);}
-body.light .surpresa-novo-btn{background:linear-gradient(135deg,#9a6e00,#b8860b);}
-body.light .surpresa-close-btn{background:#f0ece6;color:#3a2010;border-color:rgba(139,105,20,.2);}
-body.light .surpresa-close-btn:hover{background:#e5dfd7;}
 
 /* ══ KNOWN LIMITATIONS NOTE ══ */
 .item-preorder{background:var(--tag-bg);border:1px solid var(--tag-bd);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.85rem .95rem;margin:.35rem 0;}
@@ -941,7 +898,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);text-align:cente
 
 /* ══ SOURCE BADGE ══ */
 #source-badge{
-  position:fixed;bottom:14px;right:14px;z-index:990;
+  position:fixed;bottom:14px;right:14px;z-index:9999;
   display:inline-flex;align-items:center;gap:.35rem;
   padding:.28rem .65rem .28rem .45rem;border-radius:20px;
   font-family:var(--fb);font-size:.58rem;font-weight:600;
@@ -957,6 +914,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);text-align:cente
 body.lang-pt .t-pt{display:inline;}
 body.lang-en .t-en{display:inline;}
 body.lang-fr .t-fr{display:inline;}
+
+/* ══ PRICE BLOCK LINE IN EACH PRODUCT ══ */
+.pb{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  height:100%;
+}
 
 /* ══ MOBILE ══ */
 @media(max-width:680px){
@@ -1186,7 +1151,6 @@ const COL_MAP = {
   'etiqueta_dose':'price_label_full','etiqueta_meia':'price_label_half','etiqueta_terceiro':'price_label_third',
   'alergenios':'allergens','tipo':'wine_type','estado':'estado','destaque':'destaque','esgotado':'esgotado',
   'ESGOTADO HOJE':'esgotado','esgotado hoje':'esgotado',
-  'DESTAQUE NA SEÇÃO':'destaque','DESTAQUE NA SECÃO':'destaque','destaque na seção':'destaque',
   // Legacy
   'section':'section','subsection':'subsection',
   'name_pt':'name_pt','name_en':'name_en','name_fr':'name_fr',
@@ -1873,8 +1837,6 @@ function setLang(l){
   updateThemeLbl();refreshTips();fillUnavailBadges();
   const badge=document.getElementById('source-badge');
   if(badge&&badge.dataset.source) showSourceBadge(badge.dataset.source);
-  const inp=document.getElementById('search-input');
-  if(inp) inp.placeholder=inp.dataset['placeholder'+l.charAt(0).toUpperCase()+l.slice(1)]||inp.placeholder;
   try{localStorage.setItem('mLang',l);}catch(e){}
 }
 
@@ -2202,7 +2164,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 <!-- SEARCH BUTTON -->
 <button id="search-btn" onclick="openSearch()" aria-label="Pesquisar">
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-  <span><span class="t-pt">🔍 Pesquisar</span><span class="t-en">🔍 Search</span><span class="t-fr">🔍 Chercher</span></span>
+  <span><span class="t-pt">Pesquisar</span><span class="t-en">Search</span><span class="t-fr">Chercher</span></span>
 </button>
 
 <!-- SEARCH OVERLAY -->
@@ -2211,9 +2173,6 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     <div id="search-input-wrap">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="search-input" type="search" autocomplete="off" oninput="doSearch(this.value)"
-        data-placeholder-pt="Pesquisar prato, ingrediente, alergénio..."
-        data-placeholder-en="Search dish, ingredient, allergen..."
-        data-placeholder-fr="Rechercher plat, ingrédient, allergène..."
         placeholder="Pesquisar prato, ingrediente, alergénio..."/>
       <button id="search-close" onclick="closeSearch()">✕</button>
     </div>
@@ -2231,11 +2190,9 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 <div id="surpresa-overlay" onclick="if(event.target===this)closeSurpresa()">
   <div id="surpresa-card">
     <div class="surpresa-header">
-      <div class="surpresa-header-left">
-        <div class="surpresa-badge">🎲 <span class="t-pt">Sugestão do dia</span><span class="t-en">Today's suggestion</span><span class="t-fr">Suggestion du jour</span></div>
-        <div class="surpresa-title"><span class="t-pt">A nossa sugestão para si</span><span class="t-en">Our suggestion for you</span><span class="t-fr">Notre suggestion pour vous</span></div>
-        <div class="surpresa-sub"><span class="t-pt">Uma refeição completa escolhida ao acaso</span><span class="t-en">A complete meal chosen at random</span><span class="t-fr">Un repas complet choisi au hasard</span></div>
-      </div>
+      <div class="surpresa-badge">🎲 <span class="t-pt">Sugestão do dia</span><span class="t-en">Today's suggestion</span><span class="t-fr">Suggestion du jour</span></div>
+      <div class="surpresa-title"><span class="t-pt">A nossa sugestão para si</span><span class="t-en">Our suggestion for you</span><span class="t-fr">Notre suggestion pour vous</span></div>
+      <div class="surpresa-sub"><span class="t-pt">Uma refeição completa escolhida ao acaso</span><span class="t-en">A complete meal chosen at random</span><span class="t-fr">Un repas complet choisi au hasard</span></div>
     </div>
     <div class="surpresa-body" id="surpresa-body"></div>
     <div class="surpresa-footer">
@@ -2330,10 +2287,10 @@ function goToSection(secId){
 
 // ══ SURPRESA ══
 const SURPRESA_COURSES = [
-  {key:'entrada',   secs:['entradas'],          label:{pt:'Entrada',         en:'Starter',      fr:'Entrée'}},
-  {key:'prato',     secs:['carnes','peixes'],    label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'}},
-  {key:'harmoniz',  secs:['vinhos','vinhoscasa'],label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'}},
-  {key:'sobremesa', secs:['sobremesas'],         label:{pt:'Sobremesa',       en:'Dessert',      fr:'Dessert'}},
+  {key:'entrada', secs:['entradas'], label:{pt:'Entrada',en:'Starter',fr:'Entrée'}},
+  {key:'prato',   secs:['carnes','peixes'], label:{pt:'Prato Principal',en:'Main Course',fr:'Plat Principal'}},
+  {key:'sobremesa',secs:['sobremesas'], label:{pt:'Sobremesa',en:'Dessert',fr:'Dessert'}},
+  {key:'vinho',   secs:['vinhos','vinhoscasa'], label:{pt:'Vinho',en:'Wine',fr:'Vin'}},
 ];
 
 function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
@@ -2363,17 +2320,11 @@ function openSurpresa(){
   }).join('');
 
   document.getElementById('surpresa-overlay').classList.add('open');
-  document.getElementById('surpresa-btn').style.display='none';
-  const sb=document.getElementById('source-badge');
-  if(sb) sb.style.display='none';
 
   if(typeof gtag==='function') gtag('event','surpresa_me',{language:lang});
 }
 function closeSurpresa(){
   document.getElementById('surpresa-overlay').classList.remove('open');
-  document.getElementById('surpresa-btn').style.display='';
-  const sb=document.getElementById('source-badge');
-  if(sb) sb.style.display='';
 }
 </script>
 </html>
