@@ -1305,7 +1305,7 @@ function alBar(s){
   if(!s) return '';
   const icons=[...s].filter(c=>AL[c]);
   if(!icons.length) return '';
-  return `<div class="al-bar">${icons.map(ic=>`<span class="al" data-tip-pt="${AL[ic].pt}" data-tip-en="${AL[ic].en}" data-tip-fr="${AL[ic].fr}" data-tip="${AL[ic].pt}">${ic}</span>`).join('')}</div>`;
+  return '<div class="al-bar">'+icons.map(ic=>'<span class="al" data-tip-pt="'+AL[ic].pt+'" data-tip-en="'+AL[ic].en+'" data-tip-fr="'+AL[ic].fr+'" data-tip="'+AL[ic].pt+'">'+ic+'</span>').join('')+"</div>";
 }
 
 function refreshTips(){
@@ -1336,9 +1336,7 @@ function priceBlock(row){
   if(pt && lt) prices.push({v:pt,l:lt});
   if(prices.length===0 && pf) return `<div class="item-price">${pf}</div>`;
   if(prices.length===1) return `<div class="pb" style="justify-content:center;display:flex;flex-direction:column;"><div class="pr"><span class="pl">${prices[0].l}</span><span class="pv">${prices[0].v}</span></div></div>`;
-  return`<div class="pb">${prices.map((p,i)=>
-    `${i>0?'<div class="pd"></div>':''}<div class="pr"><span class="pl">${p.l}</span><span class="pv${i>0?' dim':''}">${p.v}</span></div>`
-  ).join('')}</div>`;
+  var pbh='<div class="pb">';prices.forEach(function(p,i){if(i>0)pbh+='<div class="pd"></div>';pbh+='<div class="pr"><span class="pl">'+p.l+'</span><span class="pv'+(i>0?' dim':'')+'">'+p.v+'</span></div>';});pbh+='</div>';return pbh;
 }
 
 function buildVerdeTinto(rows){
@@ -1419,7 +1417,7 @@ function buildItem(row, secId){
     return`<div class="item-preorder">
       <div class="item-badge"><span class="t-pt">Por Encomenda</span><span class="t-en">Pre-Order Required</span><span class="t-fr">Sur Commande</span></div>
       <div class="item-preorder-top"><div class="item-preorder-left">${name}${desc}${al}
-        ${isSun?`<div style="margin-top:.28rem;"><span class="item-sunday"><span class="t-pt">🟡 Apenas Domingos</span><span class="t-en">🟡 Sundays Only</span><span class="t-fr">🟡 Dimanches Seulement</span></span></div>`:''}
+        '+( isSun ? '<div style="margin-top:.28rem;"><span class="item-sunday"><span class="t-pt">🟡 Apenas Domingos</span><span class="t-en">🟡 Sundays Only</span><span class="t-fr">🟡 Dimanches Seulement</span></span></div>' : '')+ '
       </div>${priceBlock(row)}</div>
     </div>`;
   }
@@ -1507,19 +1505,27 @@ function buildHighlightCard(rows, secId){
   highlighted.forEach(r => {
     const price = r.price_full || '';
     const label = r.price_label_full || '';
-    itemsHtml += `<div class="dryaged-item">
-      <div class="dryaged-item-left">
-        ${r.subsection && r.subsection !== '__' ? `<div class="champ-premium-item-sub">${r.subsection}</div>` : ''}
-        <div class="dryaged-item-name">
-          <span class="t-pt">${r.name_pt||''}</span><span class="t-en">${r.name_en||r.name_pt||''}</span><span class="t-fr">${r.name_fr||r.name_pt||''}</span>
-        </div>
-        ${r.desc_pt ? `<div class="dryaged-item-desc"><span class="t-pt">${r.desc_pt}</span><span class="t-en">${r.desc_en||r.desc_pt}</span><span class="t-fr">${r.desc_fr||r.desc_pt}</span></div>` : ''}
-      </div>
-      ${price ? `<div class="dryaged-item-price-block">
-  <div class="dryaged-item-price">${price}<span>${r.price_label_full||'Dose'}</span></div>
-  ${r.price_half ? `<div class="dryaged-item-price dryaged-item-price-half">${r.price_half}<span>${r.price_label_half||'(1/2) Dose'}</span></div>` : ''}
-</div>` : ''}
-    </div>`;
+    let ih = '<div class="dryaged-item"><div class="dryaged-item-left">';
+    if(r.subsection && r.subsection !== '__') ih += '<div class="champ-premium-item-sub">'+r.subsection+'</div>';
+    ih += '<div class="dryaged-item-name">'
+      +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
+      +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
+      +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
+      +'</div>';
+    if(r.desc_pt) ih += '<div class="dryaged-item-desc">'
+      +'<span class="t-pt">'+r.desc_pt+'</span>'
+      +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
+      +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
+      +'</div>';
+    ih += '</div>';
+    if(price){
+      ih += '<div class="dryaged-item-price-block">'
+        +'<div class="dryaged-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
+      if(r.price_half) ih += '<div class="dryaged-item-price dryaged-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+      ih += '</div>';
+    }
+    ih += '</div>';
+    itemsHtml += ih;
   });
 
   // Use dryaged styles for carnes, champ-premium styles for others for visual variety
@@ -1549,24 +1555,28 @@ function buildHighlightCard(rows, secId){
 }
 
 function buildDryAgedExtra(){
-  const angusDesc={pt:'Mais suave, mais marmoreio interno (gordura entremeada), sabor mais adocicado.',en:'Milder, with more internal marbling (interspersed fat), a sweeter flavour.',fr:'Plus doux, plus de persillage interne (graisse entremêlée), saveur plus sucrée.'};
-  const simDesc={pt:'Sabor mais potente, gordura exterior mais rica e amarela, estrutura de carne com mais personalidade.',en:'More intense flavour, richer and yellower exterior fat, a more characterful meat structure.',fr:'Saveur plus puissante, graisse extérieure plus riche et jaune, structure de viande avec plus de personnalité.'};
-  const angusTags={pt:['Marmoreio','Suave','Adocicado'],en:['Marbling','Mild','Sweet'],fr:['Persillage','Doux','Sucré']};
-  const simTags={pt:['Personalidade','Potente','Gordura Rica'],en:['Character','Bold','Rich Fat'],fr:['Caractère','Puissant','Gras Riche']};
-  return `<div class="dryaged-breeds">
-    <div class="breed-card">
-      <div class="breed-card-name">🐄 Angus <span class="breed-card-name-sub">Black Angus (Irlanda/Espanha)</span></div>
-      <div class="breed-divider"></div>
-      <div class="breed-card-desc"><span class="t-pt">${angusDesc.pt}</span><span class="t-en">${angusDesc.en}</span><span class="t-fr">${angusDesc.fr}</span></div>
-      <div class="breed-card-tags">${angusTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${angusTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${angusTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
-    </div>
-    <div class="breed-card">
-      <div class="breed-card-name">🐄 Simmental <span class="breed-card-name-sub">Chuletero Simmental (Alemanha)</span></div>
-      <div class="breed-divider"></div>
-      <div class="breed-card-desc"><span class="t-pt">${simDesc.pt}</span><span class="t-en">${simDesc.en}</span><span class="t-fr">${simDesc.fr}</span></div>
-      <div class="breed-card-tags">${simTags.pt.map(t=>`<span class="breed-tag t-pt">${t}</span>`).join('')}${simTags.en.map(t=>`<span class="breed-tag t-en">${t}</span>`).join('')}${simTags.fr.map(t=>`<span class="breed-tag t-fr">${t}</span>`).join('')}</div>
-    </div>
-  </div>`;
+  var angusDesc={pt:'Mais suave, mais marmoreio interno (gordura entremeada), sabor mais adocicado.',en:'Milder, with more internal marbling (interspersed fat), a sweeter flavour.',fr:'Plus doux, plus de persillage interne (graisse entremêlée), saveur plus sucrée.'};
+  var simDesc={pt:'Sabor mais potente, gordura exterior mais rica e amarela, estrutura de carne com mais personalidade.',en:'More intense flavour, richer and yellower exterior fat, a more characterful meat structure.',fr:'Saveur plus puissante, graisse extérieure plus riche et jaune, structure de viande avec plus de personnalité.'};
+  var angusTags={pt:['Marmoreio','Suave','Adocicado'],en:['Marbling','Mild','Sweet'],fr:['Persillage','Doux','Sucré']};
+  var simTags={pt:['Personalidade','Potente','Gordura Rica'],en:['Character','Bold','Rich Fat'],fr:['Caractère','Puissant','Gras Riche']};
+  var h='<div class="dryaged-breeds"><div class="breed-card">';
+  h+='<div class="breed-card-name">🐄 Angus <span class="breed-card-name-sub">Black Angus (Irlanda/Espanha)</span></div>';
+  h+='<div class="breed-divider"></div>';
+  h+='<div class="breed-card-desc"><span class="t-pt">'+angusDesc.pt+'</span><span class="t-en">'+angusDesc.en+'</span><span class="t-fr">'+angusDesc.fr+'</span></div>';
+  h+='<div class="breed-card-tags">';
+  angusTags.pt.forEach(function(t){h+='<span class="breed-tag t-pt">'+t+'</span>';});
+  angusTags.en.forEach(function(t){h+='<span class="breed-tag t-en">'+t+'</span>';});
+  angusTags.fr.forEach(function(t){h+='<span class="breed-tag t-fr">'+t+'</span>';});
+  h+='</div></div><div class="breed-card">';
+  h+='<div class="breed-card-name">🐄 Simmental <span class="breed-card-name-sub">Chuletero Simmental (Alemanha)</span></div>';
+  h+='<div class="breed-divider"></div>';
+  h+='<div class="breed-card-desc"><span class="t-pt">'+simDesc.pt+'</span><span class="t-en">'+simDesc.en+'</span><span class="t-fr">'+simDesc.fr+'</span></div>';
+  h+='<div class="breed-card-tags">';
+  simTags.pt.forEach(function(t){h+='<span class="breed-tag t-pt">'+t+'</span>';});
+  simTags.en.forEach(function(t){h+='<span class="breed-tag t-en">'+t+'</span>';});
+  simTags.fr.forEach(function(t){h+='<span class="breed-tag t-fr">'+t+'</span>';});
+  h+='</div></div></div>';
+  return h;
 }
 
 function buildPairingBlock(){
