@@ -2587,9 +2587,13 @@ function buildSurpresa(pref){
   var nameKey='name_'+lang, descKey='desc_'+lang;
   var recentNames = getRecentNames();
 
+  var today = new Date().getDay(); // 0=Domingo
+  var isSunday = today === 0;
   var available = _allRows.filter(function(r){
+    var estado = (r.estado||'').toLowerCase();
+    var estadoOk = estado==='ativo' || estado==='novidade' || (isSunday && estado==='so domingo');
     return r.name_pt &&
-    (r.estado||'').toLowerCase()==='ativo' &&
+    estadoOk &&
     (r.esgotado||'').toUpperCase()!=='SIM' &&
     (r.wine_type||'').toLowerCase()!=='premium';
   });
