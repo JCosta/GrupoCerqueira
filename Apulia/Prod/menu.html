@@ -2025,6 +2025,8 @@ function setDon(btn,type){
   //
   const SURPRESA_ENABLED      = false; // <- mudar para true quando pronto
   const SURPRESA_WEEKEND_ONLY = true;  // <- só Sábado e Domingo
+  window.SURPRESA_ENABLED      = SURPRESA_ENABLED;
+  window.SURPRESA_WEEKEND_ONLY = SURPRESA_WEEKEND_ONLY;
   const day = new Date().getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
   const isWeekend = day === 0 || day === 6;
   const surpresaBtn = document.getElementById('surpresa-btn');
@@ -2629,8 +2631,14 @@ function repeatSurpresa(){ buildSurpresa(_lastPref); }
 
 function closeSurpresa(){
   document.getElementById('surpresa-overlay').classList.remove('open');
-  document.getElementById('surpresa-btn').style.display='';
-  const sb=document.getElementById('source-badge');
+  var day = new Date().getDay();
+  var isWeekend = day===0||day===6;
+  var btn = document.getElementById('surpresa-btn');
+  if(btn){
+    var show = SURPRESA_ENABLED && (!SURPRESA_WEEKEND_ONLY || isWeekend);
+    btn.style.display = show ? '' : 'none';
+  }
+  var sb=document.getElementById('source-badge');
   if(sb) sb.style.display='';
 }
 </script>
