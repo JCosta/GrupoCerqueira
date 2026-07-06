@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deploy Test — Grupo Cerqueira</title>
+  <style>
+    body{font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#1a1209;color:#e2c8a0;}
+    .box{text-align:center;padding:2rem;border:1px solid rgba(201,169,110,.3);border-radius:12px;}
+    h1{font-size:1.5rem;margin-bottom:.5rem;}
+    p{font-size:.9rem;opacity:.6;}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>✅ Deploy funcionou</h1>
+    <p>Grupo Cerqueira · Teste de deploy · <span id="ts"></span></p>
+  </div>
+  <script>
+    document.getElementById('ts').textContent = new Date().toLocaleString('pt-PT');
+  </script>
+</body>
+</html>
