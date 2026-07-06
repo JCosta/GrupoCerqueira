@@ -1920,6 +1920,28 @@ function setDon(btn,type){
   const firstBtn=document.querySelector('.nav-btn');
   if(firstBtn) firstBtn.classList.add('active');
   loadMenu();
+  // ── SURPREENDE-ME: controlos de visibilidade ──────────────────────────
+  //
+  //  SURPRESA_ENABLED = false  →  invisível sempre (período de validação)
+  //  SURPRESA_ENABLED = true   →  visível (sujeito à regra de dia abaixo)
+  //
+  //  SURPRESA_WEEKEND_ONLY = true   →  só aparece Sábado e Domingo
+  //  SURPRESA_WEEKEND_ONLY = false  →  aparece todos os dias
+  //
+  //  Exemplos:
+  //    Validação (escondido):     ENABLED=false, WEEKEND_ONLY=true  (qualquer)
+  //    Só fim de semana:          ENABLED=true,  WEEKEND_ONLY=true
+  //    Sempre visível:            ENABLED=true,  WEEKEND_ONLY=false
+  // ──────────────────────────────────────────────────────────────────────
+  const SURPRESA_ENABLED      = true; // ← mudar para true quando pronto
+  const SURPRESA_WEEKEND_ONLY = true;  // ← só Sábado e Domingo
+  const day = new Date().getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
+  const isWeekend = day === 0 || day === 6;
+  const surpresaBtn = document.getElementById('surpresa-btn');
+  if(surpresaBtn){
+    const show = SURPRESA_ENABLED && (!SURPRESA_WEEKEND_ONLY || isWeekend);
+    surpresaBtn.style.display = show ? '' : 'none';
+  }
 })();
 
 const FALLBACK_CSV = `secção,subsecção,nome_pt,nome_en,nome_fr,descricao_pt,descricao_en,descricao_fr,preco_dose,preco_meia,preco_terceiro,etiqueta_dose,etiqueta_meia,etiqueta_terceiro,alergenios,tipo,estado,destaque
