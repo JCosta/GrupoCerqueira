@@ -9,6 +9,16 @@
   gtag('js', new Date());
 
   gtag('config', 'G-4R456N8LGZ');
+
+  // Lê o parâmetro ?mesa=N do URL e regista no GA4
+  (function(){
+    var mesa = new URLSearchParams(window.location.search).get('mesa');
+    if(mesa){
+      gtag('set', {'mesa': mesa});
+      gtag('event', 'mesa_scan', {mesa: mesa});
+    }
+    window._mesaParam = mesa || null;
+  })();
 </script>
 
 <meta charset="UTF-8"/>
@@ -2000,6 +2010,7 @@ function showSec(id,btn){
     gtag('event','menu_section_view',{
       section_id: id,
       section_label: btn?.textContent?.trim() || id,
+      mesa: window._mesaParam || '(sem mesa)',
       page_title: document.title,
       language: document.body.className.match(/lang-(\w+)/)?.[1] || 'pt'
     });
@@ -2623,7 +2634,7 @@ function openSurpresa(){
   document.getElementById('surpresa-btn').style.display='none';
   var sb=document.getElementById('source-badge');
   if(sb) sb.style.display='none';
-  if(typeof gtag==='function') gtag('event','surpresa_me',{language:document.body.className.match(/lang-(\w+)/)?.[1]||'pt'});
+  if(typeof gtag==='function') gtag('event','surpresa_me',{language:document.body.className.match(/lang-(\w+)/)?.[1]||'pt', mesa: window._mesaParam || '(sem mesa)'});
 }
 
 function buildSurpresa(pref){
@@ -2721,13 +2732,14 @@ function shareSurpresa(){
   });
   var titles = {pt:'A minha sugestão na Tasquinha do Cerqueira',en:'My suggestion at Tasquinha do Cerqueira',fr:'Ma suggestion au Tasquinha do Cerqueira'};
   var ctas = {pt:'Ver a ementa completa',en:'See the full menu',fr:'Voir la carte complète'};
-  var text = (titles[lang]||titles.pt)+'\n\n'+lines.join('\n')+'\n\n'+(ctas[lang]||ctas.pt)+':\n'+window.location.href.split('?')[0];
+  var shareUrl = window.location.href.split('?')[0];
+  var text = (titles[lang]||titles.pt)+'\n\n'+lines.join('\n')+'\n\n'+(ctas[lang]||ctas.pt)+':';
   if(navigator.share){
-    navigator.share({title:titles[lang]||titles.pt, text:text, url:window.location.href.split('?')[0]})
+    navigator.share({title:titles[lang]||titles.pt, text:text, url:shareUrl})
       .catch(function(){});
   } else {
-    // Fallback: WhatsApp
-    var url = 'https://wa.me/?text='+encodeURIComponent(text);
+    var full = text+'\n'+shareUrl;
+    var url = 'https://wa.me/?text='+encodeURIComponent(full);
     window.open(url,'_blank');
   }
 }
