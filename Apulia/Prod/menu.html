@@ -1426,17 +1426,17 @@ function buildVerdeTinto(rows){
   if(pm && lm) priceRows+=`<div class="vt-price"><span class="vt-label">${lm}</span><span class="vt-val">${pm}</span></div>${pf&&lf?'<div class="vt-sep"></div>':''}`;
   if(pf && lf) priceRows+=`<div class="vt-price"><span class="vt-label">${lf}</span><span class="vt-val">${pf}</span></div>`;
   if(!priceRows && pf) priceRows=`<div class="vt-price"><span class="vt-val">${pf}</span></div>`;
-  const desc=row.desc_pt||'Vinho verde tinto servido na tigela à tradicional — experiência única da casa';
+  const desc=row.desc_pt||'Vinho tinto servido na tigela à tradicional — experiência única da casa';
   return`<div class="verde-tinto-card">
     <div class="verde-tinto-img-wrap">
-      <img src="${VERDE_IMG_URL}" alt="Vinho Verde Regional" class="verde-tinto-photo"/>
+      <img src="${VERDE_IMG_URL}" alt="Vinho Tinto" class="verde-tinto-photo"/>
       <div class="verde-tinto-overlay">
         <div class="verde-tinto-badge">
           <span class="t-pt">🏡 Especialidade da Casa</span>
           <span class="t-en">🏡 House Speciality</span>
           <span class="t-fr">🏡 Spécialité Maison</span>
         </div>
-        <div class="verde-tinto-title">Vinho Verde Regional</div>
+        <div class="verde-tinto-title">Vinho Verde Tinto</div>
         <div class="verde-tinto-subtitle">
           <span class="t-pt">Servido directamente na tigela, à tradição minhota</span>
           <span class="t-en">Served directly in the bowl, in the Minho tradition</span>
