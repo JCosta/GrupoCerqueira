@@ -52,20 +52,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 
 /* == TOP BAR == */
 /* Back bar — thin strip above the main topbar */
-.topbar-back{
-  background:var(--bg2);
-  border-bottom:1px solid rgba(201,160,50,.1);
-  padding:.3rem 1.2rem;
-  position:sticky;top:0;z-index:201;
-  display:flex;align-items:center;
-  min-height:32px;
-}
+.topbar-back{display:none;} /* integrado no topbar */
+
 .back-btn-menu{
   display:inline-flex;align-items:center;gap:.35rem;
-  color:rgba(240,232,213,.5);text-decoration:none;
-  font-family:var(--fb);font-size:.58rem;font-weight:400;
+  color:rgba(240,232,213,.4);text-decoration:none;
+  font-family:var(--fb);font-size:.55rem;font-weight:400;
   letter-spacing:.1em;text-transform:uppercase;
-  transition:color .2s;white-space:nowrap;
+  transition:color .2s;white-space:nowrap;flex-shrink:0;
   -webkit-tap-highlight-color:transparent;
 }
 .back-btn-menu:hover{color:var(--gold2);}
@@ -73,26 +67,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 body.lang-pt .back-btn-menu .t-pt{display:inline;}
 body.lang-en .back-btn-menu .t-en{display:inline;}
 body.lang-fr .back-btn-menu .t-fr{display:inline;}
-body.light .back-btn-menu{color:var(--muted);}
+body.light .back-btn-menu{color:rgba(30,20,8,.35);}
 body.light .back-btn-menu:hover{color:var(--gold);}
 
-/* Main topbar — logo + name + controls */
+/* Main topbar */
 .topbar{
-  background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg2);
+  border-bottom:1px solid rgba(201,169,110,.2);
+  display:flex;align-items:center;
   padding:.6rem 1.4rem;
-  position:sticky;top:32px;z-index:200;
-  min-height:100px;gap:1rem;
+  position:sticky;top:0;z-index:200;
+  min-height:80px;gap:1rem;
 }
+/* Brand — centrado absolutamente */
 .topbar-brand{
+  position:absolute;left:50%;transform:translateX(-50%);
   display:flex;align-items:center;gap:.9rem;
-  flex:1;justify-content:center;
+  pointer-events:none;
 }
-/* Logo: hard size with !important to override any stale CSS */
 .topbar-brand .logo-dark,
 .topbar-brand .logo-light{
-  width:90px !important;height:90px !important;
-  max-width:90px !important;max-height:90px !important;
+  width:72px !important;height:72px !important;
+  max-width:72px !important;max-height:72px !important;
   object-fit:contain;flex-shrink:0;
   filter:drop-shadow(0 0 10px rgba(212,80,10,.5));
 }
@@ -104,19 +100,20 @@ body.light .topbar-brand .logo-light{
 .logo-light{display:none;}
 body.light .logo-dark{display:none;}
 body.light .logo-light{display:block;}
-.topbar-brand-text{display:flex;flex-direction:column;gap:.15rem;}
+.topbar-brand-text{display:flex;flex-direction:column;gap:.1rem;}
 .topbar-brand-text h1{
-  font-family:var(--fh);font-size:1.2rem;font-weight:700;
+  font-family:var(--fh);font-size:1.1rem;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;
-  color:var(--gold-l);line-height:1.1;
+  color:var(--gold-l);line-height:1.1;white-space:nowrap;
 }
 .topbar-brand-text p{
-  font-size:.56rem;letter-spacing:.28em;
-  text-transform:uppercase;color:var(--muted);
+  font-size:.5rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap;
 }
+/* Controls — à direita */
 .topbar-controls{
-  display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;
-  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;
+  flex-shrink:0;margin-left:auto;
 }
 .lang-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
 .lang-btn{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .5rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.2rem;white-space:nowrap;}
@@ -128,42 +125,31 @@ body.light .logo-light{display:block;}
 
 /* == MOBILE TOPBAR == */
 @media(max-width:680px){
-  .topbar-back{
-    padding:.25rem .8rem;
-    min-height:28px;
-    max-height:28px;
-  }
   .topbar{
-    top:28px;
-    padding:.5rem .8rem .4rem;
-    min-height:100px;
-    max-height:100px;
-    position:sticky;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:.3rem;
+    top:0;padding:.4rem .9rem;
+    min-height:0;flex-wrap:wrap;gap:.25rem;
+  }
+  .back-btn-menu{
+    width:100%;font-size:.5rem;
+    padding-bottom:.25rem;
+    border-bottom:1px solid rgba(201,169,110,.06);
   }
   .topbar-brand{
-    gap:.55rem;
-    justify-content:center;
-    width:100%;
+    position:static;transform:none;
+    flex:1;justify-content:center;pointer-events:auto;
   }
   .topbar-brand .logo-dark,
   .topbar-brand .logo-light{
-    width:60px !important;height:60px !important;
-    max-width:60px !important;max-height:60px !important;
+    width:44px !important;height:44px !important;
+    max-width:44px !important;max-height:44px !important;
   }
-  .topbar-brand-text h1{font-size:.82rem;letter-spacing:.07em;}
-  .topbar-brand-text p{font-size:.44rem;letter-spacing:.18em;}
+  .topbar-brand-text h1{font-size:.76rem;letter-spacing:.06em;}
+  .topbar-brand-text p{font-size:.42rem;letter-spacing:.15em;}
   .topbar-controls{
-    flex-direction:row;
-    align-items:center;
-    justify-content:center;
-    gap:.4rem;
-    width:100%;
+    flex-direction:row;align-items:center;
+    gap:.35rem;margin-left:0;
+    width:100%;justify-content:center;
+    padding-bottom:.15rem;
   }
   .lang-toggle{border-radius:3px;}
   .lang-btn{font-size:.52rem;padding:.2rem .3rem;}
@@ -172,9 +158,10 @@ body.light .logo-light{display:block;}
 }
 @media(max-width:380px){
   .topbar-brand-text p{display:none;}
-  .topbar-brand-text h1{font-size:.72rem;}
+  .topbar-brand-text h1{font-size:.68rem;letter-spacing:.05em;}
   .back-btn-menu span{display:none;}
 }
+
 
 /* == LAYOUT == */
 .layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
@@ -182,8 +169,8 @@ body.light .logo-light{display:block;}
 /* == SIDEBAR == */
 .sidebar{
   width:var(--sidebar-w);flex-shrink:0;
-  position:sticky;top:132px;
-  height:calc(100vh - 132px);
+  position:sticky;top:80px;
+  height:calc(100vh - 80px);
   overflow-y:auto;overflow-x:hidden;
   background:var(--bg2);border-right:1px solid var(--border);
   scrollbar-width:thin;scrollbar-color:var(--border) transparent;
@@ -1332,7 +1319,7 @@ body.lang-fr .t-fr{display:inline;}
 @media(max-width:680px){
   :root{--sidebar-w:0px;}
   .sidebar{
-    position:sticky;top:128px;
+    position:sticky;top:0;
     width:100%;height:auto;
     max-height:none;overflow-x:auto;overflow-y:hidden;
     border-right:none;border-bottom:1px solid var(--border);
@@ -1379,15 +1366,11 @@ body.lang-fr .t-fr{display:inline;}
 <body class="lang-pt">
 
 <!-- TOP BAR -->
-<!-- Row 1: back button -->
-<div class="topbar-back">
+<div class="topbar">
   <a class="back-btn-menu" href="https://grupocerqueira.bistrobit.fyi/Apulia/index.html">
-    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     <span class="t-pt">Voltar</span><span class="t-en">Back</span><span class="t-fr">Retour</span>
   </a>
-</div>
-<!-- Row 2: logo + name centred -->
-<div class="topbar">
   <div class="topbar-brand">
     <img class="logo-dark"  src="https://grupocerqueira.bistrobit.fyi/Apulia/Prod/images/TasqCerqueiraDarkMode-Photoroom.png"  alt="Tasquinha do Cerqueira"/>
     <img class="logo-light" src="https://grupocerqueira.bistrobit.fyi/Apulia/Prod/images/TasqCerqueiraLightMode-Photoroom.png" alt="Tasquinha do Cerqueira"/>
@@ -2798,7 +2781,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 <script>
 // == SPLASH ==
 (function(){
-  var DURATION = 5000;
+  var DURATION = 6000;
   var splashEl = document.getElementById('splash');
   var barEl    = document.getElementById('splash-bar');
   var menuReady = false;
@@ -2821,7 +2804,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   var welcomeEl = document.getElementById('splash-welcome');
   var subEl     = document.getElementById('splash-sub');
 
-  // 3 taglines × 1800ms = 5.4s — fits within 5s DURATION
+  // 3 taglines × 1800ms = 5.4s — fits within 6s DURATION
   var taglines = document.querySelectorAll('.splash-tagline');
   var current = 0;
   var langCycle = 0;
