@@ -677,6 +677,58 @@ body.light #search-btn:hover{background:#eddcca;}
 body.light #search-btn svg{stroke:#8b6914;}
 body.light #search-btn span{color:#8b6914;}
 
+/* == QUICK-START TOUR == */
+#tour-overlay{
+  position:fixed;inset:0;z-index:8000;
+  pointer-events:none;
+  transition:opacity .4s ease;
+  opacity:0;
+}
+#tour-overlay.active{opacity:1;pointer-events:all;}
+#tour-spotlight{
+  position:fixed;z-index:8001;
+  border-radius:10px;
+  box-shadow:0 0 0 9999px rgba(0,0,0,.6);
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+  border:2px solid rgba(201,169,110,.5);
+}
+#tour-tip{
+  position:fixed;z-index:8002;
+  background:var(--bg2);
+  border:1px solid rgba(201,169,110,.25);
+  border-radius:14px;
+  padding:1.1rem 1.25rem 1rem;
+  max-width:240px;min-width:190px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+}
+#tour-tip::before{
+  content:'';position:absolute;
+  width:10px;height:10px;
+  background:var(--bg2);
+  border:1px solid rgba(201,169,110,.25);
+  transform:rotate(45deg);
+}
+#tour-tip.arrow-top::before{top:-6px;left:24px;border-bottom:none;border-right:none;}
+#tour-tip.arrow-bottom::before{bottom:-6px;left:24px;border-top:none;border-left:none;}
+#tour-tip.arrow-right::before{right:-6px;top:1.2rem;border-top:none;border-left:none;transform:rotate(45deg);}
+#tour-tip.arrow-left::before{left:-6px;top:1.2rem;border-bottom:none;border-right:none;transform:rotate(45deg);}
+.tour-step-lbl{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem;font-family:var(--fb);}
+.tour-tip-icon{font-size:1.4rem;margin-bottom:.35rem;display:block;}
+.tour-tip-title{font-family:var(--fh);font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:.28rem;line-height:1.2;}
+.tour-tip-desc{font-size:.76rem;color:var(--muted);line-height:1.55;margin-bottom:.85rem;}
+.tour-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+.tour-dots{display:flex;gap:.3rem;align-items:center;}
+.tour-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .25s;}
+.tour-dot.active{background:var(--gold);width:16px;border-radius:3px;}
+.tour-next-btn{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.42rem .85rem;font-size:.7rem;font-weight:700;font-family:var(--fb);letter-spacing:.05em;cursor:pointer;transition:opacity .2s;white-space:nowrap;}
+.tour-next-btn:hover{opacity:.85;}
+.tour-skip{background:none;border:none;color:var(--muted);font-size:.66rem;cursor:pointer;font-family:var(--fb);padding:.2rem;transition:color .2s;white-space:nowrap;}
+.tour-skip:hover{color:var(--text);}
+body.light #tour-tip{background:var(--card);}
+body.light #tour-tip::before{background:var(--card);}
+
 #search-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
   background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
@@ -2479,6 +2531,25 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   <span><span class="t-pt">🔍 Pesquisar</span><span class="t-en">🔍 Search</span><span class="t-fr">🔍 Chercher</span></span>
 </button>
 
+<!-- QUICK-START TOUR -->
+<div id="tour-overlay"></div>
+<div id="tour-spotlight"></div>
+<div id="tour-tip">
+  <div class="tour-step-lbl" id="tour-lbl">Passo 1 de 5</div>
+  <span class="tour-tip-icon" id="tour-icon">🔍</span>
+  <div class="tour-tip-title" id="tour-title">Pesquisar</div>
+  <div class="tour-tip-desc" id="tour-desc">Encontre qualquer prato, ingrediente ou alergénio em segundos.</div>
+  <div class="tour-footer">
+    <button class="tour-skip" id="tour-skip" onclick="tourEnd()">
+      <span class="t-pt">Saltar</span><span class="t-en">Skip</span><span class="t-fr">Passer</span>
+    </button>
+    <div class="tour-dots" id="tour-dots"></div>
+    <button class="tour-next-btn" id="tour-next" onclick="tourNext()">
+      <span class="t-pt">Próximo</span><span class="t-en">Next</span><span class="t-fr">Suivant</span>
+    </button>
+  </div>
+</div>
+
 <!-- SEARCH OVERLAY -->
 <div id="search-overlay" onclick="if(event.target===this)closeSearch()">
   <div id="search-box">
@@ -2664,6 +2735,180 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     tryDismiss();
   };
 })();
+
+// == QUICK-START TOUR ==
+(function(){
+  var TOUR_KEY = 'mTourDone_v1';
+  try{ if(localStorage.getItem(TOUR_KEY)) return; }catch(e){}
+
+  var lang = function(){ return document.body.className.match(/lang-(\w+)/)?.[1]||'pt'; };
+
+  var steps = [
+    {
+      target:'#search-btn',
+      arrow:'right',
+      icon:'🔍',
+      title:{pt:'Pesquisar',en:'Search',fr:'Rechercher'},
+      desc:{pt:'Encontre qualquer prato, ingrediente ou alergénio em segundos. Escreva e o resultado aparece de imediato.',
+            en:'Find any dish, ingredient or allergen in seconds. Type a name and results appear instantly.',
+            fr:'Trouvez n\'importe quel plat ou allergène en quelques secondes.'},
+    },
+    {
+      target:'#surpresa-btn',
+      arrow:'bottom',
+      icon:'🎲',
+      title:{pt:'Surpreende-me',en:'Surprise me',fr:'Surprenez-moi'},
+      desc:{pt:'Deixe-nos escolher por si! Sugerimos uma refeição completa — entrada, prato e vinho — com um clique.',
+            en:'Let us choose for you! We suggest a full meal — starter, main and wine — with one click.',
+            fr:'Laissez-nous choisir\u00a0! On suggère un repas complet en un seul clic.'},
+    },
+    {
+      target:'.lang-toggle',
+      arrow:'top',
+      icon:'🌍',
+      title:{pt:'Idioma',en:'Language',fr:'Langue'},
+      desc:{pt:'Escolha entre Português, English ou Français. A ementa adapta-se de imediato.',
+            en:'Choose between Portuguese, English or French. The menu adapts instantly.',
+            fr:'Choisissez votre langue. La carte s\'adapte aussitôt.'},
+    },
+    {
+      target:'#theme-btn',
+      arrow:'top',
+      icon:'🌙',
+      title:{pt:'Modo Escuro / Claro',en:'Dark / Light mode',fr:'Mode sombre / clair'},
+      desc:{pt:'Prefere fundo claro ou escuro? Mude quando quiser — a preferência fica guardada.',
+            en:'Prefer a light or dark background? Change anytime — your preference is saved.',
+            fr:'Préférez fond clair ou sombre\u00a0? Changez quand vous voulez.'},
+    },
+    {
+      target:'.nav-btn',
+      arrow:'right',
+      icon:'🗂️',
+      title:{pt:'Navegar pela ementa',en:'Browse the menu',fr:'Parcourir la carte'},
+      desc:{pt:'Use este menu lateral para ir directamente às Entradas, Peixes, Carnes, Vinhos e muito mais.',
+            en:'Use this side menu to jump directly to Starters, Fish, Meats, Wines and more.',
+            fr:'Accédez directement aux Entrées, Poissons, Viandes, Vins et plus encore.'},
+    },
+  ];
+
+  var current = 0;
+  var overlayEl = document.getElementById('tour-overlay');
+  var spotEl    = document.getElementById('tour-spotlight');
+  var tipEl     = document.getElementById('tour-tip');
+  var lblEl     = document.getElementById('tour-lbl');
+  var iconEl    = document.getElementById('tour-icon');
+  var titleEl   = document.getElementById('tour-title');
+  var descEl    = document.getElementById('tour-desc');
+  var dotsEl    = document.getElementById('tour-dots');
+  var nextEl    = document.getElementById('tour-next');
+
+  // Build dots
+  steps.forEach(function(_,i){
+    var d = document.createElement('div');
+    d.className = 'tour-dot'+(i===0?' active':'');
+    dotsEl.appendChild(d);
+  });
+
+  function getRect(sel){
+    var el = document.querySelector(sel);
+    if(!el) return null;
+    return el.getBoundingClientRect();
+  }
+
+  function positionTip(rect, arrow){
+    var pad = 10;
+    var tW = tipEl.offsetWidth || 220;
+    var tH = tipEl.offsetHeight || 170;
+    var vW = window.innerWidth;
+    var vH = window.innerHeight;
+    var t, l;
+
+    if(arrow === 'right'){
+      l = rect.left - tW - 16;
+      if(l < pad) l = rect.right + 16;
+      t = rect.top + rect.height/2 - tH/2;
+    } else if(arrow === 'left'){
+      l = rect.right + 16;
+      t = rect.top + rect.height/2 - tH/2;
+    } else if(arrow === 'bottom'){
+      t = rect.top - tH - 16;
+      l = rect.left + rect.width/2 - tW/2;
+    } else {
+      t = rect.bottom + 16;
+      l = rect.left + rect.width/2 - tW/2;
+    }
+
+    l = Math.max(pad, Math.min(l, vW - tW - pad));
+    t = Math.max(pad, Math.min(t, vH - tH - pad));
+    tipEl.style.top  = t + 'px';
+    tipEl.style.left = l + 'px';
+  }
+
+  function showStep(i){
+    var step = steps[i];
+    var rect = getRect(step.target);
+    if(!rect){ current++; if(current < steps.length) showStep(current); else tourEnd(); return; }
+
+    var l = lang();
+    var labels = {pt:'Passo',en:'Step',fr:'Étape'};
+    var ofs    = {pt:'de',en:'of',fr:'sur'};
+    lblEl.textContent   = (labels[l]||labels.pt)+' '+(i+1)+' '+(ofs[l]||ofs.pt)+' '+steps.length;
+    iconEl.textContent  = step.icon;
+    titleEl.textContent = step.title[l]||step.title.pt;
+    descEl.textContent  = step.desc[l]||step.desc.pt;
+    tipEl.className     = 'arrow-'+step.arrow;
+
+    dotsEl.querySelectorAll('.tour-dot').forEach(function(d,di){
+      d.classList.toggle('active', di===i);
+    });
+
+    var isLast = i === steps.length - 1;
+    nextEl.querySelector('.t-pt').textContent = isLast ? 'Fechar'  : 'Próximo';
+    nextEl.querySelector('.t-en').textContent = isLast ? 'Close'   : 'Next';
+    nextEl.querySelector('.t-fr').textContent = isLast ? 'Fermer'  : 'Suivant';
+
+    var PAD = 7;
+    spotEl.style.top    = (rect.top    - PAD) + 'px';
+    spotEl.style.left   = (rect.left   - PAD) + 'px';
+    spotEl.style.width  = (rect.width  + PAD*2) + 'px';
+    spotEl.style.height = (rect.height + PAD*2) + 'px';
+    spotEl.style.boxShadow = '0 0 0 9999px rgba(0,0,0,.6)';
+
+    // Position tip after paint
+    requestAnimationFrame(function(){ positionTip(rect, step.arrow); });
+  }
+
+  window.tourNext = function(){
+    if(current >= steps.length - 1){ tourEnd(); return; }
+    current++;
+    showStep(current);
+  };
+
+  window.tourEnd = function(){
+    overlayEl.classList.remove('active');
+    spotEl.style.boxShadow = 'none';
+    tipEl.style.opacity = '0';
+    setTimeout(function(){ tipEl.style.display='none'; }, 400);
+    try{ localStorage.setItem(TOUR_KEY,'1'); }catch(e){}
+  };
+
+  function startTour(){
+    tipEl.style.display = '';
+    tipEl.style.opacity = '1';
+    overlayEl.classList.add('active');
+    showStep(0);
+  }
+
+  // Wait for splash to close before starting
+  var splashCheck = setInterval(function(){
+    var splash = document.getElementById('splash');
+    if(!splash || splash.style.display === 'none'){
+      clearInterval(splashCheck);
+      setTimeout(startTour, 700);
+    }
+  }, 200);
+})();
+
 let _allRows = [];
 function _storeRows(rows){ _allRows = rows; }
 
