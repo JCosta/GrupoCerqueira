@@ -2738,8 +2738,12 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 
 // == QUICK-START TOUR ==
 (function(){
-  var TOUR_KEY = 'mTourDone_v1';
-  try{ if(sessionStorage.getItem(TOUR_KEY)) return; }catch(e){}
+  var TOUR_KEY = 'mTourLang_v1';
+  var currentLang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
+  try{
+    var seenLang = sessionStorage.getItem(TOUR_KEY);
+    if(seenLang === currentLang) return;
+  }catch(e){}
 
   var lang = function(){ return document.body.className.match(/lang-(\w+)/)?.[1]||'pt'; };
 
@@ -2890,7 +2894,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     spotEl.style.display   = 'none';
     tipEl.style.opacity    = '0';
     setTimeout(function(){ tipEl.style.display='none'; }, 400);
-    try{ sessionStorage.setItem(TOUR_KEY,'1'); }catch(e){}
+    try{ sessionStorage.setItem(TOUR_KEY, currentLang); }catch(e){}
   };
 
   function startTour(){
