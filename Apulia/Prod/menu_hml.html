@@ -677,6 +677,91 @@ body.light #search-btn:hover{background:#eddcca;}
 body.light #search-btn svg{stroke:#8b6914;}
 body.light #search-btn span{color:#8b6914;}
 
+/* == LANGUAGE PICKER == */
+#lang-picker{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  opacity:0;transition:opacity .5s ease;
+  pointer-events:none;
+}
+#lang-picker.active{opacity:1;pointer-events:all;}
+#lang-picker.hide{opacity:0;pointer-events:none;}
+.lp-card{
+  background:var(--bg2);
+  border:1px solid rgba(201,169,110,.2);
+  border-radius:20px;
+  padding:2.2rem 2rem 1.8rem;
+  max-width:340px;width:100%;
+  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(201,169,110,.08);
+  animation:lpSlideUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes lpSlideUp{
+  from{opacity:0;transform:translateY(28px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.lp-ornament{
+  display:flex;align-items:center;gap:.6rem;
+  margin-bottom:1.5rem;
+}
+.lp-ornament::before,.lp-ornament::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,169,110,.4),transparent);
+}
+.lp-ornament span{color:var(--gold);font-size:.45rem;letter-spacing:.3em;white-space:nowrap;}
+.lp-title{
+  font-family:var(--fh);
+  font-size:1.1rem;font-weight:700;
+  color:var(--text);text-align:center;
+  margin-bottom:.35rem;line-height:1.3;
+}
+.lp-sub{
+  font-family:var(--fh);font-style:italic;
+  font-size:.78rem;color:var(--gold);
+  text-align:center;margin-bottom:1.6rem;
+  letter-spacing:.04em;
+}
+.lp-options{display:flex;flex-direction:column;gap:.6rem;}
+.lp-btn{
+  display:flex;align-items:center;gap:1rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(201,169,110,.12);
+  border-radius:12px;padding:.9rem 1.1rem;
+  cursor:pointer;transition:all .22s ease;
+  text-align:left;width:100%;
+}
+.lp-btn:hover{
+  background:rgba(201,169,110,.08);
+  border-color:rgba(201,169,110,.35);
+  transform:translateX(4px);
+}
+.lp-btn:active{transform:translateX(2px);}
+.lp-flag{
+  font-size:1.6rem;flex-shrink:0;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));
+}
+.lp-lang-info{flex:1;}
+.lp-lang-name{
+  font-family:var(--fh);font-size:.95rem;font-weight:700;
+  color:var(--text);line-height:1;margin-bottom:.2rem;
+}
+.lp-lang-sub{
+  font-size:.68rem;color:var(--muted);
+  letter-spacing:.05em;
+}
+.lp-arrow{color:rgba(201,169,110,.4);font-size:.8rem;flex-shrink:0;}
+.lp-footer{
+  text-align:center;margin-top:1.2rem;
+  font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(201,169,110,.3);
+}
+body.light .lp-card{background:var(--card);border-color:rgba(139,105,20,.15);}
+body.light .lp-btn{background:rgba(0,0,0,.02);border-color:rgba(139,105,20,.12);}
+body.light .lp-btn:hover{background:rgba(139,105,20,.06);border-color:rgba(139,105,20,.3);}
+body.light .lp-ornament::before,body.light .lp-ornament::after{background:linear-gradient(to right,transparent,rgba(139,105,20,.3),transparent);}
+
 /* == QUICK-START TOUR == */
 #tour-overlay{
   position:fixed;inset:0;z-index:8000;
@@ -2531,6 +2616,42 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   <span><span class="t-pt">🔍 Pesquisar</span><span class="t-en">🔍 Search</span><span class="t-fr">🔍 Chercher</span></span>
 </button>
 
+<!-- LANGUAGE PICKER -->
+<div id="lang-picker">
+  <div class="lp-card">
+    <div class="lp-ornament"><span>✦ ✦ ✦</span></div>
+    <div class="lp-title">Bem-vindo · Welcome · Bienvenue</div>
+    <div class="lp-sub">Escolha o seu idioma · Choose your language</div>
+    <div class="lp-options">
+      <button class="lp-btn" onclick="pickLang('pt')">
+        <span class="lp-flag">🇵🇹</span>
+        <div class="lp-lang-info">
+          <div class="lp-lang-name">Português</div>
+          <div class="lp-lang-sub">Continuar em português</div>
+        </div>
+        <span class="lp-arrow">›</span>
+      </button>
+      <button class="lp-btn" onclick="pickLang('en')">
+        <span class="lp-flag">🇬🇧</span>
+        <div class="lp-lang-info">
+          <div class="lp-lang-name">English</div>
+          <div class="lp-lang-sub">Continue in English</div>
+        </div>
+        <span class="lp-arrow">›</span>
+      </button>
+      <button class="lp-btn" onclick="pickLang('fr')">
+        <span class="lp-flag">🇫🇷</span>
+        <div class="lp-lang-info">
+          <div class="lp-lang-name">Français</div>
+          <div class="lp-lang-sub">Continuer en français</div>
+        </div>
+        <span class="lp-arrow">›</span>
+      </button>
+    </div>
+    <div class="lp-footer">Tasquinha do Cerqueira · Apúlia</div>
+  </div>
+</div>
+
 <!-- QUICK-START TOUR -->
 <div id="tour-overlay"></div>
 <div id="tour-spotlight" style="display:none;"></div>
@@ -2736,12 +2857,59 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   };
 })();
 
+// == LANGUAGE PICKER ==
+(function(){
+  var LANG_KEY = 'mLangPicked_v1';
+
+  // If language already chosen in a previous session, skip picker
+  try{
+    if(localStorage.getItem(LANG_KEY)) return;
+  }catch(e){}
+
+  var pickerEl = document.getElementById('lang-picker');
+  if(!pickerEl) return;
+
+  // Show picker after splash closes
+  var splashCheck = setInterval(function(){
+    var splash = document.getElementById('splash');
+    if(!splash || splash.style.display === 'none'){
+      clearInterval(splashCheck);
+      setTimeout(function(){
+        pickerEl.classList.add('active');
+      }, 400);
+    }
+  }, 200);
+
+  window.pickLang = function(l){
+    // Set language
+    setLang(l);
+
+    // Hide picker
+    pickerEl.classList.add('hide');
+    setTimeout(function(){
+      pickerEl.style.display = 'none';
+    }, 500);
+
+    // Remember choice permanently
+    try{ localStorage.setItem(LANG_KEY, l); }catch(e){}
+
+    // Clear tour session so tour shows in chosen language
+    try{ sessionStorage.removeItem('mTourLang_v1'); }catch(e){}
+
+    // Start tour after picker closes
+    setTimeout(function(){
+      if(typeof startTourNow === 'function') startTourNow();
+    }, 700);
+  };
+})();
+
 // == QUICK-START TOUR ==
 (function(){
   var TOUR_KEY = 'mTourLang_v1';
   var currentLang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
   try{
     var seenLang = sessionStorage.getItem(TOUR_KEY);
+    // Skip if already seen in this language this session
     if(seenLang === currentLang) return;
   }catch(e){}
 
@@ -2901,18 +3069,30 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     spotEl.style.display = '';
     tipEl.style.display  = '';
     tipEl.style.opacity  = '1';
+    // Re-read language at start time
+    currentLang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
     overlayEl.classList.add('active');
     showStep(0);
   }
 
-  // Wait for splash to close before starting
-  var splashCheck = setInterval(function(){
-    var splash = document.getElementById('splash');
-    if(!splash || splash.style.display === 'none'){
-      clearInterval(splashCheck);
-      setTimeout(startTour, 700);
-    }
-  }, 200);
+  // Expose so language picker can trigger tour after lang selection
+  window.startTourNow = startTour;
+
+  // Auto-start only if lang picker is NOT showing (lang already chosen)
+  var langAlreadyChosen = false;
+  try{ langAlreadyChosen = !!localStorage.getItem('mLangPicked_v1'); }catch(e){}
+
+  if(langAlreadyChosen){
+    // Wait for splash to close then start tour
+    var splashCheck = setInterval(function(){
+      var splash = document.getElementById('splash');
+      if(!splash || splash.style.display === 'none'){
+        clearInterval(splashCheck);
+        setTimeout(startTour, 700);
+      }
+    }, 200);
+  }
+  // Otherwise tour is triggered by pickLang() after picker closes
 })();
 
 let _allRows = [];
