@@ -2533,8 +2533,8 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 
 <!-- QUICK-START TOUR -->
 <div id="tour-overlay"></div>
-<div id="tour-spotlight"></div>
-<div id="tour-tip">
+<div id="tour-spotlight" style="display:none;"></div>
+<div id="tour-tip" style="display:none;opacity:0;">
   <div class="tour-step-lbl" id="tour-lbl">Passo 1 de 5</div>
   <span class="tour-tip-icon" id="tour-icon">🔍</span>
   <div class="tour-tip-title" id="tour-title">Pesquisar</div>
@@ -2739,7 +2739,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 // == QUICK-START TOUR ==
 (function(){
   var TOUR_KEY = 'mTourDone_v1';
-  try{ if(localStorage.getItem(TOUR_KEY)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(TOUR_KEY)) return; }catch(e){}
 
   var lang = function(){ return document.body.className.match(/lang-(\w+)/)?.[1]||'pt'; };
 
@@ -2887,14 +2887,16 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   window.tourEnd = function(){
     overlayEl.classList.remove('active');
     spotEl.style.boxShadow = 'none';
-    tipEl.style.opacity = '0';
+    spotEl.style.display   = 'none';
+    tipEl.style.opacity    = '0';
     setTimeout(function(){ tipEl.style.display='none'; }, 400);
-    try{ localStorage.setItem(TOUR_KEY,'1'); }catch(e){}
+    try{ sessionStorage.setItem(TOUR_KEY,'1'); }catch(e){}
   };
 
   function startTour(){
-    tipEl.style.display = '';
-    tipEl.style.opacity = '1';
+    spotEl.style.display = '';
+    tipEl.style.display  = '';
+    tipEl.style.opacity  = '1';
     overlayEl.classList.add('active');
     showStep(0);
   }
