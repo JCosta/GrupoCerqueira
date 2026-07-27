@@ -2584,12 +2584,6 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     <div class="splash-tagline active">Peixe fresco do dia, directo do mar</div>
     <div class="splash-tagline">Fresh catch of the day, straight from the sea</div>
     <div class="splash-tagline">Poisson frais du jour, tout droit de la mer</div>
-    <div class="splash-tagline">Cortes Dry-Aged maturados com arte</div>
-    <div class="splash-tagline">Dry-Aged cuts, matured to perfection</div>
-    <div class="splash-tagline">Coupes Dry-Aged, maturées avec soin</div>
-    <div class="splash-tagline">À beira-mar, em Apúlia · Esposende</div>
-    <div class="splash-tagline">Seaside dining in Apúlia · Esposende</div>
-    <div class="splash-tagline">Au bord de la mer · Apúlia, Esposende</div>
   </div>
   <div class="splash-bar-wrap">
     <div class="splash-bar" id="splash-bar"></div>
@@ -2600,7 +2594,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 <script>
 // == SPLASH ==
 (function(){
-  var DURATION = 5000;
+  var DURATION = 6000;
   var splashEl = document.getElementById('splash');
   var barEl    = document.getElementById('splash-bar');
   var menuReady = false;
@@ -2623,7 +2617,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   var welcomeEl = document.getElementById('splash-welcome');
   var subEl     = document.getElementById('splash-sub');
 
-  // Rotate taglines every 1.4s, welcome every 3rd (4.2s cycle)
+  // 3 taglines × 1800ms = 5.4s — fits within 6s DURATION
   var taglines = document.querySelectorAll('.splash-tagline');
   var current = 0;
   var langCycle = 0;
@@ -2633,21 +2627,19 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
     current = (current + 1) % taglines.length;
     taglines[current].classList.add('active');
 
-    // Every 3 taglines = one language — update welcome text
-    if(current % 3 === 0){
-      langCycle = (langCycle + 1) % welcomes.length;
-      if(welcomeEl && subEl){
-        welcomeEl.style.opacity = '0';
-        subEl.style.opacity = '0';
-        setTimeout(function(){
-          welcomeEl.innerHTML = welcomes[langCycle].h;
-          subEl.textContent   = welcomes[langCycle].p;
-          welcomeEl.style.opacity = '1';
-          subEl.style.opacity = '1';
-        }, 350);
-      }
+    // Each tagline = one language — update welcome text in sync
+    langCycle = current % welcomes.length;
+    if(welcomeEl && subEl){
+      welcomeEl.style.opacity = '0';
+      subEl.style.opacity = '0';
+      setTimeout(function(){
+        welcomeEl.innerHTML = welcomes[langCycle].h;
+        subEl.textContent   = welcomes[langCycle].p;
+        welcomeEl.style.opacity = '1';
+        subEl.style.opacity = '1';
+      }, 350);
     }
-  }, 1400);
+  }, 1800);
 
   // Smooth opacity transition on welcome text
   if(welcomeEl) welcomeEl.style.transition = 'opacity .35s ease';
