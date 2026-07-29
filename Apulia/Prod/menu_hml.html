@@ -2297,6 +2297,39 @@ function setDon(btn,type){
   const firstBtn=document.querySelector('.nav-btn');
   if(firstBtn) firstBtn.classList.add('active');
   loadMenu();
+  //
+  // ================================================================
+  //  BISTROBIT — CONFIGURAÇÃO DE FUNCIONALIDADES
+  //  Editar apenas este bloco para activar/desactivar features
+  // ================================================================
+  //
+  //  SPLASH
+  //  Ecrã de boas-vindas com logo, mensagem e barra de progresso.
+  //  SPLASH_ENABLED   = true  → mostra o splash ao abrir o menu
+  //  SPLASH_DURATION  = 5000  → duração em milissegundos (5000 = 5s)
+  //
+  window.SPLASH_ENABLED  = false;
+  window.SPLASH_DURATION = 5000;
+  //
+  //  SELETOR DE LÍNGUA
+  //  Pop-up de escolha de idioma na 1ª visita (guarda em localStorage).
+  //  LANG_PICKER_ENABLED = true  → mostra a pop-up na 1ª visita
+  //  LANG_PICKER_ENABLED = false → menu abre sempre em PT
+  //
+  window.LANG_PICKER_ENABLED = false;
+  //
+  //  TOUR DE BOAS-VINDAS
+  //  Guia animado que explica os botões na 1ª visita por língua.
+  //  TOUR_ENABLED = true  → mostra o tour após splash/picker
+  //  TOUR_ENABLED = false → desactiva o tour completamente
+  //
+  window.TOUR_ENABLED = false;
+  //
+  //  SURPREENDE-ME
+  //  Sugestão de refeição completa com pré-selecção Carne/Peixe.
+  //  SURPRESA_ENABLED     = true  → botão visível
+  //  SURPRESA_WEEKEND_ONLY = true → só Sábado e Domingo
+  //
   //  SURPREENDE-ME: controlos de visibilidade
   //
   //  SURPRESA_ENABLED = false  ->  invisível sempre (período de validação)
@@ -2305,7 +2338,7 @@ function setDon(btn,type){
   //  SURPRESA_WEEKEND_ONLY = true   ->  só aparece Sábado e Domingo
   //  SURPRESA_WEEKEND_ONLY = false  ->  aparece todos os dias
   //
-  const SURPRESA_ENABLED      = true;  // <- mudar para true quando pronto
+  const SURPRESA_ENABLED      = false;  // <- mudar para true quando pronto
   const SURPRESA_WEEKEND_ONLY = false; // <- só Sábado e Domingo
   window.SURPRESA_ENABLED      = SURPRESA_ENABLED;
   window.SURPRESA_WEEKEND_ONLY = SURPRESA_WEEKEND_ONLY;
@@ -2789,7 +2822,12 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 <script>
 // == SPLASH ==
 (function(){
-  var DURATION = 5000;
+  if(!window.SPLASH_ENABLED){ 
+    var s=document.getElementById('splash');
+    if(s) s.style.display='none';
+    return;
+  }
+  var DURATION = window.SPLASH_DURATION || 6000;
   var splashEl = document.getElementById('splash');
   var barEl    = document.getElementById('splash-bar');
   var menuReady = false;
@@ -2812,7 +2850,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   var welcomeEl = document.getElementById('splash-welcome');
   var subEl     = document.getElementById('splash-sub');
 
-  // 3 taglines × 1800ms = 5.4s — fits within 5s DURATION
+  // 3 taglines × 1800ms = 5.4s — fits within 6s DURATION
   var taglines = document.querySelectorAll('.splash-tagline');
   var current = 0;
   var langCycle = 0;
@@ -2862,6 +2900,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 
 // == LANGUAGE PICKER ==
 (function(){
+  if(!window.LANG_PICKER_ENABLED) return;
   var LANG_KEY = 'mLangPicked_v1';
 
   // If language already chosen in a previous session, skip picker
@@ -2908,6 +2947,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 
 // == QUICK-START TOUR ==
 (function(){
+  if(!window.TOUR_ENABLED) return;
   var TOUR_KEY = 'mTourLang_v1';
   var currentLang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
   try{
@@ -3083,7 +3123,7 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
 
   // Auto-start only if lang picker is NOT showing (lang already chosen)
   var langAlreadyChosen = false;
-  try{ langAlreadyChosen = !!localStorage.getItem('mLangPicked_v1'); }catch(e){}
+  try{ langAlreadyChosen = !window.LANG_PICKER_ENABLED || !!localStorage.getItem('mLangPicked_v1'); }catch(e){}
 
   if(langAlreadyChosen){
     // Wait for splash to close then start tour
