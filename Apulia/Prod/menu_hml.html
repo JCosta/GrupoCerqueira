@@ -877,7 +877,7 @@ body.light #tour-tip::before{background:var(--card);}
 .sr-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;line-height:1.4;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .sr-al{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
-.sr-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.15rem;}
+.sr-price{font-size:.8rem;font-family:var(--fh);margin-top:.25rem;}
 .search-empty{padding:1.5rem 1.1rem;text-align:center;color:var(--muted);font-size:.85rem;}
 mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1px;}
 
@@ -2342,22 +2342,22 @@ function setDon(btn,type){
   //  SPLASH_ENABLED   = true  → mostra o splash ao abrir o menu
   //  SPLASH_DURATION  = 6000  → duração em milissegundos (6000 = 6s)
   //
-  window.SPLASH_ENABLED  = false;
-  window.SPLASH_DURATION = 5000;
+  window.SPLASH_ENABLED  = true;
+  window.SPLASH_DURATION = 6000;
   //
   //  SELETOR DE LÍNGUA
   //  Pop-up de escolha de idioma na 1ª visita (guarda em localStorage).
   //  LANG_PICKER_ENABLED = true  → mostra a pop-up na 1ª visita
   //  LANG_PICKER_ENABLED = false → menu abre sempre em PT
   //
-  window.LANG_PICKER_ENABLED = false;
+  window.LANG_PICKER_ENABLED = true;
   //
   //  TOUR DE BOAS-VINDAS
   //  Guia animado que explica os botões na 1ª visita por língua.
   //  TOUR_ENABLED = true  → mostra o tour após splash/picker
   //  TOUR_ENABLED = false → desactiva o tour completamente
   //
-  window.TOUR_ENABLED = false;
+  window.TOUR_ENABLED = true;
   //
   //  SURPREENDE-ME
   //  Sugestão de refeição completa com pré-selecção Carne/Peixe.
@@ -3232,10 +3232,8 @@ function doSearch(q){
     var name = highlight(r[nameKey]||r.name_pt, q);
     var desc = highlight(r[descKey]||r.desc_pt, q);
     var sec  = SECTION_LABELS[r.section]||{pt:r.section,en:r.section,fr:r.section};
-    var price= r.price_full || '';
     var h = '<div class="search-result" onclick="goToSection(\''+r.section+'\');closeSearch();">';
     h += '<div class="sr-section"><span class="t-pt">'+sec.pt+'</span><span class="t-en">'+sec.en+'</span><span class="t-fr">'+sec.fr+'</span></div>';
-    // Subsection — extract part in active language (format: "PT | EN | FR")
     if(r.subsection && r.subsection !== '__'){
       var subParts = r.subsection.split('|').map(function(s){ return s.trim(); });
       var subPt = subParts[0]||''; var subEn = subParts[1]||subPt; var subFr = subParts[2]||subPt;
@@ -3244,7 +3242,18 @@ function doSearch(q){
     h += '<div class="sr-name">'+name+'</div>';
     if(desc) h += '<div class="sr-desc">'+desc+'</div>';
     if(r.allergens) h += '<div class="sr-al">'+r.allergens+'</div>';
-    if(price) h += '<div class="sr-price">'+price+'</div>';
+    // Preços — dose, meia e terceiro quando existirem
+    var pf=r.price_full, pm=r.price_half, pt=r.price_third;
+    var lf=r.price_label_full||'Dose', lm=r.price_label_half||'1/2', lt=r.price_label_third||'1/3';
+    if(pf||pm||pt){
+      h += '<div class="sr-price">';
+      if(pf) h += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
+      if(pf&&(pm||pt)) h += '<span class="sc-sep"> · </span>';
+      if(pm) h += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
+      if(pm&&pt) h += '<span class="sc-sep"> · </span>';
+      if(pt) h += '<span class="sc-pv sc-pv-half">'+pt+'€</span><span class="sc-pl"> '+lt+'</span>';
+      h += '</div>';
+    }
     h += '</div>';
     return h;
   }).join('');
