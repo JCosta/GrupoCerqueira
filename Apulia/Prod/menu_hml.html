@@ -3364,9 +3364,9 @@ function buildSurpresa(pref){
       var lf = r.price_label_full||'Dose', lm = r.price_label_half||'1/2';
       if(pf||pm){
         priceHtml = '<div class="surpresa-course-price">';
-        if(pf) priceHtml += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
+        if(pf) priceHtml += '<span class="sc-pv">'+pf+'</span><span class="sc-pl"> '+lf+'</span>';
         if(pf && pm) priceHtml += '<span class="sc-sep"> · </span>';
-        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
+        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'</span><span class="sc-pl"> '+lm+'</span>';
         priceHtml += '</div>';
       }
 
