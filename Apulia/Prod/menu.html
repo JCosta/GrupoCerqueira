@@ -52,20 +52,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 
 /* == TOP BAR == */
 /* Back bar — thin strip above the main topbar */
-.topbar-back{
-  background:var(--bg2);
-  border-bottom:1px solid rgba(201,160,50,.1);
-  padding:.3rem 1.2rem;
-  position:sticky;top:0;z-index:201;
-  display:flex;align-items:center;
-  min-height:32px;
-}
 .back-btn-menu{
   display:inline-flex;align-items:center;gap:.35rem;
-  color:rgba(240,232,213,.5);text-decoration:none;
-  font-family:var(--fb);font-size:.58rem;font-weight:400;
+  color:rgba(240,232,213,.4);text-decoration:none;
+  font-family:var(--fb);font-size:.55rem;font-weight:400;
   letter-spacing:.1em;text-transform:uppercase;
-  transition:color .2s;white-space:nowrap;
+  transition:color .2s;white-space:nowrap;flex-shrink:0;
   -webkit-tap-highlight-color:transparent;
 }
 .back-btn-menu:hover{color:var(--gold2);}
@@ -73,26 +65,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 body.lang-pt .back-btn-menu .t-pt{display:inline;}
 body.lang-en .back-btn-menu .t-en{display:inline;}
 body.lang-fr .back-btn-menu .t-fr{display:inline;}
-body.light .back-btn-menu{color:var(--muted);}
+body.light .back-btn-menu{color:rgba(30,20,8,.35);}
 body.light .back-btn-menu:hover{color:var(--gold);}
 
-/* Main topbar — logo + name + controls */
+/* Main topbar */
 .topbar{
-  background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg2);
+  border-bottom:1px solid rgba(201,169,110,.2);
+  display:flex;align-items:center;
   padding:.6rem 1.4rem;
-  position:sticky;top:32px;z-index:200;
-  min-height:100px;gap:1rem;
+  position:sticky;top:0;z-index:200;
+  min-height:80px;gap:1rem;
 }
+/* Brand — centrado absolutamente */
 .topbar-brand{
+  position:absolute;left:50%;transform:translateX(-50%);
   display:flex;align-items:center;gap:.9rem;
-  flex:1;justify-content:center;
+  pointer-events:none;
 }
-/* Logo: hard size with !important to override any stale CSS */
 .topbar-brand .logo-dark,
 .topbar-brand .logo-light{
-  width:90px !important;height:90px !important;
-  max-width:90px !important;max-height:90px !important;
+  width:72px !important;height:72px !important;
+  max-width:72px !important;max-height:72px !important;
   object-fit:contain;flex-shrink:0;
   filter:drop-shadow(0 0 10px rgba(212,80,10,.5));
 }
@@ -104,19 +98,20 @@ body.light .topbar-brand .logo-light{
 .logo-light{display:none;}
 body.light .logo-dark{display:none;}
 body.light .logo-light{display:block;}
-.topbar-brand-text{display:flex;flex-direction:column;gap:.15rem;}
+.topbar-brand-text{display:flex;flex-direction:column;gap:.1rem;}
 .topbar-brand-text h1{
-  font-family:var(--fh);font-size:1.2rem;font-weight:700;
+  font-family:var(--fh);font-size:1.1rem;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;
-  color:var(--gold-l);line-height:1.1;
+  color:var(--gold-l);line-height:1.1;white-space:nowrap;
 }
 .topbar-brand-text p{
-  font-size:.56rem;letter-spacing:.28em;
-  text-transform:uppercase;color:var(--muted);
+  font-size:.5rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap;
 }
+/* Controls — à direita */
 .topbar-controls{
-  display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;
-  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;
+  flex-shrink:0;margin-left:auto;
 }
 .lang-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
 .lang-btn{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .5rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.2rem;white-space:nowrap;}
@@ -128,42 +123,31 @@ body.light .logo-light{display:block;}
 
 /* == MOBILE TOPBAR == */
 @media(max-width:680px){
-  .topbar-back{
-    padding:.25rem .8rem;
-    min-height:28px;
-    max-height:28px;
-  }
   .topbar{
-    top:28px;
-    padding:.5rem .8rem .4rem;
-    min-height:100px;
-    max-height:100px;
-    position:sticky;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:.3rem;
+    top:0;padding:.4rem .9rem;
+    min-height:0;flex-wrap:wrap;gap:.25rem;
+  }
+  .back-btn-menu{
+    width:100%;font-size:.5rem;
+    padding-bottom:.25rem;
+    border-bottom:1px solid rgba(201,169,110,.06);
   }
   .topbar-brand{
-    gap:.55rem;
-    justify-content:center;
-    width:100%;
+    position:static;transform:none;
+    flex:1;justify-content:center;pointer-events:auto;
   }
   .topbar-brand .logo-dark,
   .topbar-brand .logo-light{
-    width:60px !important;height:60px !important;
-    max-width:60px !important;max-height:60px !important;
+    width:44px !important;height:44px !important;
+    max-width:44px !important;max-height:44px !important;
   }
-  .topbar-brand-text h1{font-size:.82rem;letter-spacing:.07em;}
-  .topbar-brand-text p{font-size:.44rem;letter-spacing:.18em;}
+  .topbar-brand-text h1{font-size:.76rem;letter-spacing:.06em;}
+  .topbar-brand-text p{font-size:.42rem;letter-spacing:.15em;}
   .topbar-controls{
-    flex-direction:row;
-    align-items:center;
-    justify-content:center;
-    gap:.4rem;
-    width:100%;
+    flex-direction:row;align-items:center;
+    gap:.35rem;margin-left:0;
+    width:100%;justify-content:center;
+    padding-bottom:.15rem;
   }
   .lang-toggle{border-radius:3px;}
   .lang-btn{font-size:.52rem;padding:.2rem .3rem;}
@@ -172,9 +156,10 @@ body.light .logo-light{display:block;}
 }
 @media(max-width:380px){
   .topbar-brand-text p{display:none;}
-  .topbar-brand-text h1{font-size:.72rem;}
+  .topbar-brand-text h1{font-size:.68rem;letter-spacing:.05em;}
   .back-btn-menu span{display:none;}
 }
+
 
 /* == LAYOUT == */
 .layout{display:flex;align-items:flex-start;max-width:1100px;margin:0 auto;}
@@ -182,8 +167,8 @@ body.light .logo-light{display:block;}
 /* == SIDEBAR == */
 .sidebar{
   width:var(--sidebar-w);flex-shrink:0;
-  position:sticky;top:132px;
-  height:calc(100vh - 132px);
+  position:sticky;top:80px;
+  height:calc(100vh - 80px);
   overflow-y:auto;overflow-x:hidden;
   background:var(--bg2);border-right:1px solid var(--border);
   scrollbar-width:thin;scrollbar-color:var(--border) transparent;
@@ -677,6 +662,175 @@ body.light #search-btn:hover{background:#eddcca;}
 body.light #search-btn svg{stroke:#8b6914;}
 body.light #search-btn span{color:#8b6914;}
 
+/* == LANGUAGE PICKER == */
+#lang-picker{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  opacity:0;transition:opacity .5s ease;
+  pointer-events:none;
+}
+#lang-picker.active{opacity:1;pointer-events:all;}
+#lang-picker.hide{opacity:0;pointer-events:none;}
+.lp-card{
+  background:var(--bg2);
+  border:1px solid rgba(201,169,110,.2);
+  border-radius:20px;
+  padding:2.2rem 2rem 1.8rem;
+  max-width:340px;width:100%;
+  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(201,169,110,.08);
+  animation:lpSlideUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes lpSlideUp{
+  from{opacity:0;transform:translateY(28px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.lp-ornament{
+  display:flex;align-items:center;gap:.6rem;
+  margin-bottom:1.5rem;
+}
+.lp-ornament::before,.lp-ornament::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,169,110,.4),transparent);
+}
+.lp-ornament span{color:var(--gold);font-size:.45rem;letter-spacing:.3em;white-space:nowrap;}
+.lp-title{
+  font-family:var(--fh);
+  font-size:1.1rem;font-weight:700;
+  color:var(--text);text-align:center;
+  margin-bottom:.35rem;line-height:1.3;
+}
+.lp-sub{
+  font-family:var(--fh);font-style:italic;
+  font-size:.78rem;color:var(--gold);
+  text-align:center;margin-bottom:1.6rem;
+  letter-spacing:.04em;
+}
+.lp-options{display:flex;flex-direction:column;gap:.6rem;}
+.lp-btn{
+  display:flex;align-items:center;gap:1rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(201,169,110,.12);
+  border-radius:12px;padding:.9rem 1.1rem;
+  cursor:pointer;transition:all .22s ease;
+  text-align:left;width:100%;
+}
+.lp-btn:hover{
+  background:rgba(201,169,110,.08);
+  border-color:rgba(201,169,110,.35);
+  transform:translateX(4px);
+}
+.lp-btn:active{transform:translateX(2px);}
+.lp-flag{
+  font-size:1.6rem;flex-shrink:0;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));
+}
+.lp-lang-info{flex:1;}
+.lp-lang-name{
+  font-family:var(--fh);font-size:.95rem;font-weight:700;
+  color:var(--text);line-height:1;margin-bottom:.2rem;
+}
+.lp-lang-sub{
+  font-size:.68rem;color:var(--muted);
+  letter-spacing:.05em;
+}
+.lp-arrow{color:rgba(201,169,110,.4);font-size:.8rem;flex-shrink:0;}
+.lp-.legal-card{margin-top:.9rem;background:rgba(201,169,110,.06);border:1px solid rgba(201,169,110,.15);border-radius:8px;padding:.75rem 1rem;text-align:center;}
+.legal-card{
+  margin-top:1.4rem;
+  background:rgba(201,169,110,.06);
+  border:1px solid rgba(201,169,110,.2);
+  border-left:3px solid rgba(201,169,110,.5);
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  text-align:center;
+}
+.legal-lbl{
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:.55rem;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.legal-lbl::before{
+  content:'§';font-size:.7rem;opacity:.7;
+}
+.legal-text{
+  font-size:.65rem;line-height:1.7;color:var(--text);
+  opacity:.75;
+}
+.legal-ref{
+  display:block;margin-top:.3rem;
+  font-size:.56rem;color:var(--muted);opacity:.8;
+  font-style:italic;
+}
+body.light .legal-card{
+  background:rgba(139,105,20,.04);
+  border-color:rgba(139,105,20,.18);
+  border-left-color:rgba(139,105,20,.4);
+}
+footer{
+  text-align:center;margin-top:1.2rem;
+  font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(201,169,110,.3);
+}
+body.light .lp-card{background:var(--card);border-color:rgba(139,105,20,.15);}
+body.light .lp-btn{background:rgba(0,0,0,.02);border-color:rgba(139,105,20,.12);}
+body.light .lp-btn:hover{background:rgba(139,105,20,.06);border-color:rgba(139,105,20,.3);}
+body.light .lp-ornament::before,body.light .lp-ornament::after{background:linear-gradient(to right,transparent,rgba(139,105,20,.3),transparent);}
+
+/* == QUICK-START TOUR == */
+#tour-overlay{
+  position:fixed;inset:0;z-index:8000;
+  pointer-events:none;
+  transition:opacity .4s ease;
+  opacity:0;
+}
+#tour-overlay.active{opacity:1;pointer-events:all;}
+#tour-spotlight{
+  position:fixed;z-index:8001;
+  border-radius:10px;
+  box-shadow:0 0 0 9999px rgba(0,0,0,.6);
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+  border:2px solid rgba(201,169,110,.5);
+}
+#tour-tip{
+  position:fixed;z-index:8002;
+  background:var(--bg2);
+  border:1px solid rgba(201,169,110,.25);
+  border-radius:14px;
+  padding:1.1rem 1.25rem 1rem;
+  max-width:240px;min-width:190px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+}
+#tour-tip::before{
+  content:'';position:absolute;
+  width:10px;height:10px;
+  background:var(--bg2);
+  border:1px solid rgba(201,169,110,.25);
+  transform:rotate(45deg);
+}
+#tour-tip.arrow-top::before{top:-6px;left:24px;border-bottom:none;border-right:none;}
+#tour-tip.arrow-bottom::before{bottom:-6px;left:24px;border-top:none;border-left:none;}
+#tour-tip.arrow-right::before{right:-6px;top:1.2rem;border-top:none;border-left:none;transform:rotate(45deg);}
+#tour-tip.arrow-left::before{left:-6px;top:1.2rem;border-bottom:none;border-right:none;transform:rotate(45deg);}
+.tour-step-lbl{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem;font-family:var(--fb);}
+.tour-tip-icon{font-size:1.4rem;margin-bottom:.35rem;display:block;}
+.tour-tip-title{font-family:var(--fh);font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:.28rem;line-height:1.2;}
+.tour-tip-desc{font-size:.76rem;color:var(--muted);line-height:1.55;margin-bottom:.85rem;}
+.tour-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+.tour-dots{display:flex;gap:.3rem;align-items:center;}
+.tour-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .25s;}
+.tour-dot.active{background:var(--gold);width:16px;border-radius:3px;}
+.tour-next-btn{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.42rem .85rem;font-size:.7rem;font-weight:700;font-family:var(--fb);letter-spacing:.05em;cursor:pointer;transition:opacity .2s;white-space:nowrap;}
+.tour-next-btn:hover{opacity:.85;}
+.tour-skip{background:none;border:none;color:var(--muted);font-size:.66rem;cursor:pointer;font-family:var(--fb);padding:.2rem;transition:color .2s;white-space:nowrap;}
+.tour-skip:hover{color:var(--text);}
+body.light #tour-tip{background:var(--card);}
+body.light #tour-tip::before{background:var(--card);}
+
 #search-overlay{
   display:none;position:fixed;inset:0;z-index:1100;
   background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
@@ -718,6 +872,7 @@ body.light #search-btn span{color:#8b6914;}
 .search-result:last-child{border-bottom:none;}
 .search-result:hover{background:var(--bg2);}
 .sr-section{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-family:var(--fb);font-weight:700;margin-bottom:.2rem;}
+.sr-subsection{font-size:.6rem;color:var(--muted);font-family:var(--fb);margin-bottom:.25rem;font-style:italic;}
 .sr-name{font-family:var(--fh);font-size:.92rem;font-weight:600;color:var(--text);}
 .sr-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;line-height:1.4;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
@@ -804,38 +959,6 @@ body.light .surpresa-presel-btn-desc{color:#7a6a50;}
 .surpresa-presel-random:hover{border-color:rgba(201,169,110,.55);color:#e2c8a0;}
 body.light .surpresa-presel-random{color:#7a6a50;border-color:rgba(139,105,20,.2);}
 body.light .surpresa-presel-random:hover{color:#1a1208;border-color:rgba(139,105,20,.45);}
-.lp-.legal-card{margin-top:.9rem;background:rgba(201,169,110,.06);border:1px solid rgba(201,169,110,.15);border-radius:8px;padding:.75rem 1rem;text-align:center;}
-.legal-card{
-  margin-top:1.4rem;
-  background:rgba(201,169,110,.06);
-  border:1px solid rgba(201,169,110,.2);
-  border-left:3px solid rgba(201,169,110,.5);
-  border-radius:8px;
-  padding:1rem 1.2rem;
-  text-align:center;
-}
-.legal-lbl{
-  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold);font-weight:700;margin-bottom:.55rem;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-}
-.legal-lbl::before{
-  content:'§';font-size:.7rem;opacity:.7;
-}
-.legal-text{
-  font-size:.65rem;line-height:1.7;color:var(--text);
-  opacity:.75;
-}
-.legal-ref{
-  display:block;margin-top:.3rem;
-  font-size:.56rem;color:var(--muted);opacity:.8;
-  font-style:italic;
-}
-footer{
-  text-align:center;margin-top:1.2rem;
-  font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
-  color:rgba(201,169,110,.3);
-}
 
 /* == SURPRESA == */
 #surpresa-btn{
@@ -925,7 +1048,12 @@ body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(13
 .surpresa-course-label{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,169,110,.5);font-family:var(--fb);font-weight:700;margin-bottom:.25rem;}
 .surpresa-course-name{font-family:var(--fh);font-size:.95rem;font-weight:600;color:var(--text);}
 .surpresa-course-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4;}
-.surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.2rem;}
+.surpresa-course-sub{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-family:var(--fb);font-weight:600;margin-bottom:.2rem;opacity:.75;}
+.surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.3rem;}
+.sc-pv{font-weight:700;color:var(--gold);}
+.sc-pv-half{color:var(--muted);font-size:.75rem;font-weight:400;}
+.sc-pl{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:var(--fb);font-weight:400;}
+.sc-sep{color:var(--border);}
 .surpresa-footer{
   display:flex;gap:.6rem;padding:.9rem 1.4rem;
   border-top:1px solid rgba(201,169,110,.15);
@@ -1022,6 +1150,94 @@ body.light .verde-tinto-badge{background:rgba(20,10,0,.65);border-color:rgba(180
 /* == LOADING == */
 #loading-msg{text-align:center;padding:4rem 2rem;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
 .ld-spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1.1rem;}
+
+/* == SPLASH SCREEN == */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:1.6rem;padding:2.5rem 2rem;
+  transition:opacity .9s ease, visibility .9s ease;
+}
+/* Subtle radial warm glow behind logo */
+#splash::before{
+  content:'';position:absolute;
+  width:clamp(260px,60vw,420px);height:clamp(260px,60vw,420px);
+  background:radial-gradient(circle,rgba(201,169,110,.1) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.splash-logo{
+  width:clamp(140px,38vw,200px);
+  height:auto;
+  position:relative;z-index:1;
+  animation:splashFadeUp .9s ease both;
+  filter:drop-shadow(0 0 10px rgba(212,80,10,.5)) drop-shadow(0 4px 24px rgba(201,169,110,.3));
+}
+.splash-divider{
+  display:flex;align-items:center;gap:.8rem;
+  width:clamp(180px,45vw,260px);
+  animation:splashFadeUp .9s ease .25s both;
+  position:relative;z-index:1;
+}
+.splash-divider::before,.splash-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+}
+.splash-divider span{color:var(--gold);font-size:.5rem;letter-spacing:.3em;white-space:nowrap;}
+.splash-text{
+  text-align:center;
+  animation:splashFadeUp .9s ease .4s both;
+  position:relative;z-index:1;
+}
+.splash-text h1{
+  font-family:var(--fh);
+  font-size:clamp(1.35rem,5vw,2rem);
+  font-weight:700;color:var(--text);
+  letter-spacing:.03em;
+  margin-bottom:.55rem;line-height:1.25;
+}
+body.light .splash-text h1{color:var(--text);}
+.splash-text p{
+  font-family:var(--fh);font-style:italic;
+  font-size:clamp(.95rem,3vw,1.25rem);
+  color:var(--gold);letter-spacing:.05em;
+  line-height:1.4;
+}
+/* Rotating taglines */
+.splash-taglines{
+  height:1.4rem;overflow:hidden;
+  animation:splashFadeUp .9s ease .6s both;
+  position:relative;z-index:1;
+}
+.splash-tagline{
+  font-family:var(--fb);font-size:clamp(.65rem,2vw,.75rem);
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);text-align:center;
+  height:1.4rem;line-height:1.4rem;
+  opacity:0;transition:opacity .6s ease;
+  position:absolute;width:100%;left:0;
+}
+.splash-tagline.active{opacity:1;}
+.splash-bar-wrap{
+  width:clamp(120px,30vw,180px);
+  height:2px;background:var(--border);border-radius:2px;overflow:hidden;
+  animation:splashFadeUp .9s ease .75s both;
+  position:relative;z-index:1;
+}
+.splash-bar{
+  height:100%;width:0%;
+  background:linear-gradient(to right,var(--gold2),var(--gold));
+  border-radius:2px;
+  transition:width linear;
+}
+@keyframes splashFadeUp{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+body.light #splash{background:var(--bg);}
+body.light .splash-logo{filter:drop-shadow(0 2px 6px rgba(120,60,0,.25)) drop-shadow(0 4px 16px rgba(120,80,20,.2));}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* == INFO BAR == */
@@ -1103,7 +1319,9 @@ footer{
   font-size:.62rem;
   letter-spacing:.1em;
 }
-footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:1.3rem 1rem;color:var(--muted);font-size:.62rem;letter-spacing:.1em;}
+@media(min-width:700px){
+  footer{padding-bottom:1.5rem;}
+}
 
 /* == SOURCE BADGE == */
 #source-badge{
@@ -1136,7 +1354,7 @@ body.lang-fr .t-fr{display:inline;}
 @media(max-width:680px){
   :root{--sidebar-w:0px;}
   .sidebar{
-    position:sticky;top:128px;
+    position:sticky;top:0;
     width:100%;height:auto;
     max-height:none;overflow-x:auto;overflow-y:hidden;
     border-right:none;border-bottom:1px solid var(--border);
@@ -1183,15 +1401,11 @@ body.lang-fr .t-fr{display:inline;}
 <body class="lang-pt">
 
 <!-- TOP BAR -->
-<!-- Row 1: back button -->
-<div class="topbar-back">
+<div class="topbar">
   <a class="back-btn-menu" href="https://grupocerqueira.bistrobit.fyi/Apulia/index.html">
-    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     <span class="t-pt">Voltar</span><span class="t-en">Back</span><span class="t-fr">Retour</span>
   </a>
-</div>
-<!-- Row 2: logo + name centred -->
-<div class="topbar">
   <div class="topbar-brand">
     <img class="logo-dark"  src="https://grupocerqueira.bistrobit.fyi/Apulia/Prod/images/TasqCerqueiraDarkMode-Photoroom.png"  alt="Tasquinha do Cerqueira"/>
     <img class="logo-light" src="https://grupocerqueira.bistrobit.fyi/Apulia/Prod/images/TasqCerqueiraLightMode-Photoroom.png" alt="Tasquinha do Cerqueira"/>
@@ -1479,7 +1693,7 @@ function buildVerdeTinto(rows){
   if(pm && lm) priceRows+=`<div class="vt-price"><span class="vt-label">${lm}</span><span class="vt-val">${pm}</span></div>${pf&&lf?'<div class="vt-sep"></div>':''}`;
   if(pf && lf) priceRows+=`<div class="vt-price"><span class="vt-label">${lf}</span><span class="vt-val">${pf}</span></div>`;
   if(!priceRows && pf) priceRows=`<div class="vt-price"><span class="vt-val">${pf}</span></div>`;
-  const desc=row.desc_pt||'Vinho tinto servido na tigela à tradicional — experiência única da casa';
+  const desc=row.desc_pt||'Vinho verde tinto servido na tigela à tradicional — experiência única da casa';
   return`<div class="verde-tinto-card">
     <div class="verde-tinto-img-wrap">
       <img src="${VERDE_IMG_URL}" alt="Vinho Tinto" class="verde-tinto-photo"/>
@@ -1738,7 +1952,6 @@ function buildPairingBlock(){
   </div>`;
 }
 
-function buildChampagnePairing(){ return ''; }
 
 function buildDryAged(rows){ return buildHighlightCard(rows,'carnes'); }
 function buildChampagnePremium(rows){ return buildHighlightCard(rows,'champagne'); }
@@ -2047,14 +2260,10 @@ function showSec(id,btn){
   if(btn){
     btn.classList.add('active');
     if(window.innerWidth<=680){
-      // Mobile: scroll horizontal do nav + scroll para o conteúdo
+      // Mobile: scroll horizontal do nav + scroll ao topo
       btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-      setTimeout(()=>{
-        document.getElementById('page-content')?.scrollIntoView({behavior:'smooth',block:'start'});
-      },100);
+      setTimeout(()=>{ window.scrollTo({top:0,behavior:'smooth'}); },100);
     } else {
-      // Desktop: scroll suave ao topo da página para que a sidebar sticky
-      // apareça sempre do início, com todos os itens visíveis
       window.scrollTo({top:0,behavior:'smooth'});
     }
   }
@@ -2122,6 +2331,39 @@ function setDon(btn,type){
   const firstBtn=document.querySelector('.nav-btn');
   if(firstBtn) firstBtn.classList.add('active');
   loadMenu();
+  //
+  // ================================================================
+  //  BISTROBIT — CONFIGURAÇÃO DE FUNCIONALIDADES
+  //  Editar apenas este bloco para activar/desactivar features
+  // ================================================================
+  //
+  //  SPLASH
+  //  Ecrã de boas-vindas com logo, mensagem e barra de progresso.
+  //  SPLASH_ENABLED   = true  → mostra o splash ao abrir o menu
+  //  SPLASH_DURATION  = 6000  → duração em milissegundos (6000 = 6s)
+  //
+  window.SPLASH_ENABLED  = false;
+  window.SPLASH_DURATION = 5000;
+  //
+  //  SELETOR DE LÍNGUA
+  //  Pop-up de escolha de idioma na 1ª visita (guarda em localStorage).
+  //  LANG_PICKER_ENABLED = true  → mostra a pop-up na 1ª visita
+  //  LANG_PICKER_ENABLED = false → menu abre sempre em PT
+  //
+  window.LANG_PICKER_ENABLED = false;
+  //
+  //  TOUR DE BOAS-VINDAS
+  //  Guia animado que explica os botões na 1ª visita por língua.
+  //  TOUR_ENABLED = true  → mostra o tour após splash/picker
+  //  TOUR_ENABLED = false → desactiva o tour completamente
+  //
+  window.TOUR_ENABLED = false;
+  //
+  //  SURPREENDE-ME
+  //  Sugestão de refeição completa com pré-selecção Carne/Peixe.
+  //  SURPRESA_ENABLED     = true  → botão visível
+  //  SURPRESA_WEEKEND_ONLY = true → só Sábado e Domingo
+  //
   //  SURPREENDE-ME: controlos de visibilidade
   //
   //  SURPRESA_ENABLED = false  ->  invisível sempre (período de validação)
@@ -2444,6 +2686,61 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   <span><span class="t-pt">🔍 Pesquisar</span><span class="t-en">🔍 Search</span><span class="t-fr">🔍 Chercher</span></span>
 </button>
 
+<!-- LANGUAGE PICKER -->
+<div id="lang-picker">
+  <div class="lp-card">
+    <div class="lp-ornament"><span>✦ ✦ ✦</span></div>
+    <div class="lp-title">Bem-vindo · Welcome · Bienvenue</div>
+    <div class="lp-sub">Escolha o seu idioma · Choose your language</div>
+    <div class="lp-options">
+      <button class="lp-btn" onclick="pickLang('pt')">
+        <span class="lp-flag">🇵🇹</span>
+        <div class="lp-lang-info">
+          <div class="lp-lang-name">Português</div>
+          <div class="lp-lang-sub">Continuar em português</div>
+        </div>
+        <span class="lp-arrow">›</span>
+      </button>
+      <button class="lp-btn" onclick="pickLang('en')">
+        <span class="lp-flag">🇬🇧</span>
+        <div class="lp-lang-info">
+          <div class="lp-lang-name">English</div>
+          <div class="lp-lang-sub">Continue in English</div>
+        </div>
+        <span class="lp-arrow">›</span>
+      </button>
+      <button class="lp-btn" onclick="pickLang('fr')">
+        <span class="lp-flag">🇫🇷</span>
+        <div class="lp-lang-info">
+          <div class="lp-lang-name">Français</div>
+          <div class="lp-lang-sub">Continuer en français</div>
+        </div>
+        <span class="lp-arrow">›</span>
+      </button>
+    </div>
+    <div class="lp-footer">Tasquinha do Cerqueira · Apúlia</div>
+  </div>
+</div>
+
+<!-- QUICK-START TOUR -->
+<div id="tour-overlay"></div>
+<div id="tour-spotlight" style="display:none;"></div>
+<div id="tour-tip" style="display:none;opacity:0;">
+  <div class="tour-step-lbl" id="tour-lbl">Passo 1 de 5</div>
+  <span class="tour-tip-icon" id="tour-icon">🔍</span>
+  <div class="tour-tip-title" id="tour-title">Pesquisar</div>
+  <div class="tour-tip-desc" id="tour-desc">Encontre qualquer prato, ingrediente ou alergénio em segundos.</div>
+  <div class="tour-footer">
+    <button class="tour-skip" id="tour-skip" onclick="tourEnd()">
+      <span class="t-pt">Saltar</span><span class="t-en">Skip</span><span class="t-fr">Passer</span>
+    </button>
+    <div class="tour-dots" id="tour-dots"></div>
+    <button class="tour-next-btn" id="tour-next" onclick="tourNext()">
+      <span class="t-pt">Próximo</span><span class="t-en">Next</span><span class="t-fr">Suivant</span>
+    </button>
+  </div>
+</div>
+
 <!-- SEARCH OVERLAY -->
 <div id="search-overlay" onclick="if(event.target===this)closeSearch()">
   <div id="search-box">
@@ -2532,9 +2829,349 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
   </div>
 </div>
 
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <img class="splash-logo logo-dark"
+       src="https://grupocerqueira.bistrobit.fyi/Apulia/Prod/images/TasqCerqueiraDarkMode-Photoroom.png"
+       alt="Tasquinha do Cerqueira"/>
+  <img class="splash-logo logo-light"
+       src="https://grupocerqueira.bistrobit.fyi/Apulia/Prod/images/TasqCerqueiraLightMode-Photoroom.png"
+       alt="Tasquinha do Cerqueira"/>
+  <div class="splash-divider"><span>✦ ✦ ✦</span></div>
+  <div class="splash-text">
+    <h1 id="splash-welcome">Bem-vindos à<br>Tasquinha do Cerqueira.</h1>
+    <p id="splash-sub">Servi-lo é um prazer!</p>
+  </div>
+  <div class="splash-taglines" id="splash-taglines">
+    <div class="splash-tagline active">Peixe fresco do dia, directo do mar</div>
+    <div class="splash-tagline">Fresh catch of the day, straight from the sea</div>
+    <div class="splash-tagline">Poisson frais du jour, tout droit de la mer</div>
+  </div>
+  <div class="splash-bar-wrap">
+    <div class="splash-bar" id="splash-bar"></div>
+  </div>
+</div>
+
 </body>
 <script>
-// == SEARCH ==
+// == SPLASH ==
+(function(){
+  if(!window.SPLASH_ENABLED){ 
+    var s=document.getElementById('splash');
+    if(s) s.style.display='none';
+    return;
+  }
+  var DURATION = window.SPLASH_DURATION || 6000;
+  var splashEl = document.getElementById('splash');
+  var barEl    = document.getElementById('splash-bar');
+  var menuReady = false;
+  var timerDone = false;
+
+  // Animate progress bar
+  if(barEl){
+    barEl.style.transition = 'width '+DURATION+'ms linear';
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ barEl.style.width='100%'; });
+    });
+  }
+
+  // Trilingual welcome messages — rotates every 3 taglines (one per language cycle)
+  var welcomes = [
+    {h:'Bem-vindos à<br>Tasquinha do Cerqueira.', p:'Servi-lo é um prazer!'},
+    {h:'Welcome to<br>Tasquinha do Cerqueira.', p:'It\'s a pleasure to serve you!'},
+    {h:'Bienvenue à la<br>Tasquinha do Cerqueira.', p:'C\'est un plaisir de vous servir\u00a0!'},
+  ];
+  var welcomeEl = document.getElementById('splash-welcome');
+  var subEl     = document.getElementById('splash-sub');
+
+  // 3 taglines × 1800ms = 5.4s — fits within 6s DURATION
+  var taglines = document.querySelectorAll('.splash-tagline');
+  var current = 0;
+  var langCycle = 0;
+
+  var tagInterval = setInterval(function(){
+    taglines[current].classList.remove('active');
+    current = (current + 1) % taglines.length;
+    taglines[current].classList.add('active');
+
+    // Each tagline = one language — update welcome text in sync
+    langCycle = current % welcomes.length;
+    if(welcomeEl && subEl){
+      welcomeEl.style.opacity = '0';
+      subEl.style.opacity = '0';
+      setTimeout(function(){
+        welcomeEl.innerHTML = welcomes[langCycle].h;
+        subEl.textContent   = welcomes[langCycle].p;
+        welcomeEl.style.opacity = '1';
+        subEl.style.opacity = '1';
+      }, 350);
+    }
+  }, 1800);
+
+  // Smooth opacity transition on welcome text
+  if(welcomeEl) welcomeEl.style.transition = 'opacity .35s ease';
+  if(subEl)     subEl.style.transition     = 'opacity .35s ease';
+
+  function tryDismiss(){
+    if(menuReady && timerDone){
+      clearInterval(tagInterval);
+      if(splashEl) splashEl.classList.add('hide');
+      setTimeout(function(){
+        if(splashEl) splashEl.style.display='none';
+      }, 950);
+    }
+  }
+
+  setTimeout(function(){ timerDone=true; tryDismiss(); }, DURATION);
+
+  var _origBuildMenu = window.buildMenu;
+  window.buildMenu = function(rows){
+    _origBuildMenu(rows);
+    menuReady = true;
+    tryDismiss();
+  };
+})();
+
+// == LANGUAGE PICKER ==
+(function(){
+  if(!window.LANG_PICKER_ENABLED) return;
+  var LANG_KEY = 'mLangPicked_v1';
+
+  // If language already chosen in a previous session, skip picker
+  try{
+    if(localStorage.getItem(LANG_KEY)) return;
+  }catch(e){}
+
+  var pickerEl = document.getElementById('lang-picker');
+  if(!pickerEl) return;
+
+  // Show picker after splash closes
+  var splashCheck = setInterval(function(){
+    var splash = document.getElementById('splash');
+    if(!splash || splash.style.display === 'none'){
+      clearInterval(splashCheck);
+      setTimeout(function(){
+        pickerEl.classList.add('active');
+      }, 400);
+    }
+  }, 200);
+
+  window.pickLang = function(l){
+    // Set language
+    setLang(l);
+
+    // Hide picker
+    pickerEl.classList.add('hide');
+    setTimeout(function(){
+      pickerEl.style.display = 'none';
+    }, 500);
+
+    // Remember choice permanently
+    try{ localStorage.setItem(LANG_KEY, l); }catch(e){}
+
+    // Clear tour session so tour shows in chosen language
+    try{ sessionStorage.removeItem('mTourLang_v1'); }catch(e){}
+
+    // Start tour after picker closes
+    setTimeout(function(){
+      if(typeof startTourNow === 'function') startTourNow();
+    }, 700);
+  };
+})();
+
+// == QUICK-START TOUR ==
+(function(){
+  if(!window.TOUR_ENABLED) return;
+  var TOUR_KEY = 'mTourLang_v1';
+  var currentLang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
+  try{
+    var seenLang = sessionStorage.getItem(TOUR_KEY);
+    // Skip if already seen in this language this session
+    if(seenLang === currentLang) return;
+  }catch(e){}
+
+  var lang = function(){ return document.body.className.match(/lang-(\w+)/)?.[1]||'pt'; };
+
+  var steps = [
+    {
+      target:'#search-btn',
+      arrow:'right',
+      icon:'🔍',
+      title:{pt:'Pesquisar',en:'Search',fr:'Rechercher'},
+      desc:{pt:'Encontre qualquer prato, ingrediente ou alergénio em segundos. Escreva e o resultado aparece de imediato.',
+            en:'Find any dish, ingredient or allergen in seconds. Type a name and results appear instantly.',
+            fr:'Trouvez n\'importe quel plat ou allergène en quelques secondes.'},
+    },
+    {
+      target:'#surpresa-btn',
+      arrow:'bottom',
+      icon:'🎲',
+      title:{pt:'Surpreende-me',en:'Surprise me',fr:'Surprenez-moi'},
+      desc:{pt:'Deixe-nos escolher por si! Sugerimos uma refeição completa — entrada, prato e vinho — com um clique.',
+            en:'Let us choose for you! We suggest a full meal — starter, main and wine — with one click.',
+            fr:'Laissez-nous choisir\u00a0! On suggère un repas complet en un seul clic.'},
+    },
+    {
+      target:'.lang-toggle',
+      arrow:'top',
+      icon:'🌍',
+      title:{pt:'Idioma',en:'Language',fr:'Langue'},
+      desc:{pt:'Escolha entre Português, English ou Français. A ementa adapta-se de imediato.',
+            en:'Choose between Portuguese, English or French. The menu adapts instantly.',
+            fr:'Choisissez votre langue. La carte s\'adapte aussitôt.'},
+    },
+    {
+      target:'#theme-btn',
+      arrow:'top',
+      icon:'🌙',
+      title:{pt:'Modo Escuro / Claro',en:'Dark / Light mode',fr:'Mode sombre / clair'},
+      desc:{pt:'Prefere fundo claro ou escuro? Mude quando quiser — a preferência fica guardada.',
+            en:'Prefer a light or dark background? Change anytime — your preference is saved.',
+            fr:'Préférez fond clair ou sombre\u00a0? Changez quand vous voulez.'},
+    },
+    {
+      target:'.nav-btn',
+      arrow:'right',
+      icon:'🗂️',
+      title:{pt:'Navegar pela ementa',en:'Browse the menu',fr:'Parcourir la carte'},
+      desc:{pt:'Use este menu lateral para ir directamente às Entradas, Peixes, Carnes, Vinhos e muito mais.',
+            en:'Use this side menu to jump directly to Starters, Fish, Meats, Wines and more.',
+            fr:'Accédez directement aux Entrées, Poissons, Viandes, Vins et plus encore.'},
+    },
+  ];
+
+  var current = 0;
+  var overlayEl = document.getElementById('tour-overlay');
+  var spotEl    = document.getElementById('tour-spotlight');
+  var tipEl     = document.getElementById('tour-tip');
+  var lblEl     = document.getElementById('tour-lbl');
+  var iconEl    = document.getElementById('tour-icon');
+  var titleEl   = document.getElementById('tour-title');
+  var descEl    = document.getElementById('tour-desc');
+  var dotsEl    = document.getElementById('tour-dots');
+  var nextEl    = document.getElementById('tour-next');
+
+  // Build dots
+  steps.forEach(function(_,i){
+    var d = document.createElement('div');
+    d.className = 'tour-dot'+(i===0?' active':'');
+    dotsEl.appendChild(d);
+  });
+
+  function getRect(sel){
+    var el = document.querySelector(sel);
+    if(!el) return null;
+    return el.getBoundingClientRect();
+  }
+
+  function positionTip(rect, arrow){
+    var pad = 10;
+    var tW = tipEl.offsetWidth || 220;
+    var tH = tipEl.offsetHeight || 170;
+    var vW = window.innerWidth;
+    var vH = window.innerHeight;
+    var t, l;
+
+    if(arrow === 'right'){
+      l = rect.left - tW - 16;
+      if(l < pad) l = rect.right + 16;
+      t = rect.top + rect.height/2 - tH/2;
+    } else if(arrow === 'left'){
+      l = rect.right + 16;
+      t = rect.top + rect.height/2 - tH/2;
+    } else if(arrow === 'bottom'){
+      t = rect.top - tH - 16;
+      l = rect.left + rect.width/2 - tW/2;
+    } else {
+      t = rect.bottom + 16;
+      l = rect.left + rect.width/2 - tW/2;
+    }
+
+    l = Math.max(pad, Math.min(l, vW - tW - pad));
+    t = Math.max(pad, Math.min(t, vH - tH - pad));
+    tipEl.style.top  = t + 'px';
+    tipEl.style.left = l + 'px';
+  }
+
+  function showStep(i){
+    var step = steps[i];
+    var rect = getRect(step.target);
+    if(!rect){ current++; if(current < steps.length) showStep(current); else tourEnd(); return; }
+
+    var l = lang();
+    var labels = {pt:'Passo',en:'Step',fr:'Étape'};
+    var ofs    = {pt:'de',en:'of',fr:'sur'};
+    lblEl.textContent   = (labels[l]||labels.pt)+' '+(i+1)+' '+(ofs[l]||ofs.pt)+' '+steps.length;
+    iconEl.textContent  = step.icon;
+    titleEl.textContent = step.title[l]||step.title.pt;
+    descEl.textContent  = step.desc[l]||step.desc.pt;
+    tipEl.className     = 'arrow-'+step.arrow;
+
+    dotsEl.querySelectorAll('.tour-dot').forEach(function(d,di){
+      d.classList.toggle('active', di===i);
+    });
+
+    var isLast = i === steps.length - 1;
+    nextEl.querySelector('.t-pt').textContent = isLast ? 'Fechar'  : 'Próximo';
+    nextEl.querySelector('.t-en').textContent = isLast ? 'Close'   : 'Next';
+    nextEl.querySelector('.t-fr').textContent = isLast ? 'Fermer'  : 'Suivant';
+
+    var PAD = 7;
+    spotEl.style.top    = (rect.top    - PAD) + 'px';
+    spotEl.style.left   = (rect.left   - PAD) + 'px';
+    spotEl.style.width  = (rect.width  + PAD*2) + 'px';
+    spotEl.style.height = (rect.height + PAD*2) + 'px';
+    spotEl.style.boxShadow = '0 0 0 9999px rgba(0,0,0,.6)';
+
+    // Position tip after paint
+    requestAnimationFrame(function(){ positionTip(rect, step.arrow); });
+  }
+
+  window.tourNext = function(){
+    if(current >= steps.length - 1){ tourEnd(); return; }
+    current++;
+    showStep(current);
+  };
+
+  window.tourEnd = function(){
+    overlayEl.classList.remove('active');
+    spotEl.style.boxShadow = 'none';
+    spotEl.style.display   = 'none';
+    tipEl.style.opacity    = '0';
+    setTimeout(function(){ tipEl.style.display='none'; }, 400);
+    try{ sessionStorage.setItem(TOUR_KEY, currentLang); }catch(e){}
+  };
+
+  function startTour(){
+    spotEl.style.display = '';
+    tipEl.style.display  = '';
+    tipEl.style.opacity  = '1';
+    // Re-read language at start time
+    currentLang = document.body.className.match(/lang-(\w+)/)?.[1]||'pt';
+    overlayEl.classList.add('active');
+    showStep(0);
+  }
+
+  // Expose so language picker can trigger tour after lang selection
+  window.startTourNow = startTour;
+
+  // Auto-start only if lang picker is NOT showing (lang already chosen)
+  var langAlreadyChosen = false;
+  try{ langAlreadyChosen = !window.LANG_PICKER_ENABLED || !!localStorage.getItem('mLangPicked_v1'); }catch(e){}
+
+  if(langAlreadyChosen){
+    // Wait for splash to close then start tour
+    var splashCheck = setInterval(function(){
+      var splash = document.getElementById('splash');
+      if(!splash || splash.style.display === 'none'){
+        clearInterval(splashCheck);
+        setTimeout(startTour, 700);
+      }
+    }, 200);
+  }
+  // Otherwise tour is triggered by pickLang() after picker closes
+})();
+
 let _allRows = [];
 function _storeRows(rows){ _allRows = rows; }
 
@@ -2598,6 +3235,12 @@ function doSearch(q){
     var price= r.price_full || '';
     var h = '<div class="search-result" onclick="goToSection(\''+r.section+'\');closeSearch();">';
     h += '<div class="sr-section"><span class="t-pt">'+sec.pt+'</span><span class="t-en">'+sec.en+'</span><span class="t-fr">'+sec.fr+'</span></div>';
+    // Subsection — extract part in active language (format: "PT | EN | FR")
+    if(r.subsection && r.subsection !== '__'){
+      var subParts = r.subsection.split('|').map(function(s){ return s.trim(); });
+      var subPt = subParts[0]||''; var subEn = subParts[1]||subPt; var subFr = subParts[2]||subPt;
+      if(subPt) h += '<div class="sr-subsection"><span class="t-pt">'+subPt+'</span><span class="t-en">'+subEn+'</span><span class="t-fr">'+subFr+'</span></div>';
+    }
     h += '<div class="sr-name">'+name+'</div>';
     if(desc) h += '<div class="sr-desc">'+desc+'</div>';
     if(r.allergens) h += '<div class="sr-al">'+r.allergens+'</div>';
@@ -2721,18 +3364,49 @@ function buildSurpresa(pref){
     var labelCount = picks.length;
 
     var itemsHtml = picks.map(function(r){
-      var price = r.price_full||'';
-      var name = r[nameKey]||r.name_pt;
-      var desc = r[descKey]||r.desc_pt;
-      var al = r.allergens ? alBar(r.allergens) : '';
+      var name  = r[nameKey]||r.name_pt;
+      var al    = r.allergens ? alBar(r.allergens) : '';
       var multiCls = labelCount>1?' surpresa-course-item-multi':'';
+
+      // Subsecção — extrai parte na língua activa (formato PT | EN | FR)
+      // Omite se igual ao nome da secção (evita repetição)
+      var subHtml = '';
+      if(r.subsection && r.subsection !== '__'){
+        var subParts = r.subsection.split('|').map(function(s){ return s.trim(); });
+        var subPt = subParts[0]||'';
+        var subEn = subParts[1]||subPt;
+        var subFr = subParts[2]||subPt;
+        // Verifica se a subsecção é igual ao label da secção (ignora case)
+        var secLabel = (course.label[lang]||course.label.pt||'').toLowerCase();
+        var subCurrent = (lang==='en'?subEn:lang==='fr'?subFr:subPt).toLowerCase();
+        if(subPt && subCurrent !== secLabel){
+          subHtml = '<div class="surpresa-course-sub">'
+            +'<span class="t-pt">'+subPt+'</span>'
+            +'<span class="t-en">'+subEn+'</span>'
+            +'<span class="t-fr">'+subFr+'</span>'
+            +'</div>';
+        }
+      }
+
+      // Preços — dose e meia dose quando existirem
+      var priceHtml = '';
+      var pf = r.price_full, pm = r.price_half;
+      var lf = r.price_label_full||'Dose', lm = r.price_label_half||'1/2';
+      if(pf||pm){
+        priceHtml = '<div class="surpresa-course-price">';
+        if(pf) priceHtml += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
+        if(pf && pm) priceHtml += '<span class="sc-sep"> · </span>';
+        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
+        priceHtml += '</div>';
+      }
+
       var h = '<div class="surpresa-course-item'+multiCls+'">';
+      h += subHtml;
       h += '<div class="surpresa-course-name-row">';
       h += '<span class="surpresa-course-name">'+name+'</span>';
       if(al) h += al;
       h += '</div>';
-      if(desc) h += '<div class="surpresa-course-desc">'+desc+'</div>';
-      if(price) h += '<div class="surpresa-course-price">'+price+'</div>';
+      if(priceHtml) h += priceHtml;
       h += '</div>';
       return h;
     }).join('');
