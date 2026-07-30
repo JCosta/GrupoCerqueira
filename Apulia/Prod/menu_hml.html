@@ -738,7 +738,37 @@ body.light #search-btn span{color:#8b6914;}
 }
 .lp-arrow{color:rgba(201,169,110,.4);font-size:.8rem;flex-shrink:0;}
 .lp-.legal-card{margin-top:.9rem;background:rgba(201,169,110,.06);border:1px solid rgba(201,169,110,.15);border-radius:8px;padding:.75rem 1rem;text-align:center;}
-.legal-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem;opacity:.8;}
+.legal-card{
+  margin-top:1.4rem;
+  background:rgba(201,169,110,.06);
+  border:1px solid rgba(201,169,110,.2);
+  border-left:3px solid rgba(201,169,110,.5);
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  text-align:left;
+}
+.legal-lbl{
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:.55rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.legal-lbl::before{
+  content:'§';font-size:.7rem;opacity:.7;
+}
+.legal-text{
+  font-size:.65rem;line-height:1.7;color:var(--text);
+  opacity:.75;
+}
+.legal-ref{
+  display:block;margin-top:.3rem;
+  font-size:.56rem;color:var(--muted);opacity:.8;
+  font-style:italic;
+}
+body.light .legal-card{
+  background:rgba(139,105,20,.04);
+  border-color:rgba(139,105,20,.18);
+  border-left-color:rgba(139,105,20,.4);
+}
 footer{
   text-align:center;margin-top:1.2rem;
   font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
@@ -1471,10 +1501,10 @@ body.lang-fr .t-fr{display:inline;}
       <span class="t-en">Legal notice</span>
       <span class="t-fr">Mention légale</span>
     </div>
-    <p style="font-size:.63rem;line-height:1.65;color:var(--muted);">
-      <span class="t-pt">Nenhum prato, produto alimentar ou bebida, incluindo o couvert, pode ser cobrado se não for solicitado pelo cliente ou por este for inutilizado.<span style="display:block;margin-top:.25rem;font-size:.55rem;opacity:.75;">(n.º 3 do artigo 135.º do Decreto-Lei n.º 10/2015, de 16 de janeiro)</span></span>
-      <span class="t-en">No dish, food product or beverage, including the bread basket, may be charged if it was not requested by the customer or was left unused.<span style="display:block;margin-top:.25rem;font-size:.55rem;opacity:.75;">(Article 135, paragraph 3, Decree-Law No. 10/2015, of 16 January)</span></span>
-      <span class="t-fr">Aucun plat, produit alimentaire ou boisson, y compris le couvert, ne peut être facturé s'il n'a pas été demandé par le client ou s'il n'a pas été consommé.<span style="display:block;margin-top:.25rem;font-size:.55rem;opacity:.75;">(Article 135, paragraphe 3, Décret-loi n.º 10/2015, du 16 janvier)</span></span>
+    <p class="legal-text">
+      <span class="t-pt">Nenhum prato, produto alimentar ou bebida, incluindo o couvert, pode ser cobrado se não for solicitado pelo cliente ou por este for inutilizado.<span class="legal-ref">(n.º 3 do artigo 135.º do Decreto-Lei n.º 10/2015, de 16 de janeiro)</span></span>
+      <span class="t-en">No dish, food product or beverage, including the bread basket, may be charged if it was not requested by the customer or was left unused.<span class="legal-ref">(Article 135, paragraph 3, Decree-Law No. 10/2015, of 16 January)</span></span>
+      <span class="t-fr">Aucun plat, produit alimentaire ou boisson, y compris le couvert, ne peut être facturé s'il n'a pas été demandé par le client ou s'il n'a pas été consommé.<span class="legal-ref">(Article 135, paragraphe 3, Décret-loi n.º 10/2015, du 16 janvier)</span></span>
     </p>
   </div>
   <div style="margin-top:.9rem;display:flex;justify-content:center;">
@@ -2310,10 +2340,10 @@ function setDon(btn,type){
   //  SPLASH
   //  Ecrã de boas-vindas com logo, mensagem e barra de progresso.
   //  SPLASH_ENABLED   = true  → mostra o splash ao abrir o menu
-  //  SPLASH_DURATION  = 5000  → duração em milissegundos (5000 = 5s)
+  //  SPLASH_DURATION  = 6000  → duração em milissegundos (6000 = 6s)
   //
   window.SPLASH_ENABLED  = true;
-  window.SPLASH_DURATION = 5000;
+  window.SPLASH_DURATION = 6000;
   //
   //  SELETOR DE LÍNGUA
   //  Pop-up de escolha de idioma na 1ª visita (guarda em localStorage).
@@ -3364,9 +3394,9 @@ function buildSurpresa(pref){
       var lf = r.price_label_full||'Dose', lm = r.price_label_half||'1/2';
       if(pf||pm){
         priceHtml = '<div class="surpresa-course-price">';
-        if(pf) priceHtml += '<span class="sc-pv">'+pf+'</span><span class="sc-pl"> '+lf+'</span>';
+        if(pf) priceHtml += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
         if(pf && pm) priceHtml += '<span class="sc-sep"> · </span>';
-        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'</span><span class="sc-pl"> '+lm+'</span>';
+        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
         priceHtml += '</div>';
       }
 
