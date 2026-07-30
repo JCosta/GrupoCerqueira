@@ -52,8 +52,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.
 
 /* == TOP BAR == */
 /* Back bar — thin strip above the main topbar */
-.topbar-back{display:none;} /* integrado no topbar */
-
 .back-btn-menu{
   display:inline-flex;align-items:center;gap:.35rem;
   color:rgba(240,232,213,.4);text-decoration:none;
@@ -739,7 +737,9 @@ body.light #search-btn span{color:#8b6914;}
   letter-spacing:.05em;
 }
 .lp-arrow{color:rgba(201,169,110,.4);font-size:.8rem;flex-shrink:0;}
-.lp-footer{
+.lp-.legal-card{margin-top:.9rem;background:rgba(201,169,110,.06);border:1px solid rgba(201,169,110,.15);border-radius:8px;padding:.75rem 1rem;text-align:center;}
+.legal-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem;opacity:.8;}
+footer{
   text-align:center;margin-top:1.2rem;
   font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
   color:rgba(201,169,110,.3);
@@ -1018,7 +1018,12 @@ body.light .surpresa-course{background:rgba(255,255,255,.6);border-color:rgba(13
 .surpresa-course-label{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,169,110,.5);font-family:var(--fb);font-weight:700;margin-bottom:.25rem;}
 .surpresa-course-name{font-family:var(--fh);font-size:.95rem;font-weight:600;color:var(--text);}
 .surpresa-course-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4;}
-.surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.2rem;}
+.surpresa-course-sub{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-family:var(--fb);font-weight:600;margin-bottom:.2rem;opacity:.75;}
+.surpresa-course-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.3rem;}
+.sc-pv{font-weight:700;color:var(--gold);}
+.sc-pv-half{color:var(--muted);font-size:.75rem;font-weight:400;}
+.sc-pl{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:var(--fb);font-weight:400;}
+.sc-sep{color:var(--border);}
 .surpresa-footer{
   display:flex;gap:.6rem;padding:.9rem 1.4rem;
   border-top:1px solid rgba(201,169,110,.15);
@@ -1460,8 +1465,8 @@ body.lang-fr .t-fr{display:inline;}
     <span class="t-en">All rights reserved</span>
     <span class="t-fr">Tous droits réservés</span>
   </p>
-  <div style="margin-top:.9rem;background:rgba(201,169,110,.06);border:1px solid rgba(201,169,110,.15);border-radius:8px;padding:.75rem 1rem;text-align:center;">
-    <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem;opacity:.8;">
+  <div class="legal-card">
+    <div class="legal-lbl">
       <span class="t-pt">Informação legal</span>
       <span class="t-en">Legal notice</span>
       <span class="t-fr">Mention légale</span>
@@ -1917,7 +1922,6 @@ function buildPairingBlock(){
   </div>`;
 }
 
-function buildChampagnePairing(){ return ''; }
 
 function buildDryAged(rows){ return buildHighlightCard(rows,'carnes'); }
 function buildChampagnePremium(rows){ return buildHighlightCard(rows,'champagne'); }
@@ -2306,10 +2310,10 @@ function setDon(btn,type){
   //  SPLASH
   //  Ecrã de boas-vindas com logo, mensagem e barra de progresso.
   //  SPLASH_ENABLED   = true  → mostra o splash ao abrir o menu
-  //  SPLASH_DURATION  = 5000  → duração em milissegundos (5000 = 5s)
+  //  SPLASH_DURATION  = 6000  → duração em milissegundos (6000 = 6s)
   //
-  window.SPLASH_ENABLED  = false;
-  window.SPLASH_DURATION = 5000;
+  window.SPLASH_ENABLED  = true;
+  window.SPLASH_DURATION = 6000;
   //
   //  SELETOR DE LÍNGUA
   //  Pop-up de escolha de idioma na 1ª visita (guarda em localStorage).
@@ -3330,18 +3334,49 @@ function buildSurpresa(pref){
     var labelCount = picks.length;
 
     var itemsHtml = picks.map(function(r){
-      var price = r.price_full||'';
-      var name = r[nameKey]||r.name_pt;
-      var desc = r[descKey]||r.desc_pt;
-      var al = r.allergens ? alBar(r.allergens) : '';
+      var name  = r[nameKey]||r.name_pt;
+      var al    = r.allergens ? alBar(r.allergens) : '';
       var multiCls = labelCount>1?' surpresa-course-item-multi':'';
+
+      // Subsecção — extrai parte na língua activa (formato PT | EN | FR)
+      // Omite se igual ao nome da secção (evita repetição)
+      var subHtml = '';
+      if(r.subsection && r.subsection !== '__'){
+        var subParts = r.subsection.split('|').map(function(s){ return s.trim(); });
+        var subPt = subParts[0]||'';
+        var subEn = subParts[1]||subPt;
+        var subFr = subParts[2]||subPt;
+        // Verifica se a subsecção é igual ao label da secção (ignora case)
+        var secLabel = (course.label[lang]||course.label.pt||'').toLowerCase();
+        var subCurrent = (lang==='en'?subEn:lang==='fr'?subFr:subPt).toLowerCase();
+        if(subPt && subCurrent !== secLabel){
+          subHtml = '<div class="surpresa-course-sub">'
+            +'<span class="t-pt">'+subPt+'</span>'
+            +'<span class="t-en">'+subEn+'</span>'
+            +'<span class="t-fr">'+subFr+'</span>'
+            +'</div>';
+        }
+      }
+
+      // Preços — dose e meia dose quando existirem
+      var priceHtml = '';
+      var pf = r.price_full, pm = r.price_half;
+      var lf = r.price_label_full||'Dose', lm = r.price_label_half||'1/2';
+      if(pf||pm){
+        priceHtml = '<div class="surpresa-course-price">';
+        if(pf) priceHtml += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
+        if(pf && pm) priceHtml += '<span class="sc-sep"> · </span>';
+        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
+        priceHtml += '</div>';
+      }
+
       var h = '<div class="surpresa-course-item'+multiCls+'">';
+      h += subHtml;
       h += '<div class="surpresa-course-name-row">';
       h += '<span class="surpresa-course-name">'+name+'</span>';
       if(al) h += al;
       h += '</div>';
-      if(desc) h += '<div class="surpresa-course-desc">'+desc+'</div>';
-      if(price) h += '<div class="surpresa-course-price">'+price+'</div>';
+      if(priceHtml) h += priceHtml;
       h += '</div>';
       return h;
     }).join('');
