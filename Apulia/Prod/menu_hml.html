@@ -1696,14 +1696,14 @@ function buildVerdeTinto(rows){
   const desc=row.desc_pt||'Vinho verde tinto servido na tigela à tradicional — experiência única da casa';
   return`<div class="verde-tinto-card">
     <div class="verde-tinto-img-wrap">
-      <img src="${VERDE_IMG_URL}" alt="Vinho Verde Regional" class="verde-tinto-photo"/>
+      <img src="${VERDE_IMG_URL}" alt="Vinho Tinto" class="verde-tinto-photo"/>
       <div class="verde-tinto-overlay">
         <div class="verde-tinto-badge">
           <span class="t-pt">🏡 Especialidade da Casa</span>
           <span class="t-en">🏡 House Speciality</span>
           <span class="t-fr">🏡 Spécialité Maison</span>
         </div>
-        <div class="verde-tinto-title">Vinho Verde Regional</div>
+        <div class="verde-tinto-title">Vinho Tinto</div>
         <div class="verde-tinto-subtitle">
           <span class="t-pt">Servido directamente na tigela, à tradição minhota</span>
           <span class="t-en">Served directly in the bowl, in the Minho tradition</span>
@@ -2342,22 +2342,22 @@ function setDon(btn,type){
   //  SPLASH_ENABLED   = true  → mostra o splash ao abrir o menu
   //  SPLASH_DURATION  = 6000  → duração em milissegundos (6000 = 6s)
   //
-  window.SPLASH_ENABLED  = true;
-  window.SPLASH_DURATION = 6000;
+  window.SPLASH_ENABLED  = false;
+  window.SPLASH_DURATION = 5000;
   //
   //  SELETOR DE LÍNGUA
   //  Pop-up de escolha de idioma na 1ª visita (guarda em localStorage).
   //  LANG_PICKER_ENABLED = true  → mostra a pop-up na 1ª visita
   //  LANG_PICKER_ENABLED = false → menu abre sempre em PT
   //
-  window.LANG_PICKER_ENABLED = true;
+  window.LANG_PICKER_ENABLED = false;
   //
   //  TOUR DE BOAS-VINDAS
   //  Guia animado que explica os botões na 1ª visita por língua.
   //  TOUR_ENABLED = true  → mostra o tour após splash/picker
   //  TOUR_ENABLED = false → desactiva o tour completamente
   //
-  window.TOUR_ENABLED = true;
+  window.TOUR_ENABLED = false;
   //
   //  SURPREENDE-ME
   //  Sugestão de refeição completa com pré-selecção Carne/Peixe.
