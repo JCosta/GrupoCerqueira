@@ -3247,11 +3247,11 @@ function doSearch(q){
     var lf=r.price_label_full||'Dose', lm=r.price_label_half||'1/2', lt=r.price_label_third||'1/3';
     if(pf||pm||pt){
       h += '<div class="sr-price">';
-      if(pf) h += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
+      if(pf) h += '<span class="sc-pv">'+pf+'</span><span class="sc-pl"> '+lf+'</span>';
       if(pf&&(pm||pt)) h += '<span class="sc-sep"> · </span>';
-      if(pm) h += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
+      if(pm) h += '<span class="sc-pv sc-pv-half">'+pm+'</span><span class="sc-pl"> '+lm+'</span>';
       if(pm&&pt) h += '<span class="sc-sep"> · </span>';
-      if(pt) h += '<span class="sc-pv sc-pv-half">'+pt+'€</span><span class="sc-pl"> '+lt+'</span>';
+      if(pt) h += '<span class="sc-pv sc-pv-half">'+pt+'</span><span class="sc-pl"> '+lt+'</span>';
       h += '</div>';
     }
     h += '</div>';
@@ -3403,9 +3403,9 @@ function buildSurpresa(pref){
       var lf = r.price_label_full||'Dose', lm = r.price_label_half||'1/2';
       if(pf||pm){
         priceHtml = '<div class="surpresa-course-price">';
-        if(pf) priceHtml += '<span class="sc-pv">'+pf+'€</span><span class="sc-pl"> '+lf+'</span>';
+        if(pf) priceHtml += '<span class="sc-pv">'+pf+'</span><span class="sc-pl"> '+lf+'</span>';
         if(pf && pm) priceHtml += '<span class="sc-sep"> · </span>';
-        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'€</span><span class="sc-pl"> '+lm+'</span>';
+        if(pm) priceHtml += '<span class="sc-pv sc-pv-half">'+pm+'</span><span class="sc-pl"> '+lm+'</span>';
         priceHtml += '</div>';
       }
 
