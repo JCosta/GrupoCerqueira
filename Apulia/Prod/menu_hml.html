@@ -517,155 +517,138 @@ body.light .pairing-row-name{color:#5a3810;}
 body.light .pairing-row-sep{color:rgba(139,105,20,.3);}
 body.light .pairing-row-note{color:rgba(80,50,20,.5);}
 
-/* == MARISCOS PREMIUM CARD — marine / ocean aesthetic == */
+/* == MARISCOS PREMIUM CARD — dark template, salty-pearl accent == */
 .mariscos-hl-section{
   margin:1.4rem 0 1.2rem;
   border-radius:14px;
   overflow:hidden;
-  background:linear-gradient(160deg,#06131a 0%,#091e2c 55%,#0a1c28 100%);
-  border:1px solid rgba(64,180,180,.22);
-  box-shadow:0 4px 32px rgba(0,0,0,.55),inset 0 1px 0 rgba(100,220,220,.1),0 0 0 1px rgba(30,130,150,.08);
+  background:linear-gradient(160deg,#0e1012 0%,#141820 55%,#101318 100%);
+  border:1px solid rgba(160,190,200,.18);
+  box-shadow:0 4px 28px rgba(0,0,0,.5),inset 0 1px 0 rgba(180,210,220,.08);
   position:relative;
 }
 body.light .mariscos-hl-section{
-  background:linear-gradient(160deg,#e8f6f8 0%,#d8eff5 55%,#daf0f4 100%);
-  border-color:rgba(0,130,150,.3);
-  box-shadow:0 4px 20px rgba(0,100,130,.12),inset 0 1px 0 rgba(0,180,200,.2);
+  background:#f0f4f5;
+  border-color:rgba(80,130,145,.28);
+  box-shadow:0 4px 20px rgba(40,80,100,.1),inset 0 1px 0 rgba(120,170,185,.2);
 }
-/* animated shimmer layer */
-.mariscos-hl-section::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 20% 0%,rgba(32,180,200,.09) 0%,transparent 65%),
-    radial-gradient(ellipse 40% 60% at 80% 100%,rgba(20,140,170,.07) 0%,transparent 60%);
-  pointer-events:none;
-}
-/* subtle wave ripple at top edge */
+/* pearl shimmer top edge */
 .mariscos-hl-section::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,
-    transparent 0%,rgba(40,200,210,.55) 25%,rgba(80,230,240,.8) 50%,rgba(40,200,210,.55) 75%,transparent 100%);
-  animation:marine-shimmer 3.5s ease-in-out infinite;
+    transparent 0%,rgba(180,215,225,.4) 30%,rgba(210,235,240,.7) 50%,rgba(180,215,225,.4) 70%,transparent 100%);
+  animation:pearl-shimmer 4s ease-in-out infinite;
 }
-@keyframes marine-shimmer{
-  0%,100%{opacity:.6;transform:scaleX(.9);}
-  50%{opacity:1;transform:scaleX(1);}
+@keyframes pearl-shimmer{
+  0%,100%{opacity:.5;}
+  50%{opacity:1;}
 }
 
 .mariscos-hl-header{
-  background:linear-gradient(135deg,#061018 0%,#0d2030 55%,#091825 100%);
+  background:linear-gradient(135deg,#0a0d10 0%,#151d24 55%,#0d1318 100%);
   padding:1.4rem 1.5rem 1rem;
   position:relative;
-  border-bottom:1px solid rgba(40,180,200,.2);
+  border-bottom:1px solid rgba(160,195,210,.14);
 }
 body.light .mariscos-hl-header{
-  background:linear-gradient(135deg,#c8eaf0 0%,#b8e2ec 55%,#c2e8f2 100%);
-  border-bottom-color:rgba(0,130,150,.2);
+  background:linear-gradient(135deg,#dde8ec 0%,#d2e3e9 55%,#d8e8ee 100%);
+  border-bottom-color:rgba(80,130,150,.18);
 }
 .mariscos-hl-header::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 65% 90% at 50% -10%,rgba(30,180,200,.1) 0%,transparent 65%);
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(160,200,215,.06) 0%,transparent 70%);
   pointer-events:none;
 }
 
 .mariscos-hl-badge{
   display:inline-flex;align-items:center;gap:.4rem;
-  background:linear-gradient(135deg,rgba(30,180,200,.18),rgba(10,140,160,.12));
-  border:1px solid rgba(40,200,220,.38);
+  background:linear-gradient(135deg,rgba(160,200,215,.14),rgba(120,165,185,.1));
+  border:1px solid rgba(160,205,220,.32);
   border-radius:20px;
   font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(100,230,240,.9);font-family:var(--fb);
+  color:rgba(195,225,235,.85);font-family:var(--fb);
   padding:.28rem .8rem;
   margin-bottom:.7rem;
-  box-shadow:0 0 14px rgba(30,180,200,.18);
+  box-shadow:0 0 10px rgba(140,190,210,.1);
 }
 body.light .mariscos-hl-badge{
-  color:#005a6e;border-color:rgba(0,150,180,.45);
-  background:rgba(0,170,200,.1);box-shadow:none;
+  color:#2a6070;border-color:rgba(60,130,155,.38);
+  background:rgba(80,160,185,.1);box-shadow:none;
 }
 
 .mariscos-hl-title{
   font-family:var(--fh);font-size:1.35rem;font-weight:700;
-  color:#a8e8f0;letter-spacing:.04em;line-height:1.15;
-  text-shadow:0 2px 20px rgba(40,200,220,.3),0 0 40px rgba(20,160,190,.15);
+  color:#cde0e8;letter-spacing:.04em;line-height:1.15;
+  text-shadow:0 2px 16px rgba(140,195,215,.18);
 }
-body.light .mariscos-hl-title{color:#004a5c;text-shadow:none;}
+body.light .mariscos-hl-title{color:#1a3d4a;text-shadow:none;}
 
 .mariscos-hl-subtitle{
-  font-size:.7rem;color:rgba(100,200,215,.5);
-  margin-top:.3rem;letter-spacing:.06em;font-style:italic;
+  font-size:.7rem;color:rgba(160,200,215,.45);
+  margin-top:.28rem;letter-spacing:.06em;font-style:italic;
 }
-body.light .mariscos-hl-subtitle{color:rgba(0,100,130,.5);}
+body.light .mariscos-hl-subtitle{color:rgba(40,100,125,.5);}
 
 .mariscos-hl-body{padding:1rem 1.5rem 1.3rem;}
 
 .mariscos-hl-items-title{
   font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(40,190,210,.45);font-family:var(--fb);font-weight:600;
+  color:rgba(155,195,210,.4);font-family:var(--fb);font-weight:600;
   margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem;
 }
 .mariscos-hl-items-title::after{
   content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(40,190,210,.25),transparent);
+  background:linear-gradient(90deg,rgba(155,195,210,.2),transparent);
 }
-body.light .mariscos-hl-items-title{color:rgba(0,120,150,.5);}
-body.light .mariscos-hl-items-title::after{background:linear-gradient(90deg,rgba(0,140,170,.2),transparent);}
+body.light .mariscos-hl-items-title{color:rgba(40,110,135,.5);}
+body.light .mariscos-hl-items-title::after{background:linear-gradient(90deg,rgba(40,120,145,.18),transparent);}
 
 .mariscos-hl-item{
   display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
-  padding:.9rem 1rem;
-  background:rgba(20,130,150,.04);
-  border:1px solid rgba(40,180,200,.12);
+  padding:.85rem .9rem;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(155,195,210,.1);
   border-radius:10px;
   margin-bottom:.5rem;
-  transition:background .2s,border-color .2s,box-shadow .2s;
-  position:relative;overflow:hidden;
-}
-.mariscos-hl-item::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(180deg,rgba(40,210,230,.7),rgba(20,160,190,.3));
-  border-radius:0 2px 2px 0;
-  opacity:0;transition:opacity .2s;
+  transition:background .2s,border-color .2s;
 }
 .mariscos-hl-item:last-child{margin-bottom:0;}
 .mariscos-hl-item:hover{
-  background:rgba(30,170,190,.08);
-  border-color:rgba(40,200,220,.28);
-  box-shadow:0 2px 12px rgba(20,160,190,.12);
+  background:rgba(155,195,210,.06);
+  border-color:rgba(155,200,215,.24);
 }
-.mariscos-hl-item:hover::before{opacity:1;}
-body.light .mariscos-hl-item{background:rgba(0,160,185,.04);border-color:rgba(0,140,165,.15);}
-body.light .mariscos-hl-item:hover{background:rgba(0,160,185,.1);border-color:rgba(0,150,180,.3);}
+body.light .mariscos-hl-item{background:rgba(255,255,255,.55);border-color:rgba(80,140,165,.16);}
+body.light .mariscos-hl-item:hover{background:rgba(255,255,255,.85);border-color:rgba(80,150,175,.3);}
 
 .mariscos-hl-item-left{flex:1;min-width:0;}
 .mariscos-hl-item-name{
-  font-family:var(--fh);font-size:.93rem;font-weight:600;
-  color:#8adde8;line-height:1.2;margin-bottom:.2rem;
+  font-family:var(--fh);font-size:.92rem;font-weight:600;
+  color:#bdd8e2;line-height:1.2;margin-bottom:.2rem;
 }
-body.light .mariscos-hl-item-name{color:#004455;}
+body.light .mariscos-hl-item-name{color:#1a3a48;}
 .mariscos-hl-item-sub{
   font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(40,190,210,.4);font-family:var(--fb);margin-bottom:.18rem;
+  color:rgba(155,195,210,.38);font-family:var(--fb);margin-bottom:.18rem;
 }
-body.light .mariscos-hl-item-sub{color:rgba(0,100,130,.45);}
+body.light .mariscos-hl-item-sub{color:rgba(40,100,130,.4);}
 .mariscos-hl-item-desc{
-  font-size:.71rem;color:rgba(140,210,225,.45);line-height:1.5;font-style:italic;
+  font-size:.71rem;color:rgba(175,210,225,.4);line-height:1.5;font-style:italic;
 }
-body.light .mariscos-hl-item-desc{color:rgba(0,90,115,.5);}
+body.light .mariscos-hl-item-desc{color:rgba(40,90,115,.48);}
 .mariscos-hl-item-price{
   font-family:var(--fh);font-size:1.1rem;font-weight:700;
-  color:#4ec8d8;white-space:nowrap;flex-shrink:0;align-self:center;
+  color:#a8ccd8;white-space:nowrap;flex-shrink:0;align-self:center;
 }
-body.light .mariscos-hl-item-price{color:#005c70;}
+body.light .mariscos-hl-item-price{color:#1c5060;}
 .mariscos-hl-item-price span{
   font-size:.55rem;font-family:var(--fb);font-weight:400;
-  color:rgba(60,190,210,.45);margin-left:.2rem;letter-spacing:.04em;
+  color:rgba(155,195,210,.42);margin-left:.2rem;letter-spacing:.04em;
 }
-body.light .mariscos-hl-item-price span{color:rgba(0,110,140,.5);}
+body.light .mariscos-hl-item-price span{color:rgba(40,100,130,.48);}
 .mariscos-hl-item-price-half{
-  font-size:.82rem;color:rgba(60,190,210,.55);
+  font-size:.82rem;color:rgba(155,195,210,.55);
 }
-body.light .mariscos-hl-item-price-half{color:rgba(0,110,140,.55);}
+body.light .mariscos-hl-item-price-half{color:rgba(40,110,140,.55);}
 
 /* == CHAMPAGNE PREMIUM CARD == */
 .champ-premium-section{
@@ -2022,12 +2005,7 @@ function buildHighlightCard(rows, secId){
         +'<span class="t-pt">'+r.desc_pt+'</span>'
         +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
         +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
-				
-				   
-			  
-													
         +'</div>';
-																																								 
       ih += '</div>';
       if(price){
         ih += '<div class="dryaged-item-price-block">'
@@ -2060,8 +2038,6 @@ function buildHighlightCard(rows, secId){
       ih += '</div>';
       itemsHtml += ih;
     }
-				   
-					
   });
 
   // Three visual flavours: carnes=dryaged, mariscos=marine, others=champ-premium
