@@ -517,138 +517,144 @@ body.light .pairing-row-name{color:#5a3810;}
 body.light .pairing-row-sep{color:rgba(139,105,20,.3);}
 body.light .pairing-row-note{color:rgba(80,50,20,.5);}
 
-/* == MARISCOS PREMIUM CARD — dark template, salty-pearl accent == */
+/* == MARISCOS PREMIUM CARD — mesma linguagem do template, acento sal-e-mar == */
 .mariscos-hl-section{
   margin:1.4rem 0 1.2rem;
   border-radius:14px;
   overflow:hidden;
-  background:linear-gradient(160deg,#0e1012 0%,#141820 55%,#101318 100%);
-  border:1px solid rgba(160,190,200,.18);
-  box-shadow:0 4px 28px rgba(0,0,0,.5),inset 0 1px 0 rgba(180,210,220,.08);
+  /* dark: mesmo fundo escuro quente do template, borda dourada levemente fria */
+  background:linear-gradient(160deg,#111009 0%,#181510 55%,#141108 100%);
+  border:1px solid rgba(180,200,195,.16);
+  box-shadow:0 4px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(201,169,110,.07);
   position:relative;
 }
 body.light .mariscos-hl-section{
-  background:#f0f4f5;
-  border-color:rgba(80,130,145,.28);
-  box-shadow:0 4px 20px rgba(40,80,100,.1),inset 0 1px 0 rgba(120,170,185,.2);
+  /* light: mesmo fundo creme do template */
+  background:#f5f0e8;
+  border-color:rgba(100,140,135,.28);
+  box-shadow:0 4px 20px rgba(60,90,85,.1),inset 0 1px 0 rgba(140,175,170,.18);
 }
-/* pearl shimmer top edge */
+/* linha de acento tênue no topo — distingue sem chocar */
 .mariscos-hl-section::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,
-    transparent 0%,rgba(180,215,225,.4) 30%,rgba(210,235,240,.7) 50%,rgba(180,215,225,.4) 70%,transparent 100%);
-  animation:pearl-shimmer 4s ease-in-out infinite;
+    transparent 0%,rgba(160,195,188,.35) 30%,rgba(185,215,208,.55) 50%,rgba(160,195,188,.35) 70%,transparent 100%);
+  animation:salt-shimmer 4s ease-in-out infinite;
 }
-@keyframes pearl-shimmer{
-  0%,100%{opacity:.5;}
-  50%{opacity:1;}
+@keyframes salt-shimmer{
+  0%,100%{opacity:.45;}
+  50%{opacity:.9;}
 }
 
 .mariscos-hl-header{
-  background:linear-gradient(135deg,#0a0d10 0%,#151d24 55%,#0d1318 100%);
+  /* dark: mesmo padrão dos outros headers */
+  background:linear-gradient(135deg,#0e0c07 0%,#1c180e 50%,#151108 100%);
   padding:1.4rem 1.5rem 1rem;
   position:relative;
-  border-bottom:1px solid rgba(160,195,210,.14);
+  border-bottom:1px solid rgba(180,200,195,.12);
 }
 body.light .mariscos-hl-header{
-  background:linear-gradient(135deg,#dde8ec 0%,#d2e3e9 55%,#d8e8ee 100%);
-  border-bottom-color:rgba(80,130,150,.18);
+  background:linear-gradient(135deg,#ede7db 0%,#e6dfd2 50%,#eae3d6 100%);
+  border-bottom-color:rgba(100,140,130,.16);
 }
 .mariscos-hl-header::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(160,200,215,.06) 0%,transparent 70%);
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(160,195,188,.05) 0%,transparent 70%);
   pointer-events:none;
 }
 
+/* badge: tom âmbar-esverdeado — quente como o template, toque marinho */
 .mariscos-hl-badge{
   display:inline-flex;align-items:center;gap:.4rem;
-  background:linear-gradient(135deg,rgba(160,200,215,.14),rgba(120,165,185,.1));
-  border:1px solid rgba(160,205,220,.32);
+  background:linear-gradient(135deg,rgba(160,195,185,.16),rgba(120,160,150,.1));
+  border:1px solid rgba(160,200,190,.3);
   border-radius:20px;
   font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(195,225,235,.85);font-family:var(--fb);
+  color:rgba(185,220,210,.82);font-family:var(--fb);
   padding:.28rem .8rem;
   margin-bottom:.7rem;
-  box-shadow:0 0 10px rgba(140,190,210,.1);
 }
 body.light .mariscos-hl-badge{
-  color:#2a6070;border-color:rgba(60,130,155,.38);
-  background:rgba(80,160,185,.1);box-shadow:none;
+  color:#2e5c52;border-color:rgba(60,120,110,.35);
+  background:rgba(80,150,135,.1);
 }
 
+/* título: quase branco no dark, quase preto no light — idêntico aos outros */
 .mariscos-hl-title{
   font-family:var(--fh);font-size:1.35rem;font-weight:700;
-  color:#cde0e8;letter-spacing:.04em;line-height:1.15;
-  text-shadow:0 2px 16px rgba(140,195,215,.18);
+  color:#ddeae6;letter-spacing:.04em;line-height:1.15;
+  text-shadow:0 2px 16px rgba(140,190,180,.12);
 }
-body.light .mariscos-hl-title{color:#1a3d4a;text-shadow:none;}
+body.light .mariscos-hl-title{color:#1a2e28;text-shadow:none;}
 
 .mariscos-hl-subtitle{
-  font-size:.7rem;color:rgba(160,200,215,.45);
+  font-size:.7rem;color:rgba(160,200,190,.42);
   margin-top:.28rem;letter-spacing:.06em;font-style:italic;
 }
-body.light .mariscos-hl-subtitle{color:rgba(40,100,125,.5);}
+body.light .mariscos-hl-subtitle{color:rgba(40,90,80,.48);}
 
 .mariscos-hl-body{padding:1rem 1.5rem 1.3rem;}
 
 .mariscos-hl-items-title{
   font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(155,195,210,.4);font-family:var(--fb);font-weight:600;
+  color:rgba(155,195,185,.38);font-family:var(--fb);font-weight:600;
   margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem;
 }
 .mariscos-hl-items-title::after{
   content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(155,195,210,.2),transparent);
+  background:linear-gradient(90deg,rgba(155,195,185,.18),transparent);
 }
-body.light .mariscos-hl-items-title{color:rgba(40,110,135,.5);}
-body.light .mariscos-hl-items-title::after{background:linear-gradient(90deg,rgba(40,120,145,.18),transparent);}
+body.light .mariscos-hl-items-title{color:rgba(40,100,88,.48);}
+body.light .mariscos-hl-items-title::after{background:linear-gradient(90deg,rgba(40,110,95,.16),transparent);}
 
+/* itens: mesmo estilo dos outros cards */
 .mariscos-hl-item{
   display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
   padding:.85rem .9rem;
   background:rgba(255,255,255,.025);
-  border:1px solid rgba(155,195,210,.1);
+  border:1px solid rgba(155,195,185,.1);
   border-radius:10px;
   margin-bottom:.5rem;
   transition:background .2s,border-color .2s;
 }
 .mariscos-hl-item:last-child{margin-bottom:0;}
 .mariscos-hl-item:hover{
-  background:rgba(155,195,210,.06);
-  border-color:rgba(155,200,215,.24);
+  background:rgba(155,195,185,.055);
+  border-color:rgba(155,200,188,.22);
 }
-body.light .mariscos-hl-item{background:rgba(255,255,255,.55);border-color:rgba(80,140,165,.16);}
-body.light .mariscos-hl-item:hover{background:rgba(255,255,255,.85);border-color:rgba(80,150,175,.3);}
+body.light .mariscos-hl-item{background:rgba(255,255,255,.55);border-color:rgba(80,140,125,.16);}
+body.light .mariscos-hl-item:hover{background:rgba(255,255,255,.85);border-color:rgba(80,145,130,.28);}
 
 .mariscos-hl-item-left{flex:1;min-width:0;}
 .mariscos-hl-item-name{
   font-family:var(--fh);font-size:.92rem;font-weight:600;
-  color:#bdd8e2;line-height:1.2;margin-bottom:.2rem;
+  color:#ccddd8;line-height:1.2;margin-bottom:.2rem;
 }
-body.light .mariscos-hl-item-name{color:#1a3a48;}
+body.light .mariscos-hl-item-name{color:#1a2e28;}
 .mariscos-hl-item-sub{
   font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(155,195,210,.38);font-family:var(--fb);margin-bottom:.18rem;
+  color:rgba(155,195,185,.36);font-family:var(--fb);margin-bottom:.18rem;
 }
-body.light .mariscos-hl-item-sub{color:rgba(40,100,130,.4);}
+body.light .mariscos-hl-item-sub{color:rgba(40,95,82,.38);}
 .mariscos-hl-item-desc{
-  font-size:.71rem;color:rgba(175,210,225,.4);line-height:1.5;font-style:italic;
+  font-size:.71rem;color:rgba(175,210,200,.38);line-height:1.5;font-style:italic;
 }
-body.light .mariscos-hl-item-desc{color:rgba(40,90,115,.48);}
+body.light .mariscos-hl-item-desc{color:rgba(40,85,72,.46);}
+/* preço: mesmo tom dourado do template mas ligeiramente frio */
 .mariscos-hl-item-price{
   font-family:var(--fh);font-size:1.1rem;font-weight:700;
-  color:#a8ccd8;white-space:nowrap;flex-shrink:0;align-self:center;
+  color:#b8cec8;white-space:nowrap;flex-shrink:0;align-self:center;
 }
-body.light .mariscos-hl-item-price{color:#1c5060;}
+body.light .mariscos-hl-item-price{color:#1e4a40;}
 .mariscos-hl-item-price span{
   font-size:.55rem;font-family:var(--fb);font-weight:400;
-  color:rgba(155,195,210,.42);margin-left:.2rem;letter-spacing:.04em;
+  color:rgba(155,195,185,.4);margin-left:.2rem;letter-spacing:.04em;
 }
-body.light .mariscos-hl-item-price span{color:rgba(40,100,130,.48);}
+body.light .mariscos-hl-item-price span{color:rgba(40,95,82,.44);}
 .mariscos-hl-item-price-half{
-  font-size:.82rem;color:rgba(155,195,210,.55);
+  font-size:.82rem;color:rgba(155,195,185,.52);
 }
-body.light .mariscos-hl-item-price-half{color:rgba(40,110,140,.55);}
+body.light .mariscos-hl-item-price-half{color:rgba(40,100,88,.52);}
 
 /* == CHAMPAGNE PREMIUM CARD == */
 .champ-premium-section{
