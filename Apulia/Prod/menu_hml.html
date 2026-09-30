@@ -517,6 +517,156 @@ body.light .pairing-row-name{color:#5a3810;}
 body.light .pairing-row-sep{color:rgba(139,105,20,.3);}
 body.light .pairing-row-note{color:rgba(80,50,20,.5);}
 
+/* == MARISCOS PREMIUM CARD — marine / ocean aesthetic == */
+.mariscos-hl-section{
+  margin:1.4rem 0 1.2rem;
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(160deg,#06131a 0%,#091e2c 55%,#0a1c28 100%);
+  border:1px solid rgba(64,180,180,.22);
+  box-shadow:0 4px 32px rgba(0,0,0,.55),inset 0 1px 0 rgba(100,220,220,.1),0 0 0 1px rgba(30,130,150,.08);
+  position:relative;
+}
+body.light .mariscos-hl-section{
+  background:linear-gradient(160deg,#e8f6f8 0%,#d8eff5 55%,#daf0f4 100%);
+  border-color:rgba(0,130,150,.3);
+  box-shadow:0 4px 20px rgba(0,100,130,.12),inset 0 1px 0 rgba(0,180,200,.2);
+}
+/* animated shimmer layer */
+.mariscos-hl-section::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%,rgba(32,180,200,.09) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 60% at 80% 100%,rgba(20,140,170,.07) 0%,transparent 60%);
+  pointer-events:none;
+}
+/* subtle wave ripple at top edge */
+.mariscos-hl-section::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,
+    transparent 0%,rgba(40,200,210,.55) 25%,rgba(80,230,240,.8) 50%,rgba(40,200,210,.55) 75%,transparent 100%);
+  animation:marine-shimmer 3.5s ease-in-out infinite;
+}
+@keyframes marine-shimmer{
+  0%,100%{opacity:.6;transform:scaleX(.9);}
+  50%{opacity:1;transform:scaleX(1);}
+}
+
+.mariscos-hl-header{
+  background:linear-gradient(135deg,#061018 0%,#0d2030 55%,#091825 100%);
+  padding:1.4rem 1.5rem 1rem;
+  position:relative;
+  border-bottom:1px solid rgba(40,180,200,.2);
+}
+body.light .mariscos-hl-header{
+  background:linear-gradient(135deg,#c8eaf0 0%,#b8e2ec 55%,#c2e8f2 100%);
+  border-bottom-color:rgba(0,130,150,.2);
+}
+.mariscos-hl-header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 90% at 50% -10%,rgba(30,180,200,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+.mariscos-hl-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,rgba(30,180,200,.18),rgba(10,140,160,.12));
+  border:1px solid rgba(40,200,220,.38);
+  border-radius:20px;
+  font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(100,230,240,.9);font-family:var(--fb);
+  padding:.28rem .8rem;
+  margin-bottom:.7rem;
+  box-shadow:0 0 14px rgba(30,180,200,.18);
+}
+body.light .mariscos-hl-badge{
+  color:#005a6e;border-color:rgba(0,150,180,.45);
+  background:rgba(0,170,200,.1);box-shadow:none;
+}
+
+.mariscos-hl-title{
+  font-family:var(--fh);font-size:1.35rem;font-weight:700;
+  color:#a8e8f0;letter-spacing:.04em;line-height:1.15;
+  text-shadow:0 2px 20px rgba(40,200,220,.3),0 0 40px rgba(20,160,190,.15);
+}
+body.light .mariscos-hl-title{color:#004a5c;text-shadow:none;}
+
+.mariscos-hl-subtitle{
+  font-size:.7rem;color:rgba(100,200,215,.5);
+  margin-top:.3rem;letter-spacing:.06em;font-style:italic;
+}
+body.light .mariscos-hl-subtitle{color:rgba(0,100,130,.5);}
+
+.mariscos-hl-body{padding:1rem 1.5rem 1.3rem;}
+
+.mariscos-hl-items-title{
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(40,190,210,.45);font-family:var(--fb);font-weight:600;
+  margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem;
+}
+.mariscos-hl-items-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(40,190,210,.25),transparent);
+}
+body.light .mariscos-hl-items-title{color:rgba(0,120,150,.5);}
+body.light .mariscos-hl-items-title::after{background:linear-gradient(90deg,rgba(0,140,170,.2),transparent);}
+
+.mariscos-hl-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
+  padding:.9rem 1rem;
+  background:rgba(20,130,150,.04);
+  border:1px solid rgba(40,180,200,.12);
+  border-radius:10px;
+  margin-bottom:.5rem;
+  transition:background .2s,border-color .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.mariscos-hl-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,rgba(40,210,230,.7),rgba(20,160,190,.3));
+  border-radius:0 2px 2px 0;
+  opacity:0;transition:opacity .2s;
+}
+.mariscos-hl-item:last-child{margin-bottom:0;}
+.mariscos-hl-item:hover{
+  background:rgba(30,170,190,.08);
+  border-color:rgba(40,200,220,.28);
+  box-shadow:0 2px 12px rgba(20,160,190,.12);
+}
+.mariscos-hl-item:hover::before{opacity:1;}
+body.light .mariscos-hl-item{background:rgba(0,160,185,.04);border-color:rgba(0,140,165,.15);}
+body.light .mariscos-hl-item:hover{background:rgba(0,160,185,.1);border-color:rgba(0,150,180,.3);}
+
+.mariscos-hl-item-left{flex:1;min-width:0;}
+.mariscos-hl-item-name{
+  font-family:var(--fh);font-size:.93rem;font-weight:600;
+  color:#8adde8;line-height:1.2;margin-bottom:.2rem;
+}
+body.light .mariscos-hl-item-name{color:#004455;}
+.mariscos-hl-item-sub{
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(40,190,210,.4);font-family:var(--fb);margin-bottom:.18rem;
+}
+body.light .mariscos-hl-item-sub{color:rgba(0,100,130,.45);}
+.mariscos-hl-item-desc{
+  font-size:.71rem;color:rgba(140,210,225,.45);line-height:1.5;font-style:italic;
+}
+body.light .mariscos-hl-item-desc{color:rgba(0,90,115,.5);}
+.mariscos-hl-item-price{
+  font-family:var(--fh);font-size:1.1rem;font-weight:700;
+  color:#4ec8d8;white-space:nowrap;flex-shrink:0;align-self:center;
+}
+body.light .mariscos-hl-item-price{color:#005c70;}
+.mariscos-hl-item-price span{
+  font-size:.55rem;font-family:var(--fb);font-weight:400;
+  color:rgba(60,190,210,.45);margin-left:.2rem;letter-spacing:.04em;
+}
+body.light .mariscos-hl-item-price span{color:rgba(0,110,140,.5);}
+.mariscos-hl-item-price-half{
+  font-size:.82rem;color:rgba(60,190,210,.55);
+}
+body.light .mariscos-hl-item-price-half{color:rgba(0,110,140,.55);}
+
 /* == CHAMPAGNE PREMIUM CARD == */
 .champ-premium-section{
   margin:1.4rem 0 1.2rem;
@@ -1577,7 +1727,8 @@ const AL = {
 };
 
 const VALID_SECTIONS = new Set([
-  'entradas','sopas','carnes','peixes','mariscos','vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','sobremesas','digestivos'
+  'entradas','sopas','carnes','peixes','mariscos',
+  'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','sobremesas','digestivos'
 ]);
 
 const COL_MAP = {
@@ -1587,7 +1738,7 @@ const COL_MAP = {
   'preco_dose':'price_full','preco_meia':'price_half','preco_terceiro':'price_third',
   'etiqueta_dose':'price_label_full','etiqueta_meia':'price_label_half','etiqueta_terceiro':'price_label_third',
   'alergenios':'allergens','tipo':'wine_type','estado':'estado','destaque':'destaque','esgotado':'esgotado',
-  'ESGOTADO HOJE':'esgotado','esgotado hoje':'esgotado',
+  'ESGOTADO HOJE':'esgotado','esgotado hoje':'esgotado','esgotado hoje?':'esgotado','ESGOTADO HOJE?':'esgotado',
   'DESTAQUE NA SEÇÃO':'destaque','DESTAQUE NA SECÃO':'destaque','destaque na seção':'destaque','destaque na categoria':'destaque',
   // Legacy
   'section':'section','subsection':'subsection',
@@ -1786,7 +1937,7 @@ function buildHero(sec){
 
 // == GENERIC HIGHLIGHT CARD ==
 // Secções com card de destaque (coluna R = SIM)
-const HIGHLIGHT_SECTIONS = new Set(['carnes','champagne','vinhos','peixes','mariscos','digestivos','sobremesas']);
+const HIGHLIGHT_SECTIONS = new Set(['carnes','champagne','vinhos','peixes','digestivos','sobremesas','mariscos']);
 
 function isDestaque(r){ return (r.destaque||'').trim().toUpperCase() === 'SIM'; }
 
@@ -1844,46 +1995,85 @@ function buildHighlightCard(rows, secId){
            fr:'Les préférées de notre équipe — douceurs préparées avec soin.'},
       extra:''
     },
+    mariscos:{
+      badge:{pt:'🦞 APANHA DO DIA', en:'🦞 CATCH OF THE DAY', fr:'🦞 PÊCHE DU JOUR'},
+      title:{pt:'Tesouros do Mar', en:'Treasures of the Sea', fr:'Trésors de la Mer'},
+      sub:{pt:'Mariscos frescos, apanhados hoje, preparados com dedicação e simplicidade atlântica.',
+           en:'Fresh shellfish, caught today, prepared with Atlantic simplicity and care.',
+           fr:'Fruits de mer frais du jour, préparés avec simplicité et passion atlantique.'},
+      extra:''
+    },
   };
   const c = cfg[secId] || cfg.digestivos;
 
   let itemsHtml = '';
+  const isMar = secId === 'mariscos';
   highlighted.forEach(r => {
     const price = r.price_full || '';
-    const label = r.price_label_full || '';
-    let ih = '<div class="dryaged-item"><div class="dryaged-item-left">';
-    if(r.subsection && r.subsection !== '__') ih += '<div class="champ-premium-item-sub">'+r.subsection+'</div>';
-    ih += '<div class="dryaged-item-name">'
-      +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
-      +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
-      +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
-      +'</div>';
-    if(r.desc_pt) ih += '<div class="dryaged-item-desc">'
-      +'<span class="t-pt">'+r.desc_pt+'</span>'
-      +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
-      +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
-      +'</div>';
-    ih += '</div>';
-    if(price){
-      ih += '<div class="dryaged-item-price-block">'
-        +'<div class="dryaged-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
-      if(r.price_half) ih += '<div class="dryaged-item-price dryaged-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+    if(isMar){
+      let ih = '<div class="mariscos-hl-item"><div class="mariscos-hl-item-left">';
+      if(r.subsection && r.subsection !== '__') ih += '<div class="mariscos-hl-item-sub">'+r.subsection+'</div>';
+      ih += '<div class="mariscos-hl-item-name">'
+        +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
+        +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
+        +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
+        +'</div>';
+      if(r.desc_pt) ih += '<div class="mariscos-hl-item-desc">'
+        +'<span class="t-pt">'+r.desc_pt+'</span>'
+        +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
+        +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
+				
+				   
+			  
+													
+        +'</div>';
+																																								 
       ih += '</div>';
+      if(price){
+        ih += '<div class="dryaged-item-price-block">'
+          +'<div class="mariscos-hl-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
+        if(r.price_half) ih += '<div class="mariscos-hl-item-price mariscos-hl-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+        ih += '</div>';
+      }
+      ih += '</div>';
+      itemsHtml += ih;
+    } else {
+      let ih = '<div class="dryaged-item"><div class="dryaged-item-left">';
+      if(r.subsection && r.subsection !== '__') ih += '<div class="champ-premium-item-sub">'+r.subsection+'</div>';
+      ih += '<div class="dryaged-item-name">'
+        +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
+        +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
+        +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
+        +'</div>';
+      if(r.desc_pt) ih += '<div class="dryaged-item-desc">'
+        +'<span class="t-pt">'+r.desc_pt+'</span>'
+        +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
+        +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
+        +'</div>';
+      ih += '</div>';
+      if(price){
+        ih += '<div class="dryaged-item-price-block">'
+          +'<div class="dryaged-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
+        if(r.price_half) ih += '<div class="dryaged-item-price dryaged-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+        ih += '</div>';
+      }
+      ih += '</div>';
+      itemsHtml += ih;
     }
-    ih += '</div>';
-    itemsHtml += ih;
+				   
+					
   });
 
-  // Use dryaged styles for carnes, champ-premium styles for others for visual variety
+  // Three visual flavours: carnes=dryaged, mariscos=marine, others=champ-premium
   const useAlt = secId !== 'carnes';
-  const wrapClass = useAlt ? 'champ-premium-section' : 'dryaged-section';
-  const headClass = useAlt ? 'champ-premium-header' : 'dryaged-header';
-  const badgeClass = useAlt ? 'champ-premium-badge' : 'dryaged-badge';
-  const titleClass = useAlt ? 'champ-premium-title' : 'dryaged-title';
-  const subClass   = useAlt ? 'champ-premium-subtitle' : 'dryaged-subtitle';
-  const bodyClass  = useAlt ? 'champ-premium-body' : 'dryaged-body';
-  const labelClass = useAlt ? 'champ-premium-items-title' : 'dryaged-items-title';
-  const cardId     = `highlight-card-${secId}`;
+  const wrapClass = isMar ? 'mariscos-hl-section'      : useAlt ? 'champ-premium-section' : 'dryaged-section';
+  const headClass = isMar ? 'mariscos-hl-header'       : useAlt ? 'champ-premium-header'  : 'dryaged-header';
+  const badgeClass= isMar ? 'mariscos-hl-badge'        : useAlt ? 'champ-premium-badge'   : 'dryaged-badge';
+  const titleClass= isMar ? 'mariscos-hl-title'        : useAlt ? 'champ-premium-title'   : 'dryaged-title';
+  const subClass  = isMar ? 'mariscos-hl-subtitle'     : useAlt ? 'champ-premium-subtitle': 'dryaged-subtitle';
+  const bodyClass = isMar ? 'mariscos-hl-body'         : useAlt ? 'champ-premium-body'    : 'dryaged-body';
+  const labelClass= isMar ? 'mariscos-hl-items-title'  : useAlt ? 'champ-premium-items-title' : 'dryaged-items-title';
+  const cardId    = `highlight-card-${secId}`;
 
   return `<div class="${wrapClass}" id="${cardId}">
     <div class="${headClass}">
