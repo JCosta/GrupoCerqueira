@@ -1536,6 +1536,9 @@ const SECTIONS = [
   {id:'peixes',    lPt:'Peixes',            lEn:'Fish',             lFr:'Poissons',
    img:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=1200&auto=format&fit=crop',
    sPt:'Do mar à mesa',sEn:'From the sea to the table',sFr:'De la mer à la table',legend:true,doneness:false},
+   {id:'mariscos',    lPt:'Mariscos',            lEn:'Seafood',             lFr:'Fruits de mer',
+   img:'https://images.unsplash.com/photo-1657618217273-00513772e15d?q=80&w=1200&auto=format&fit=crop',
+   sPt:'Sabores frescos do mar',sEn:'Fresh flavours of the sea',sFr:'Saveurs fraîches de la mer',legend:true,doneness:false},
   {id:'bebidas',   lPt:'Bebidas & Cafetaria',lEn:'Drinks & Coffee', lFr:'Boissons & Café',
    img:'https://images.unsplash.com/photo-1596202415827-e842da5ef687?w=1200&q=80&auto=format&fit=crop',
    sPt:'Águas · Refrigerantes · Café',sEn:'Water · Soft Drinks · Coffee',sFr:'Eaux · Boissons · Café',legend:false,doneness:false},
@@ -1574,7 +1577,7 @@ const AL = {
 };
 
 const VALID_SECTIONS = new Set([
-  'entradas','sopas','carnes','peixes',
+  'entradas','sopas','carnes','peixes','mariscos'
   'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','sobremesas','digestivos'
 ]);
 
@@ -3202,6 +3205,7 @@ const SECTION_LABELS = {
   sopas:{pt:'Sopas & Saladas',en:'Soups & Salads',fr:'Soupes & Salades'},
   carnes:{pt:'Carnes',en:'Meats',fr:'Viandes'},
   peixes:{pt:'Peixes',en:'Fish',fr:'Poissons'},
+  mariscos:{pt:'Mariscos',en:'Seafood',fr:'Fruits de mer'},
   sobremesas:{pt:'Sobremesas',en:'Desserts',fr:'Desserts'},
   bebidas:{pt:'Bebidas',en:'Drinks',fr:'Boissons'},
   cervejas:{pt:'Cervejas',en:'Beers',fr:'Bières'},
