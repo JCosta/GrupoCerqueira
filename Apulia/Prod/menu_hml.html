@@ -1061,7 +1061,7 @@ body.light .surpresa-presel-question{color:#1a1208;}
 }
 body.light .surpresa-presel-sub{color:#7a6a50;}
 .surpresa-presel-btns{
-  display:grid;grid-template-columns:1fr 1fr;gap:.7rem;width:100%;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;width:100%;
 }
 .surpresa-presel-btn{
   background:rgba(201,169,110,.08);
@@ -2981,6 +2981,11 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
           <span class="surpresa-presel-btn-label"><span class="t-pt">Peixe</span><span class="t-en">Fish</span><span class="t-fr">Poisson</span></span>
           <span class="surpresa-presel-btn-desc"><span class="t-pt">Do mar à mesa, fresquíssimo</span><span class="t-en">From the sea to your table</span><span class="t-fr">De la mer à votre table</span></span>
         </button>
+        <button class="surpresa-presel-btn" onclick="buildSurpresa('mariscos')">
+          <span class="surpresa-presel-btn-icon">🦞</span>
+          <span class="surpresa-presel-btn-label"><span class="t-pt">Marisco</span><span class="t-en">Seafood</span><span class="t-fr">Fruits de Mer</span></span>
+          <span class="surpresa-presel-btn-desc"><span class="t-pt">Tesouros do mar, seleção premium</span><span class="t-en">Treasures of the sea, premium selection</span><span class="t-fr">Trésors de la mer, sélection premium</span></span>
+        </button>
       </div>
       <button class="surpresa-presel-random" onclick="buildSurpresa(null)">
         🎲 <span class="t-pt">Surpreende-me (sem preferência)</span>
@@ -3452,7 +3457,7 @@ function goToSection(secId){
 // == SURPRESA ==
 const SURPRESA_COURSES = [
   {key:'entrada',   secs:['entradas'],           label:{pt:'Entradas',        en:'Starters',     fr:'Entrées'},      count:2},
-  {key:'prato',     secs:['carnes','peixes'],     label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'},count:1},
+  {key:'prato',     secs:['carnes','peixes','mariscos'], label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'},count:1},
   {key:'harmoniz',  secs:['vinhos','vinhoscasa'], label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'},   count:1},
   {key:'sobremesa', secs:['sobremesas'],          label:{pt:'Sobremesa',       en:'Dessert',      fr:'Dessert'},      count:1},
 ];
