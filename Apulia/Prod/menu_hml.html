@@ -3542,7 +3542,6 @@ function buildSurpresa(pref){
     return r.name_pt &&
     (r.estado||'').toLowerCase()==='ativo' &&
     (r.esgotado||'').toUpperCase()!=='SIM' &&
-    !isDestaque(r) &&
     (r.wine_type||'').toLowerCase()!=='premium';
   });
 
