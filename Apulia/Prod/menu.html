@@ -517,6 +517,145 @@ body.light .pairing-row-name{color:#5a3810;}
 body.light .pairing-row-sep{color:rgba(139,105,20,.3);}
 body.light .pairing-row-note{color:rgba(80,50,20,.5);}
 
+/* == MARISCOS PREMIUM CARD — mesma linguagem do template, acento sal-e-mar == */
+.mariscos-hl-section{
+  margin:1.4rem 0 1.2rem;
+  border-radius:14px;
+  overflow:hidden;
+  /* dark: mesmo fundo escuro quente do template, borda dourada levemente fria */
+  background:linear-gradient(160deg,#111009 0%,#181510 55%,#141108 100%);
+  border:1px solid rgba(180,200,195,.16);
+  box-shadow:0 4px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(201,169,110,.07);
+  position:relative;
+}
+body.light .mariscos-hl-section{
+  /* light: mesmo fundo creme do template */
+  background:#f5f0e8;
+  border-color:rgba(100,140,135,.28);
+  box-shadow:0 4px 20px rgba(60,90,85,.1),inset 0 1px 0 rgba(140,175,170,.18);
+}
+/* linha de acento tênue no topo — distingue sem chocar */
+.mariscos-hl-section::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,
+    transparent 0%,rgba(160,195,188,.35) 30%,rgba(185,215,208,.55) 50%,rgba(160,195,188,.35) 70%,transparent 100%);
+  animation:salt-shimmer 4s ease-in-out infinite;
+}
+@keyframes salt-shimmer{
+  0%,100%{opacity:.45;}
+  50%{opacity:.9;}
+}
+
+.mariscos-hl-header{
+  /* dark: mesmo padrão dos outros headers */
+  background:linear-gradient(135deg,#0e0c07 0%,#1c180e 50%,#151108 100%);
+  padding:1.4rem 1.5rem 1rem;
+  position:relative;
+  border-bottom:1px solid rgba(180,200,195,.12);
+}
+body.light .mariscos-hl-header{
+  background:linear-gradient(135deg,#ede7db 0%,#e6dfd2 50%,#eae3d6 100%);
+  border-bottom-color:rgba(100,140,130,.16);
+}
+.mariscos-hl-header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(160,195,188,.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* badge: tom âmbar-esverdeado — quente como o template, toque marinho */
+.mariscos-hl-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,rgba(160,195,185,.16),rgba(120,160,150,.1));
+  border:1px solid rgba(160,200,190,.3);
+  border-radius:20px;
+  font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(185,220,210,.82);font-family:var(--fb);
+  padding:.28rem .8rem;
+  margin-bottom:.7rem;
+}
+body.light .mariscos-hl-badge{
+  color:#2e5c52;border-color:rgba(60,120,110,.35);
+  background:rgba(80,150,135,.1);
+}
+
+/* título: quase branco no dark, quase preto no light — idêntico aos outros */
+.mariscos-hl-title{
+  font-family:var(--fh);font-size:1.35rem;font-weight:700;
+  color:#ddeae6;letter-spacing:.04em;line-height:1.15;
+  text-shadow:0 2px 16px rgba(140,190,180,.12);
+}
+body.light .mariscos-hl-title{color:#1a2e28;text-shadow:none;}
+
+.mariscos-hl-subtitle{
+  font-size:.7rem;color:rgba(160,200,190,.42);
+  margin-top:.28rem;letter-spacing:.06em;font-style:italic;
+}
+body.light .mariscos-hl-subtitle{color:rgba(40,90,80,.48);}
+
+.mariscos-hl-body{padding:1rem 1.5rem 1.3rem;}
+
+.mariscos-hl-items-title{
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(155,195,185,.38);font-family:var(--fb);font-weight:600;
+  margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem;
+}
+.mariscos-hl-items-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(155,195,185,.18),transparent);
+}
+body.light .mariscos-hl-items-title{color:rgba(40,100,88,.48);}
+body.light .mariscos-hl-items-title::after{background:linear-gradient(90deg,rgba(40,110,95,.16),transparent);}
+
+/* itens: mesmo estilo dos outros cards */
+.mariscos-hl-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
+  padding:.85rem .9rem;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(155,195,185,.1);
+  border-radius:10px;
+  margin-bottom:.5rem;
+  transition:background .2s,border-color .2s;
+}
+.mariscos-hl-item:last-child{margin-bottom:0;}
+.mariscos-hl-item:hover{
+  background:rgba(155,195,185,.055);
+  border-color:rgba(155,200,188,.22);
+}
+body.light .mariscos-hl-item{background:rgba(255,255,255,.55);border-color:rgba(80,140,125,.16);}
+body.light .mariscos-hl-item:hover{background:rgba(255,255,255,.85);border-color:rgba(80,145,130,.28);}
+
+.mariscos-hl-item-left{flex:1;min-width:0;}
+.mariscos-hl-item-name{
+  font-family:var(--fh);font-size:.92rem;font-weight:600;
+  color:#ccddd8;line-height:1.2;margin-bottom:.2rem;
+}
+body.light .mariscos-hl-item-name{color:#1a2e28;}
+.mariscos-hl-item-sub{
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(155,195,185,.36);font-family:var(--fb);margin-bottom:.18rem;
+}
+body.light .mariscos-hl-item-sub{color:rgba(40,95,82,.38);}
+.mariscos-hl-item-desc{
+  font-size:.71rem;color:rgba(175,210,200,.38);line-height:1.5;font-style:italic;
+}
+body.light .mariscos-hl-item-desc{color:rgba(40,85,72,.46);}
+/* preço: mesmo tom dourado do template mas ligeiramente frio */
+.mariscos-hl-item-price{
+  font-family:var(--fh);font-size:1.1rem;font-weight:700;
+  color:#b8cec8;white-space:nowrap;flex-shrink:0;align-self:center;
+}
+body.light .mariscos-hl-item-price{color:#1e4a40;}
+.mariscos-hl-item-price span{
+  font-size:.55rem;font-family:var(--fb);font-weight:400;
+  color:rgba(155,195,185,.4);margin-left:.2rem;letter-spacing:.04em;
+}
+body.light .mariscos-hl-item-price span{color:rgba(40,95,82,.44);}
+.mariscos-hl-item-price-half{
+  font-size:.82rem;color:rgba(155,195,185,.52);
+}
+body.light .mariscos-hl-item-price-half{color:rgba(40,100,88,.52);}
+
 /* == CHAMPAGNE PREMIUM CARD == */
 .champ-premium-section{
   margin:1.4rem 0 1.2rem;
@@ -877,7 +1016,7 @@ body.light #tour-tip::before{background:var(--card);}
 .sr-desc{font-size:.72rem;color:var(--muted);margin-top:.15rem;line-height:1.4;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .sr-al{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
-.sr-price{font-size:.8rem;font-family:var(--fh);color:var(--accent);font-weight:600;margin-top:.15rem;}
+.sr-price{font-size:.8rem;font-family:var(--fh);margin-top:.25rem;}
 .search-empty{padding:1.5rem 1.1rem;text-align:center;color:var(--muted);font-size:.85rem;}
 mark{background:rgba(201,169,110,.3);color:inherit;border-radius:2px;padding:0 1px;}
 
@@ -922,7 +1061,7 @@ body.light .surpresa-presel-question{color:#1a1208;}
 }
 body.light .surpresa-presel-sub{color:#7a6a50;}
 .surpresa-presel-btns{
-  display:grid;grid-template-columns:1fr 1fr;gap:.7rem;width:100%;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;width:100%;
 }
 .surpresa-presel-btn{
   background:rgba(201,169,110,.08);
@@ -1536,6 +1675,9 @@ const SECTIONS = [
   {id:'peixes',    lPt:'Peixes',            lEn:'Fish',             lFr:'Poissons',
    img:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=1200&auto=format&fit=crop',
    sPt:'Do mar à mesa',sEn:'From the sea to the table',sFr:'De la mer à la table',legend:true,doneness:false},
+   {id:'mariscos',    lPt:'Mariscos',            lEn:'Seafood',             lFr:'Fruits de mer',
+   img:'https://images.unsplash.com/photo-1657618217273-00513772e15d?q=80&w=1200&auto=format&fit=crop',
+   sPt:'Sabores frescos do mar',sEn:'Fresh flavours of the sea',sFr:'Saveurs fraîches de la mer',legend:true,doneness:false},
   {id:'bebidas',   lPt:'Bebidas & Cafetaria',lEn:'Drinks & Coffee', lFr:'Boissons & Café',
    img:'https://images.unsplash.com/photo-1596202415827-e842da5ef687?w=1200&q=80&auto=format&fit=crop',
    sPt:'Águas · Refrigerantes · Café',sEn:'Water · Soft Drinks · Coffee',sFr:'Eaux · Boissons · Café',legend:false,doneness:false},
@@ -1574,7 +1716,7 @@ const AL = {
 };
 
 const VALID_SECTIONS = new Set([
-  'entradas','sopas','carnes','peixes',
+  'entradas','sopas','carnes','peixes','mariscos',
   'vinhoscasa','vinhos','bebidas','cervejas','cocktails','champagne','sobremesas','digestivos'
 ]);
 
@@ -1585,7 +1727,7 @@ const COL_MAP = {
   'preco_dose':'price_full','preco_meia':'price_half','preco_terceiro':'price_third',
   'etiqueta_dose':'price_label_full','etiqueta_meia':'price_label_half','etiqueta_terceiro':'price_label_third',
   'alergenios':'allergens','tipo':'wine_type','estado':'estado','destaque':'destaque','esgotado':'esgotado',
-  'ESGOTADO HOJE':'esgotado','esgotado hoje':'esgotado',
+  'ESGOTADO HOJE':'esgotado','esgotado hoje':'esgotado','esgotado hoje?':'esgotado','ESGOTADO HOJE?':'esgotado',
   'DESTAQUE NA SEÇÃO':'destaque','DESTAQUE NA SECÃO':'destaque','destaque na seção':'destaque','destaque na categoria':'destaque',
   // Legacy
   'section':'section','subsection':'subsection',
@@ -1784,7 +1926,7 @@ function buildHero(sec){
 
 // == GENERIC HIGHLIGHT CARD ==
 // Secções com card de destaque (coluna R = SIM)
-const HIGHLIGHT_SECTIONS = new Set(['carnes','champagne','vinhos','peixes','digestivos','sobremesas']);
+const HIGHLIGHT_SECTIONS = new Set(['carnes','champagne','vinhos','peixes','digestivos','sobremesas','mariscos']);
 
 function isDestaque(r){ return (r.destaque||'').trim().toUpperCase() === 'SIM'; }
 
@@ -1842,46 +1984,80 @@ function buildHighlightCard(rows, secId){
            fr:'Les préférées de notre équipe — douceurs préparées avec soin.'},
       extra:''
     },
+    mariscos:{
+      badge:{pt:'🦞 SELEÇÃO PREMIUM', en:'🦞 PREMIUM SELECTION', fr:'🦞 SÉLECTION PREMIUM'},
+      title:{pt:'Tesouros do Mar', en:'Treasures of the Sea', fr:'Trésors de la Mer'},
+      sub:{pt:'Uma seleção exclusiva dos melhores tesouros do mar (lagosta, sapateira, gambas ao alho, zamburinhas, mexilhão, amêijoas e camarão da costa), grelhados no ponto e servidos com um delicioso molho cheio de sabor.',
+           en:'An exclusive selection of the finest treasures of the sea (lobster, spider crab, garlic prawns, scallops, mussels, clams and local shrimp), grilled to perfection and served with a delicious, flavour-packed sauce.',
+           fr:'Une sélection exclusive des meilleurs trésors de la mer (homard, araignée de mer, gambas à l’ail, noix de Saint-Jacques, moules, palourdes et crevettes locales), grillés à point et servis avec une délicieuse sauce savoureuse.'},
+      extra:''
+    },
   };
   const c = cfg[secId] || cfg.digestivos;
 
   let itemsHtml = '';
+  const isMar = secId === 'mariscos';
   highlighted.forEach(r => {
     const price = r.price_full || '';
-    const label = r.price_label_full || '';
-    let ih = '<div class="dryaged-item"><div class="dryaged-item-left">';
-    if(r.subsection && r.subsection !== '__') ih += '<div class="champ-premium-item-sub">'+r.subsection+'</div>';
-    ih += '<div class="dryaged-item-name">'
-      +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
-      +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
-      +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
-      +'</div>';
-    if(r.desc_pt) ih += '<div class="dryaged-item-desc">'
-      +'<span class="t-pt">'+r.desc_pt+'</span>'
-      +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
-      +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
-      +'</div>';
-    ih += '</div>';
-    if(price){
-      ih += '<div class="dryaged-item-price-block">'
-        +'<div class="dryaged-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
-      if(r.price_half) ih += '<div class="dryaged-item-price dryaged-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+    if(isMar){
+      let ih = '<div class="mariscos-hl-item"><div class="mariscos-hl-item-left">';
+      if(r.subsection && r.subsection !== '__') ih += '<div class="mariscos-hl-item-sub">'+r.subsection+'</div>';
+      ih += '<div class="mariscos-hl-item-name">'
+        +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
+        +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
+        +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
+        +'</div>';
+      if(r.desc_pt) ih += '<div class="mariscos-hl-item-desc">'
+        +'<span class="t-pt">'+r.desc_pt+'</span>'
+        +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
+        +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
+        +'</div>';
+      ih += alBar(r.allergens);
       ih += '</div>';
+      if(price){
+        ih += '<div class="dryaged-item-price-block">'
+          +'<div class="mariscos-hl-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
+        if(r.price_half) ih += '<div class="mariscos-hl-item-price mariscos-hl-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+        ih += '</div>';
+      }
+      ih += '</div>';
+      itemsHtml += ih;
+    } else {
+      let ih = '<div class="dryaged-item"><div class="dryaged-item-left">';
+      if(r.subsection && r.subsection !== '__') ih += '<div class="champ-premium-item-sub">'+r.subsection+'</div>';
+      ih += '<div class="dryaged-item-name">'
+        +'<span class="t-pt">'+(r.name_pt||'')+'</span>'
+        +'<span class="t-en">'+(r.name_en||r.name_pt||'')+'</span>'
+        +'<span class="t-fr">'+(r.name_fr||r.name_pt||'')+'</span>'
+        +'</div>';
+      if(r.desc_pt) ih += '<div class="dryaged-item-desc">'
+        +'<span class="t-pt">'+r.desc_pt+'</span>'
+        +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
+        +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
+        +'</div>';
+      ih += alBar(r.allergens);
+      ih += '</div>';
+      if(price){
+        ih += '<div class="dryaged-item-price-block">'
+          +'<div class="dryaged-item-price">'+price+'<span>'+(r.price_label_full||'Dose')+'</span></div>';
+        if(r.price_half) ih += '<div class="dryaged-item-price dryaged-item-price-half">'+r.price_half+'<span>'+(r.price_label_half||'(1/2) Dose')+'</span></div>';
+        ih += '</div>';
+      }
+      ih += '</div>';
+      itemsHtml += ih;
     }
-    ih += '</div>';
-    itemsHtml += ih;
   });
 
-  // Use dryaged styles for carnes, champ-premium styles for others for visual variety
+  // Three visual flavours: carnes=dryaged, mariscos=marine, others=champ-premium
   const useAlt = secId !== 'carnes';
-  const wrapClass = useAlt ? 'champ-premium-section' : 'dryaged-section';
-  const headClass = useAlt ? 'champ-premium-header' : 'dryaged-header';
-  const badgeClass = useAlt ? 'champ-premium-badge' : 'dryaged-badge';
-  const titleClass = useAlt ? 'champ-premium-title' : 'dryaged-title';
-  const subClass   = useAlt ? 'champ-premium-subtitle' : 'dryaged-subtitle';
-  const bodyClass  = useAlt ? 'champ-premium-body' : 'dryaged-body';
-  const labelClass = useAlt ? 'champ-premium-items-title' : 'dryaged-items-title';
-  const cardId     = `highlight-card-${secId}`;
+  const wrapClass = isMar ? 'mariscos-hl-section'      : useAlt ? 'champ-premium-section' : 'dryaged-section';
+  const headClass = isMar ? 'mariscos-hl-header'       : useAlt ? 'champ-premium-header'  : 'dryaged-header';
+  const badgeClass= isMar ? 'mariscos-hl-badge'        : useAlt ? 'champ-premium-badge'   : 'dryaged-badge';
+  const titleClass= isMar ? 'mariscos-hl-title'        : useAlt ? 'champ-premium-title'   : 'dryaged-title';
+  const subClass  = isMar ? 'mariscos-hl-subtitle'     : useAlt ? 'champ-premium-subtitle': 'dryaged-subtitle';
+  const bodyClass = isMar ? 'mariscos-hl-body'         : useAlt ? 'champ-premium-body'    : 'dryaged-body';
+  const labelClass= isMar ? 'mariscos-hl-items-title'  : useAlt ? 'champ-premium-items-title' : 'dryaged-items-title';
+  const cardId    = `highlight-card-${secId}`;
 
   return `<div class="${wrapClass}" id="${cardId}">
     <div class="${headClass}">
@@ -2805,6 +2981,11 @@ champagne,Espumante | Sparkling Wine | Vin Mousseux / Crémant,Terras do Demo Es
           <span class="surpresa-presel-btn-label"><span class="t-pt">Peixe</span><span class="t-en">Fish</span><span class="t-fr">Poisson</span></span>
           <span class="surpresa-presel-btn-desc"><span class="t-pt">Do mar à mesa, fresquíssimo</span><span class="t-en">From the sea to your table</span><span class="t-fr">De la mer à votre table</span></span>
         </button>
+        <button class="surpresa-presel-btn" onclick="buildSurpresa('mariscos')">
+          <span class="surpresa-presel-btn-icon">🦞</span>
+          <span class="surpresa-presel-btn-label"><span class="t-pt">Marisco</span><span class="t-en">Seafood</span><span class="t-fr">Fruits de Mer</span></span>
+          <span class="surpresa-presel-btn-desc"><span class="t-pt">Tesouros do mar, seleção premium</span><span class="t-en">Treasures of the sea, premium selection</span><span class="t-fr">Trésors de la mer, sélection premium</span></span>
+        </button>
       </div>
       <button class="surpresa-presel-random" onclick="buildSurpresa(null)">
         🎲 <span class="t-pt">Surpreende-me (sem preferência)</span>
@@ -3202,6 +3383,7 @@ const SECTION_LABELS = {
   sopas:{pt:'Sopas & Saladas',en:'Soups & Salads',fr:'Soupes & Salades'},
   carnes:{pt:'Carnes',en:'Meats',fr:'Viandes'},
   peixes:{pt:'Peixes',en:'Fish',fr:'Poissons'},
+  mariscos:{pt:'Mariscos',en:'Seafood',fr:'Fruits de mer'},
   sobremesas:{pt:'Sobremesas',en:'Desserts',fr:'Desserts'},
   bebidas:{pt:'Bebidas',en:'Drinks',fr:'Boissons'},
   cervejas:{pt:'Cervejas',en:'Beers',fr:'Bières'},
@@ -3240,10 +3422,8 @@ function doSearch(q){
     var name = highlight(r[nameKey]||r.name_pt, q);
     var desc = highlight(r[descKey]||r.desc_pt, q);
     var sec  = SECTION_LABELS[r.section]||{pt:r.section,en:r.section,fr:r.section};
-    var price= r.price_full || '';
     var h = '<div class="search-result" onclick="goToSection(\''+r.section+'\');closeSearch();">';
     h += '<div class="sr-section"><span class="t-pt">'+sec.pt+'</span><span class="t-en">'+sec.en+'</span><span class="t-fr">'+sec.fr+'</span></div>';
-    // Subsection — extract part in active language (format: "PT | EN | FR")
     if(r.subsection && r.subsection !== '__'){
       var subParts = r.subsection.split('|').map(function(s){ return s.trim(); });
       var subPt = subParts[0]||''; var subEn = subParts[1]||subPt; var subFr = subParts[2]||subPt;
@@ -3252,7 +3432,18 @@ function doSearch(q){
     h += '<div class="sr-name">'+name+'</div>';
     if(desc) h += '<div class="sr-desc">'+desc+'</div>';
     if(r.allergens) h += '<div class="sr-al">'+r.allergens+'</div>';
-    if(price) h += '<div class="sr-price">'+price+'</div>';
+    // Preços — dose, meia e terceiro quando existirem
+    var pf=r.price_full, pm=r.price_half, pt=r.price_third;
+    var lf=r.price_label_full||'Dose', lm=r.price_label_half||'1/2', lt=r.price_label_third||'1/3';
+    if(pf||pm||pt){
+      h += '<div class="sr-price">';
+      if(pf) h += '<span class="sc-pv">'+pf+'</span><span class="sc-pl"> '+lf+'</span>';
+      if(pf&&(pm||pt)) h += '<span class="sc-sep"> · </span>';
+      if(pm) h += '<span class="sc-pv sc-pv-half">'+pm+'</span><span class="sc-pl"> '+lm+'</span>';
+      if(pm&&pt) h += '<span class="sc-sep"> · </span>';
+      if(pt) h += '<span class="sc-pv sc-pv-half">'+pt+'</span><span class="sc-pl"> '+lt+'</span>';
+      h += '</div>';
+    }
     h += '</div>';
     return h;
   }).join('');
@@ -3266,7 +3457,7 @@ function goToSection(secId){
 // == SURPRESA ==
 const SURPRESA_COURSES = [
   {key:'entrada',   secs:['entradas'],           label:{pt:'Entradas',        en:'Starters',     fr:'Entrées'},      count:2},
-  {key:'prato',     secs:['carnes','peixes'],     label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'},count:1},
+  {key:'prato',     secs:['carnes','peixes','mariscos'], label:{pt:'Prato Principal', en:'Main Course',  fr:'Plat Principal'},count:1},
   {key:'harmoniz',  secs:['vinhos','vinhoscasa'], label:{pt:'Harmonização',    en:'Wine Pairing', fr:'Accord Vin'},   count:1},
   {key:'sobremesa', secs:['sobremesas'],          label:{pt:'Sobremesa',       en:'Dessert',      fr:'Dessert'},      count:1},
 ];
@@ -3351,7 +3542,6 @@ function buildSurpresa(pref){
     return r.name_pt &&
     (r.estado||'').toLowerCase()==='ativo' &&
     (r.esgotado||'').toUpperCase()!=='SIM' &&
-    !isDestaque(r) &&
     (r.wine_type||'').toLowerCase()!=='premium';
   });
 
