@@ -2012,6 +2012,7 @@ function buildHighlightCard(rows, secId){
         +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
         +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
         +'</div>';
+      ih += alBar(r.allergens);
       ih += '</div>';
       if(price){
         ih += '<div class="dryaged-item-price-block">'
@@ -2034,6 +2035,7 @@ function buildHighlightCard(rows, secId){
         +'<span class="t-en">'+(r.desc_en||r.desc_pt)+'</span>'
         +'<span class="t-fr">'+(r.desc_fr||r.desc_pt)+'</span>'
         +'</div>';
+      ih += alBar(r.allergens);
       ih += '</div>';
       if(price){
         ih += '<div class="dryaged-item-price-block">'
